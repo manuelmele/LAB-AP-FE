@@ -9,16 +9,17 @@ class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> introData = [
     {
-      "text": "Welcome to Tokoto, Let’s shop!",
+      "text": "Welcome to WeFix, Let's Start!",
       "image": "assets/images/splash_1.png"
     },
     {
       "text":
-          "We help people conect with store \naround United State of America",
+          "We help people solve theri problems \nconnecting them to local artisans",
       "image": "assets/images/splash_2.png"
     },
     {
-      "text": "We show the easy way to shop. \nJust stay at home with us",
+      "text":
+          "We give visibility to small local enterpreneurs \nby offering an easy-to-use platform",
       "image": "assets/images/splash_3.png"
     },
   ];
@@ -27,9 +28,32 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return PageView(
       children: <Widget>[
-        Container(color: Colors.pink),
-        Container(color: Colors.cyan),
-        Container(color: Colors.deepPurple),
+        Container(
+            color: Colors.blueGrey,
+            child: const Center(
+                child: Text('Welcome to WeFix, Let\'s Start!',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white)))),
+        Container(
+            color: Colors.cyan,
+            child: const Center(
+                child: Text(
+                    'We help people solve their problems \nconnecting them to local artisans',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white)))),
+        Container(
+            color: Colors.deepPurple,
+            child: const Center(
+                child: Text(
+                    'We give visibility to small local enterpreneurs \nby offering an easy-to-use platform',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white)))),
       ],
     );
   }
