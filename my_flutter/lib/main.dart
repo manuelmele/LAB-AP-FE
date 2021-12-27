@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 import 'package:wefix/screens/intro/intro_slides.dart';
 import 'package:wefix/routes.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'WeFix',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: kPrimaryColor_material,
       ),
       initialRoute: IntroSlides.routeName, //this is set to "/intro"
       routes: routes,
