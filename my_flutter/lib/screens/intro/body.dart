@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'intro_content.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -10,20 +11,21 @@ class _BodyState extends State<Body> {
   List<Map<String, String>> introData = [
     {
       "text": "Welcome to WeFix, Let's Start!",
-      "image": "assets/images/splash_1.png"
+      "image": "assets/images/intro1.jpg"
     },
     {
       "text":
           "We help people solve theri problems \nconnecting them to local artisans",
-      "image": "assets/images/splash_2.png"
+      "image": "assets/images/intro2.jpg"
     },
     {
       "text":
           "We give visibility to small local enterpreneurs \nby offering an easy-to-use platform",
-      "image": "assets/images/splash_3.png"
+      "image": "assets/images/intro3.jpg"
     },
   ];
 
+/*
   @override
   Widget build(BuildContext context) {
     return PageView(
@@ -48,17 +50,24 @@ class _BodyState extends State<Body> {
         Container(
             color: Colors.deepPurple,
             child: const Center(
-                child: Text(
+                children: <Widget>[
+                  Text(
                     'We give visibility to small local enterpreneurs \nby offering an easy-to-use platform',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontStyle: FontStyle.italic,
-                        color: Colors.white)))),
+                        color: Colors.white)),
+                  ContainedButton(
+                      text: "Continue",
+                      press: () {
+                        Navigator.pushNamed(context, SignInScreen.routeName);
+                      },
+                    ),
       ],
     );
   }
+*/
 
-  /*
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,10 +83,10 @@ class _BodyState extends State<Body> {
                     currentPage = value;
                   });
                 },
-                itemCount: splashData.length,
-                itemBuilder: (context, index) => SplashContent(
-                  image: splashData[index]["image"],
-                  text: splashData[index]['text'],
+                itemCount: introData.length,
+                itemBuilder: (context, index) => IntroContent(
+                  image: introData[index]["image"],
+                  text: introData[index]['text'],
                 ),
               ),
             ),
@@ -85,7 +94,8 @@ class _BodyState extends State<Body> {
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                    //horizontal: getProportionateScreenWidth(20)
+                    ),
                 child: Column(
                   children: <Widget>[
                     Spacer(),
@@ -93,16 +103,14 @@ class _BodyState extends State<Body> {
                       //riga che mostra a quale swipe sono nella home
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
-                        splashData.length,
+                        introData.length,
                         (index) => buildDot(index: index),
                       ),
                     ),
                     Spacer(flex: 3),
-                    DefaultButton(
-                      text: "Continue",
-                      press: () {
-                        Navigator.pushNamed(context, SignInScreen.routeName);
-                      },
+                    ElevatedButton(
+                      child: const Text('Continue'),
+                      onPressed: () {},
                     ),
                     Spacer(),
                   ],
@@ -113,6 +121,18 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
 
-    */
+  AnimatedContainer buildDot({int? index}) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      margin: EdgeInsets.only(right: 5),
+      height: 6,
+      width: currentPage == index ? 20 : 6,
+      decoration: BoxDecoration(
+        color: currentPage == index ? Color(0xFFFF7643) : Color(0xFFD8D8D8),
+        borderRadius: BorderRadius.circular(3),
+      ),
+    );
+  }
 }
