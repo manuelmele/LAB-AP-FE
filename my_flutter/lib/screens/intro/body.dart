@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 import 'intro_content.dart';
 
 class Body extends StatefulWidget {
@@ -15,7 +16,7 @@ class _BodyState extends State<Body> {
     },
     {
       "text":
-          "We help people solve theri problems \nconnecting them to local artisans",
+          "We help people solve their problems \nconnecting them to local artisans",
       "image": "assets/images/intro2.jpg"
     },
     {
@@ -25,49 +26,6 @@ class _BodyState extends State<Body> {
     },
   ];
 
-/*
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-      children: <Widget>[
-        Container(
-            color: Colors.blueGrey,
-            child: const Center(
-                child: Text('Welcome to WeFix, Let\'s Start!',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.white)))),
-        Container(
-            color: Colors.cyan,
-            child: const Center(
-                child: Text(
-                    'We help people solve their problems \nconnecting them to local artisans',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.white)))),
-        Container(
-            color: Colors.deepPurple,
-            child: const Center(
-                children: <Widget>[
-                  Text(
-                    'We give visibility to small local enterpreneurs \nby offering an easy-to-use platform',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.white)),
-                  ContainedButton(
-                      text: "Continue",
-                      press: () {
-                        Navigator.pushNamed(context, SignInScreen.routeName);
-                      },
-                    ),
-      ],
-    );
-  }
-*/
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -76,6 +34,7 @@ class _BodyState extends State<Body> {
         child: Column(
           children: <Widget>[
             Expanded(
+              //box with image and text
               flex: 3,
               child: PageView.builder(
                 onPageChanged: (value) {
@@ -98,7 +57,7 @@ class _BodyState extends State<Body> {
                     ),
                 child: Column(
                   children: <Widget>[
-                    Spacer(),
+                    //Spacer(flex: 1),
                     Row(
                       //riga che mostra a quale swipe sono nella home
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -107,12 +66,16 @@ class _BodyState extends State<Body> {
                         (index) => buildDot(index: index),
                       ),
                     ),
-                    Spacer(flex: 3),
-                    ElevatedButton(
-                      child: const Text('Continue'),
-                      onPressed: () {},
+                    Spacer(flex: 1),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        child: const Text('Continue'),
+                        onPressed: () {},
+                      ),
                     ),
-                    Spacer(),
+
+                    //Spacer(),
                   ],
                 ),
               ),
@@ -130,7 +93,7 @@ class _BodyState extends State<Body> {
       height: 6,
       width: currentPage == index ? 20 : 6,
       decoration: BoxDecoration(
-        color: currentPage == index ? Color(0xFFFF7643) : Color(0xFFD8D8D8),
+        color: currentPage == index ? kPrimaryColor : kGrey,
         borderRadius: BorderRadius.circular(3),
       ),
     );
