@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/size_config.dart';
+import 'package:wefix/constants.dart';
 
 class IntroContent extends StatelessWidget {
   const IntroContent({
@@ -16,8 +18,8 @@ class IntroContent extends StatelessWidget {
         Text(
           "WEFIX",
           style: TextStyle(
-            //fontSize: getProportionateScreenWidth(36),
-            //color: kPrimaryColor,
+            fontSize: getProportionateScreenWidth(36),
+            color: kPrimaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -28,8 +30,8 @@ class IntroContent extends StatelessWidget {
         Spacer(flex: 2),
         Image.asset(
           image!,
-          //height: getProportionateScreenHeight(265),
-          //width: getProportionateScreenWidth(235),
+          height: getProportionateScreenHeight(265),
+          width: getProportionateScreenWidth(235),
         ),
       ],
     );

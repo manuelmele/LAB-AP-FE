@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/intro/body.dart';
+import 'package:wefix/size_config.dart';
 
 class IntroSlides extends StatelessWidget {
   //equivalente a SplashScreen
@@ -10,7 +11,7 @@ class IntroSlides extends StatelessWidget {
   Widget build(BuildContext context) {
     //you have to call it on your starting screen (?)
 
-    //SizeConfig().init(context);
+    SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('WeFix'),

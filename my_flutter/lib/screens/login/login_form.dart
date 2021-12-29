@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 //import 'package:shop_app/screens/login_success/login_success_screen.dart';
 
 import '../../../constants.dart';
-//import '../../../size_config.dart';
+import '../../../size_config.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -41,9 +41,9 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          const SizedBox(height: 30.0),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
-          const SizedBox(height: 30.0),
+          SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
               Checkbox(
@@ -68,7 +68,7 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           //FormError(errors: errors),
-          const SizedBox(height: 20.0),
+          SizedBox(height: getProportionateScreenHeight(20)),
           Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
