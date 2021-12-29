@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:shop_app/components/no_account_text.dart';
 //import 'package:shop_app/components/socal_card.dart';
-//import '../../../size_config.dart';
+import '../../../size_config.dart';
 import 'login_form.dart';
 
 class Body extends StatelessWidget {
@@ -11,7 +11,8 @@ class Body extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -20,7 +21,7 @@ class Body extends StatelessWidget {
                   "Welcome!",
                   style: TextStyle(
                     color: Colors.black,
-                    //fontSize: getProportionateScreenWidth(28),
+                    fontSize: getProportionateScreenWidth(28),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -28,11 +29,11 @@ class Body extends StatelessWidget {
                   "Sign in with your email and password",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 0.08),
+                SizedBox(height: SizeConfig.screenHeight * 0.08),
                 LoginForm(),
-                SizedBox(height: 0.08),
+                SizedBox(height: SizeConfig.screenHeight * 0.08),
 
-                const SizedBox(height: 20.0),
+                SizedBox(height: getProportionateScreenHeight(20)),
                 //NoAccountText(),
               ],
             ),
