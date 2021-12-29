@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/constants.dart';
+import 'package:wefix/screens/login/login.dart';
 import 'intro_content.dart';
 
 class Body extends StatefulWidget {
@@ -33,6 +34,7 @@ class _BodyState extends State<Body> {
         width: double.infinity,
         child: Column(
           children: <Widget>[
+            Spacer(flex: 1),
             Expanded(
               //box with image and text
               flex: 3,
@@ -57,7 +59,7 @@ class _BodyState extends State<Body> {
                     ),
                 child: Column(
                   children: <Widget>[
-                    //Spacer(flex: 1),
+                    Spacer(flex: 1),
                     Row(
                       //riga che mostra a quale swipe sono nella home
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -68,10 +70,12 @@ class _BodyState extends State<Body> {
                     ),
                     Spacer(flex: 1),
                     Align(
-                      alignment: Alignment.bottomRight,
+                      alignment: Alignment.bottomCenter,
                       child: ElevatedButton(
                         child: const Text('Continue'),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, LoginScreen.routeName);
+                        },
                       ),
                     ),
 
