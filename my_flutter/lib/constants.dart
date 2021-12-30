@@ -25,3 +25,6 @@ Map<int, Color> colormap = {
   800: Color.fromRGBO(147, 205, 72, .9),
   900: Color.fromRGBO(147, 205, 72, 1),
 };
+
+
+// costanti per le frasi di errore?

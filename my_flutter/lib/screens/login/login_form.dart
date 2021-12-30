@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/intro/intro_slides.dart';
+import 'package:wefix/screens/signup/signup.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
 //import 'package:shop_app/components/form_error.dart';
 //import 'package:shop_app/helper/keyboard.dart';
@@ -83,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, IntroSlides.routeName);
+              Navigator.pushNamed(context, SignUpScreen.routeName);
             }, //add forgotpasswordScreen.routeName and .dart
             child: Text(
               "Don't have an account? Sign up",
