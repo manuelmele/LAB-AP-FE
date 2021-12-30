@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/screens/intro/intro_slides.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
 //import 'package:shop_app/components/form_error.dart';
 //import 'package:shop_app/helper/keyboard.dart';
@@ -57,14 +58,15 @@ class _LoginFormState extends State<LoginForm> {
               ),
               Text("Remember me"), //for remaining the current session
               Spacer(),
-              /*GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName), //add forgotpasswordScreen.dart
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, IntroSlides.routeName);
+                }, //add forgotpasswordScreen.routeName and .dart
                 child: Text(
                   "Forgot Password",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
-              )*/
+              )
             ],
           ),
           //FormError(errors: errors),
@@ -74,10 +76,20 @@ class _LoginFormState extends State<LoginForm> {
             child: ElevatedButton(
               child: const Text('Log-in'),
               onPressed: () {
-                //Navigator.pushNamed(context, HomeScreen.routeName);
+                Navigator.pushNamed(context, IntroSlides.routeName);
               },
             ),
           ),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, IntroSlides.routeName);
+            }, //add forgotpasswordScreen.routeName and .dart
+            child: Text(
+              "Don't have an account? Sign up",
+              style: TextStyle(decoration: TextDecoration.underline),
+            ),
+          )
         ],
       ),
     );
@@ -90,19 +102,19 @@ class _LoginFormState extends State<LoginForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: "Please, enter your password!");
-        } else if (value.length >= 8) {
-          removeError(error: "Your password is too short!");
-        }
+        } //else if (value.length >= 8) {
+        //removeError(error: "Your password is too short!");
+        //}
         return null;
       },
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: "Please, enter your password!");
           return "";
-        } else if (value.length < 8) {
-          addError(error: "Your password is too short!");
-          return "";
-        }
+        } //else if (value.length < 8) {
+        //addError(error: "Your password is too short!");
+        //return "";
+        //}
         return null;
       },
       decoration: InputDecoration(

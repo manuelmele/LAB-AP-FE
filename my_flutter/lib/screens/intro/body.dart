@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'intro_content.dart';
+import 'package:wefix/size_config.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _BodyState extends State<Body> {
         width: double.infinity,
         child: Column(
           children: <Widget>[
-            Spacer(flex: 1),
+            Spacer(),
             Expanded(
               //box with image and text
               flex: 3,
@@ -55,8 +56,7 @@ class _BodyState extends State<Body> {
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    //horizontal: getProportionateScreenWidth(20)
-                    ),
+                    horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   children: <Widget>[
                     Spacer(flex: 1),
@@ -78,8 +78,7 @@ class _BodyState extends State<Body> {
                         },
                       ),
                     ),
-
-                    //Spacer(),
+                    Spacer(),
                   ],
                 ),
               ),
