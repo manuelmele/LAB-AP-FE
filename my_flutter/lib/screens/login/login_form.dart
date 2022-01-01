@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wefix/screens/intro/intro_slides.dart';
+import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/signup/signup.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
 //import 'package:shop_app/components/form_error.dart';
@@ -20,6 +20,15 @@ class _LoginFormState extends State<LoginForm> {
   String? email;
   String? password;
   bool? remember = false;
+
+  bool _passwordVisible = false; //makes the password readable or dotted
+  //note the underscore in front of the variable name means that the variable is private to this file
+
+  @override
+  void initState() {
+    _passwordVisible = false; //setta inizialmente la password oscurata
+  }
+
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -57,13 +66,13 @@ class _LoginFormState extends State<LoginForm> {
                   });
                 },
               ),
-              Text("Remember me"), //for remaining the current session
-              Spacer(),
+              const Text("Remember me"), //for remaining the current session
+              const Spacer(),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, IntroSlides.routeName);
+                  Navigator.pushNamed(context, Intro.routeName);
                 }, //add forgotpasswordScreen.routeName and .dart
-                child: Text(
+                child: const Text(
                   "Forgot Password",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
@@ -77,7 +86,7 @@ class _LoginFormState extends State<LoginForm> {
             child: ElevatedButton(
               child: const Text('Log-in'),
               onPressed: () {
-                Navigator.pushNamed(context, IntroSlides.routeName);
+                Navigator.pushNamed(context, Intro.routeName);
               },
             ),
           ),
@@ -86,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
             onTap: () {
               Navigator.pushNamed(context, SignUpScreen.routeName);
             }, //add forgotpasswordScreen.routeName and .dart
-            child: Text(
+            child: const Text(
               "Don't have an account? Sign up",
               style: TextStyle(decoration: TextDecoration.underline),
             ),
@@ -98,7 +107,7 @@ class _LoginFormState extends State<LoginForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      obscureText: true,
+      obscureText: !_passwordVisible,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -124,7 +133,18 @@ class _LoginFormState extends State<LoginForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+        suffixIcon: IconButton(
+          icon: Icon(
+            //cambia l'icona in base alla visibility della pw
+            _passwordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+          onPressed: () {
+            setState(() {
+              _passwordVisible =
+                  !_passwordVisible; //switcha tra password oscurata e password visibile
+            });
+          },
+        ),
       ),
     );
   }
@@ -151,12 +171,19 @@ class _LoginFormState extends State<LoginForm> {
         //}
         return null;
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Align(
+          widthFactor: 1.0,
+          heightFactor: 1.0,
+          child: Icon(
+            Icons.email,
+          ),
+        ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );

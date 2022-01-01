@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 //this is the value to modify to change base color of the application
 //its an hexadecimal value
-const int kPrimaryColorCode = 0xFF5fd7e4;
+const int kPrimaryColorCode = 0xFFfe7062;
+
+const kOrange = Color(0xFFfe7062);
+const kBlue = Color(0xFF14097f);
 
 const kPrimaryColor = Color(kPrimaryColorCode);
 const kGrey = Color(0xFFD8D8D8);

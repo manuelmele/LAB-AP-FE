@@ -11,35 +11,81 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int currentPage = 0;
+
+  //pageController lets us choose which page of the pageviwe to see
+  final PageController _pageController = PageController();
+  @override //non so a che serve l'ho preso dalle api di flutter
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   List<Map<String, String>> introData = [
     {
       "text": "Welcome to WeFix, Let's Start!",
-      "image": "assets/images/intro1.jpg"
+      "image": "assets/images/intro1.png"
     },
     {
       "text":
           "We help people solve their problems \nconnecting them to local artisans",
-      "image": "assets/images/intro2.jpg"
+      "image": "assets/images/intro2.png"
     },
     {
       "text":
           "We give visibility to small local enterpreneurs \nby offering an easy-to-use platform",
-      "image": "assets/images/intro3.jpg"
+      "image": "assets/images/intro3.png"
     },
   ];
 
   @override
   Widget build(BuildContext context) {
+    final isLastPage = (currentPage.round() == introData.length - 1);
+
+    //bool isSkipBtn = (!_isSkipPressed && !isLastPage && widget.showSkipButton);
+
+    /*final skipBtn = IntroButton(
+      //child: widget.skip,
+      //color: widget.skipColor ?? widget.color,
+      onPressed: () {
+        Navigator.pushNamed(context, LoginScreen.routeName);
+      },
+    );*/
+
+    final skipBtn = TextButton(
+      onPressed: () {
+        Navigator.pushNamed(context, LoginScreen.routeName);
+      },
+      child: const Text("SKIP", style: TextStyle(fontSize: 15, color: kOrange)),
+    );
+
+    final nextBtn = TextButton(
+      onPressed: () {
+        if (_pageController.hasClients) {
+          _pageController.animateToPage(currentPage + 1,
+              duration: Duration(milliseconds: 400), curve: Curves.easeInOut);
+        }
+      },
+      child: const Text("NEXT", style: TextStyle(fontSize: 15, color: kOrange)),
+    );
+
+    final doneBtn = TextButton(
+      onPressed: () {
+        Navigator.pushNamed(context, LoginScreen.routeName);
+      },
+      child: const Text("DONE", style: TextStyle(fontSize: 15, color: kOrange)),
+    );
+
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
         child: Column(
           children: <Widget>[
-            Spacer(),
+            SizedBox(height: getProportionateScreenWidth(60)),
             Expanded(
               //box with image and text
-              flex: 3,
+              flex: 15,
               child: PageView.builder(
+                controller: _pageController,
                 onPageChanged: (value) {
                   setState(() {
                     currentPage = value;
@@ -59,26 +105,25 @@ class _BodyState extends State<Body> {
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(
                   children: <Widget>[
-                    Spacer(flex: 1),
+                    //Spacer(flex: 1),
                     Row(
-                      //riga che mostra a quale swipe sono nella home
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        introData.length,
-                        (index) => buildDot(index: index),
-                      ),
+                      children: [
+                        skipBtn,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: getProportionateScreenWidth(0)),
+                          child: Row(
+                            children: List.generate(
+                              introData.length,
+                              (index) => buildDot(index: index),
+                            ),
+                          ),
+                        ),
+                        isLastPage ? doneBtn : nextBtn,
+                        SizedBox(height: getProportionateScreenWidth(80))
+                      ],
                     ),
-                    Spacer(flex: 1),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                        child: const Text('Continue'),
-                        onPressed: () {
-                          Navigator.pushNamed(context, LoginScreen.routeName);
-                        },
-                      ),
-                    ),
-                    Spacer(),
                   ],
                 ),
               ),
@@ -94,7 +139,8 @@ class _BodyState extends State<Body> {
       duration: Duration(milliseconds: 200),
       margin: EdgeInsets.only(right: 5),
       height: 6,
-      width: currentPage == index ? 20 : 6,
+      //il primo valore di width indica quanto deve essere largo il dot evidenziato, 240 lo fa diventare una barra
+      width: currentPage == index ? 240 : 6,
       decoration: BoxDecoration(
         color: currentPage == index ? kPrimaryColor : kGrey,
         borderRadius: BorderRadius.circular(3),

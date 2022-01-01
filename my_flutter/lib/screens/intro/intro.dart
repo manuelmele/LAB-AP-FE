@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wefix/screens/intro/body.dart';
 import 'package:wefix/size_config.dart';
 
-class IntroSlides extends StatelessWidget {
+class Intro extends StatelessWidget {
   //equivalente a SplashScreen
   static String routeName =
       "/intro"; //nell'app di prova questa si chiama splash
@@ -13,9 +13,9 @@ class IntroSlides extends StatelessWidget {
 
     SizeConfig().init(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('WeFix'),
-      ),
+      //appBar: AppBar(
+      //title: const Text('WeFix'),
+      //),
       body: Body(),
     );
   }

@@ -14,7 +14,7 @@ class IntroContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Spacer(),
+        //Spacer(),
         Text(
           "WEFIX",
           style: TextStyle(
@@ -27,11 +27,13 @@ class IntroContent extends StatelessWidget {
           text!,
           textAlign: TextAlign.center,
         ),
-        Spacer(flex: 2),
-        Image.asset(
-          image!,
-          height: getProportionateScreenHeight(265),
-          width: getProportionateScreenWidth(235),
+        //Spacer(flex: 2),
+        Expanded(
+          child: Image.asset(
+            image!,
+            height: getProportionateScreenHeight(626),
+            width: getProportionateScreenWidth(626),
+          ),
         ),
       ],
     );
