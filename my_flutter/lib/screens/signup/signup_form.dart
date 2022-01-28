@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
+import 'package:wefix/services/auth_service.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -18,6 +19,24 @@ class _SignUpFormState extends State<SignUpForm> {
   String? confirm_password;
   bool remember = false;
   final List<String?> errors = [];
+
+  Future<String> signUp() async {
+    String response = await signUpService(
+        name!, surname!, email!, password!, confirm_password!);
+
+    //print(response);
+
+    if (response.contains('Error')) {
+      String error = response;
+      print(error);
+      //errors.add(error);
+    } else {
+      String jwt = response;
+      return jwt;
+    }
+
+    return '';
+  }
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -51,12 +70,17 @@ class _SignUpFormState extends State<SignUpForm> {
           //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           ElevatedButton(
-            child: const Text('Next'),
-            onPressed: () {
+            child: const Text('Continue'),
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                Navigator.pushNamed(context, SignUpOptionalScreen.routeName);
+
+                String jwt = await signUp();
+
+                if (jwt.isNotEmpty) {
+                  // if all are valid then go to success screen
+                  Navigator.pushNamed(context, SignUpOptionalScreen.routeName);
+                }
               }
             },
           ),
