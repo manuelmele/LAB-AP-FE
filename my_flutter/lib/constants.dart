@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 const int kPrimaryColorCode = 0xFFfe7062;
 
 const kOrange = Color(0xFFfe7062);
-const kBlue = Color(0xFF14097f);
-
+const kBluScuro = Color(0xFFfe7062);
 const kPrimaryColor = Color(kPrimaryColorCode);
 const kGrey = Color(0xFFD8D8D8);
 

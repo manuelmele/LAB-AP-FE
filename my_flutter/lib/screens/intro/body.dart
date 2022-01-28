@@ -121,7 +121,7 @@ class _BodyState extends State<Body> {
                           ),
                         ),
                         isLastPage ? doneBtn : nextBtn,
-                        SizedBox(height: getProportionateScreenWidth(80))
+                        SizedBox(height: getProportionateScreenWidth(0))
                       ],
                     ),
                   ],
@@ -140,7 +140,7 @@ class _BodyState extends State<Body> {
       margin: EdgeInsets.only(right: 5),
       height: 6,
       //il primo valore di width indica quanto deve essere largo il dot evidenziato, 240 lo fa diventare una barra
-      width: currentPage == index ? 240 : 6,
+      width: currentPage == index ? 200 : 6,
       decoration: BoxDecoration(
         color: currentPage == index ? kPrimaryColor : kGrey,
         borderRadius: BorderRadius.circular(3),
