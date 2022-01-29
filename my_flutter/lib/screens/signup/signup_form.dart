@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
 import 'package:wefix/services/auth_service.dart';
 
@@ -78,8 +79,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 String jwt = await signUp();
 
                 if (jwt.isNotEmpty) {
-                  // if all are valid then go to success screen
-                  Navigator.pushNamed(context, SignUpOptionalScreen.routeName);
+                  Navigator.pushNamed(context, NavigatorScreen.routeName);
                 }
               }
             },

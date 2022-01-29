@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/intro/intro.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/services/auth_service.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
@@ -106,11 +107,11 @@ class _LoginFormState extends State<LoginForm> {
             child: ElevatedButton(
               child: const Text('Login'),
               onPressed: () async {
-                print(email! + " - " + password!);
+                //print(email! + " - " + password!);
                 String jwt = await signIn();
 
                 if (jwt.isNotEmpty) {
-                  Navigator.pushNamed(context, Intro.routeName);
+                  Navigator.pushNamed(context, NavigatorScreen.routeName);
                 }
               },
             ),
