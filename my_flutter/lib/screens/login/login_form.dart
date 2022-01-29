@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/signup/signup.dart';
+import 'package:wefix/services/auth_service.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
 //import 'package:shop_app/components/form_error.dart';
 //import 'package:shop_app/helper/keyboard.dart';
@@ -23,6 +24,25 @@ class _LoginFormState extends State<LoginForm> {
 
   bool _passwordVisible = false; //makes the password readable or dotted
   //note the underscore in front of the variable name means that the variable is private to this file
+
+  Future<String> signIn() async {
+    if (email == null || password == null) return '';
+
+    String response = await signInService(email!, password!);
+
+    //print(response);
+
+    if (response.contains('Error')) {
+      String error = response;
+      print(error);
+      //errors.add(error);
+    } else {
+      String jwt = response;
+      return jwt;
+    }
+
+    return '';
+  }
 
   @override
   void initState() {
@@ -84,9 +104,14 @@ class _LoginFormState extends State<LoginForm> {
           Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
-              child: const Text('Log-in'),
-              onPressed: () {
-                Navigator.pushNamed(context, Intro.routeName);
+              child: const Text('Login'),
+              onPressed: () async {
+                print(email! + " - " + password!);
+                String jwt = await signIn();
+
+                if (jwt.isNotEmpty) {
+                  Navigator.pushNamed(context, Intro.routeName);
+                }
               },
             ),
           ),
@@ -115,7 +140,7 @@ class _LoginFormState extends State<LoginForm> {
         } //else if (value.length >= 8) {
         //removeError(error: "Your password is too short!");
         //}
-        return null;
+        password = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -159,7 +184,7 @@ class _LoginFormState extends State<LoginForm> {
         } //else if (emailValidatorRegExp.hasMatch(value)) {
         //removeError(error: "Please, enter valid email!");
         //}
-        return null;
+        email = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
