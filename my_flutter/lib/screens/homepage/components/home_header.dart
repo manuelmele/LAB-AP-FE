@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../constants.dart';
 import '../../../size_config.dart';
-import 'search_field.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
@@ -10,8 +10,23 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SearchField(),
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      width: SizeConfig.screenWidth * 0.9,
+      decoration: BoxDecoration(
+        color: kPrimaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: TextField(
+        textAlignVertical: TextAlignVertical.center,
+        onChanged: (value) => print(value),
+        decoration: const InputDecoration(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            hintText: "Search",
+            prefixIcon: Icon(Icons.search)),
+      ),
     );
   }
 }
