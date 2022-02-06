@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/screens/homepage/components/results_widget.dart';
 
 import '../../../size_config.dart';
 
@@ -6,7 +7,12 @@ class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
-      {"icon": const Icon(Icons.plumbing), "text": "Plumber"},
+      {
+        "icon": const Icon(
+          Icons.plumbing,
+        ),
+        "text": "Plumber"
+      },
       {"icon": const Icon(Icons.cut), "text": "Tailor"},
       {"icon": const Icon(Icons.electrical_services), "text": "Electrician"},
       {"icon": const Icon(Icons.window_rounded), "text": "Glass Maker"},
@@ -28,7 +34,14 @@ class Categories extends StatelessWidget {
           return CategoryCard(
             icon: categories[index]["icon"],
             text: categories[index]["text"],
-            press: () {},
+            press: () {
+              String _category = categories[index]["text"];
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResultsWidget(category: _category),
+                  ));
+            },
           );
         },
       ),
