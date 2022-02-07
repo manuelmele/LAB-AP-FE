@@ -33,7 +33,7 @@ class _NavigatorState extends State<NavigatorScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white70,
         currentIndex: currentIndex,

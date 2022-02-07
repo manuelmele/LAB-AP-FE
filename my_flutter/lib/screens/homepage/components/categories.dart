@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
+import 'package:wefix/screens/homepage/components/results_widget.dart';
 
 import '../../../size_config.dart';
 
@@ -10,17 +11,45 @@ class Categories extends StatelessWidget {
       {
         "icon": const Icon(
           Icons.plumbing,
+          color: Colors.blue,
         ),
         "text": "Plumber"
       },
-      {"icon": const Icon(Icons.cut), "text": "Tailor"},
-      {"icon": const Icon(Icons.electrical_services), "text": "Electrician"},
-      {"icon": const Icon(Icons.window_rounded), "text": "Glass Maker"},
       {
-        "icon": const Icon(Icons.photo_size_select_actual_outlined),
+        "icon": const Icon(
+          Icons.cut,
+          color: Colors.blue,
+        ),
+        "text": "Tailor"
+      },
+      {
+        "icon": const Icon(
+          Icons.electrical_services,
+          color: Colors.blue,
+        ),
+        "text": "Electrician"
+      },
+      {
+        "icon": const Icon(
+          Icons.window_rounded,
+          color: Colors.blue,
+        ),
+        "text": "Glass Maker"
+      },
+      {
+        "icon": const Icon(
+          Icons.photo_size_select_actual_outlined,
+          color: Colors.blue,
+        ),
         "text": "Gardner"
       },
-      {"icon": const Icon(Icons.sensor_window_outlined), "text": "Carpenter"},
+      {
+        "icon": const Icon(
+          Icons.sensor_window_outlined,
+          color: Colors.blue,
+        ),
+        "text": "Carpenter"
+      },
     ];
     return Expanded(
       child: GridView.builder(
@@ -71,7 +100,7 @@ class CategoryCard extends StatelessWidget {
             height: getProportionateScreenWidth(100),
             width: getProportionateScreenWidth(100),
             decoration: BoxDecoration(
-              color: Color(0xFFFFECDF),
+              color: Colors.grey[200],
               borderRadius: BorderRadius.circular(100),
             ),
             child: icon!,

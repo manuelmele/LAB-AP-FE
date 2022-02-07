@@ -14,7 +14,7 @@ class HomeHeader extends StatelessWidget {
       margin: EdgeInsets.only(top: 20),
       width: SizeConfig.screenWidth * 0.9,
       decoration: BoxDecoration(
-        color: kPrimaryColor.withOpacity(0.1),
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextField(
