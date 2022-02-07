@@ -27,17 +27,21 @@ class _ResultsState extends State<ResultsWidget> {
       children: [
         SizedBox(height: getProportionateScreenHeight(20)),
         HomeHeader(),
-        SizedBox(height: getProportionateScreenWidth(10)),
-        ListProfile(
-            name: 'Marco Prova',
-            description: "Sono un $category",
-            image: Icon(Icons.person),
-            press: () {}),
-        ListProfile(
-            name: 'Marco Prova2',
-            description: "Sono un $category",
-            image: Icon(Icons.person),
-            press: () {}),
+        Expanded(
+            child: ListView(
+          children: [
+            ListProfile(
+                name: 'Marco Prova',
+                description: "Sono un $category",
+                image: Icon(Icons.person),
+                press: () {}),
+            ListProfile(
+                name: 'Marco Prova2',
+                description: "Sono un $category",
+                image: Icon(Icons.person),
+                press: () {}),
+          ],
+        )),
         SizedBox(height: getProportionateScreenWidth(30)),
       ],
     ));

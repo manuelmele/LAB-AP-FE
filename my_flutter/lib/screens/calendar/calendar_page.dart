@@ -10,6 +10,15 @@ class CalendarPage extends StatefulWidget {
 class CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Body());
+    return Scaffold(
+      body: Body(),
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: Text(
+            "Your Appointments",
+          )),
+    );
   }
 }

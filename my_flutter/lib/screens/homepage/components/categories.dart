@@ -53,11 +53,11 @@ class Categories extends StatelessWidget {
     ];
     return Expanded(
       child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: SizeConfig.screenWidth / 2,
             childAspectRatio: 1,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10),
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 0),
         itemCount: categories.length,
         itemBuilder: (BuildContext ctx, int index) {
           return CategoryCard(

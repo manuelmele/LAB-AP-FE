@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wefix/screens/calendar/components/appointments/new_requests.dart';
+import 'package:wefix/screens/calendar/components/appointments_worker/booked_requests.dart';
+import 'package:wefix/screens/calendar/components/appointments_worker/completed_requests.dart';
+import 'package:wefix/screens/calendar/components/appointments_worker/new_requests.dart';
 
 import '../../../size_config.dart';
 
@@ -8,23 +10,22 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: getProportionateScreenHeight(40)),
-        const Center(
-          child: Text(
-            "Your Appointments",
-            style: TextStyle(
-                fontSize: 18, color: Colors.blue, fontWeight: FontWeight.bold),
+        SizedBox(height: getProportionateScreenHeight(10)),
+        Expanded(
+          child: ListView(
+            children: [
+              NewRequestsWorker(
+                userID: "iduserblbla",
+              ),
+              BookedRequestsWorker(
+                userID: "iduserblbla",
+              ),
+              CompletedRequestsWorker(
+                userID: "iduserblbla",
+              ),
+            ],
           ),
         ),
-        SizedBox(height: getProportionateScreenHeight(20)),
-
-        NewRequests(
-          userID: "iduserblbla",
-        ),
-        //Booked Appointments
-
-        //Completed Appointments
-        SizedBox(height: getProportionateScreenWidth(30)),
       ],
     );
   }

@@ -10,6 +10,15 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Body());
+    return Scaffold(
+      body: Body(),
+      appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.blue,
+          centerTitle: true,
+          title: Text(
+            "Categories",
+          )),
+    );
   }
 }

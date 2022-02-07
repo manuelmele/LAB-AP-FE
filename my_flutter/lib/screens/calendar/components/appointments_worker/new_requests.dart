@@ -7,48 +7,56 @@ import 'package:wefix/screens/profile/profile_page.dart';
 
 import '../../../../size_config.dart';
 
-class NewRequests extends StatefulWidget {
+class NewRequestsWorker extends StatefulWidget {
   final String? userID;
 
-  const NewRequests({Key? key, this.userID}) : super(key: key);
+  const NewRequestsWorker({Key? key, this.userID}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }
 
-class _AppointmentsState extends State<NewRequests> {
+class _AppointmentsState extends State<NewRequestsWorker> {
   @override
   Widget build(BuildContext context) {
     String userID = widget.userID!;
 
-    return Column(
-      children: [
-        SizedBox(height: getProportionateScreenHeight(20)),
-        Container(
-          padding: EdgeInsets.only(left: 20),
-          child: const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "New Requests",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
+    return Container(
+      padding: EdgeInsets.only(left: 20),
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: ExpansionTile(
+              initiallyExpanded: false,
+              title: const Text(
+                "New Requests",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              children: [
+                SizedBox(
+                  height: SizeConfig.screenHeight,
+                  child: ListView(
+                    children: [
+                      ListAppointment(
+                          name: 'Marco Prova',
+                          service: "Type of service: Gardener",
+                          image: Icon(Icons.person),
+                          press: () {}),
+                      ListAppointment(
+                          name: 'Marco Prova2',
+                          service: "Type of service: Gardener",
+                          image: Icon(Icons.person),
+                          press: () {}),
+                    ],
+                  ),
+                )
+              ],
             ),
-          ),
-        ),
-        ListAppointment(
-            name: 'Marco Prova',
-            service: "Type of service: Gardener",
-            image: Icon(Icons.person),
-            press: () {}),
-        ListAppointment(
-            name: 'Marco Prova2',
-            service: "Type of service: Gardener",
-            image: Icon(Icons.person),
-            press: () {}),
-        SizedBox(height: getProportionateScreenWidth(30)),
-      ],
+          )),
     );
   }
 }

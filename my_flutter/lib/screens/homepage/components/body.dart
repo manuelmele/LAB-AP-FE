@@ -10,12 +10,6 @@ class Body extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: getProportionateScreenHeight(40)),
-        Text(
-          "Select category:",
-          style: TextStyle(
-              fontSize: 18, color: Colors.blue, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: getProportionateScreenHeight(10)),
         Categories(),
         SizedBox(height: getProportionateScreenWidth(30)),
       ],
