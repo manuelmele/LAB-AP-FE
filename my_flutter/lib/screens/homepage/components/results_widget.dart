@@ -38,16 +38,6 @@ class _ResultsState extends State<ResultsWidget> {
             description: "Sono un $category",
             image: Icon(Icons.person),
             press: () {}),
-        ListProfile(
-            name: 'Marco Prova',
-            description: "Sono un $category",
-            image: Icon(Icons.person),
-            press: () {}),
-        ListProfile(
-            name: 'Marco Prova1',
-            description: "Sono un $category",
-            image: Icon(Icons.person),
-            press: () {}),
         SizedBox(height: getProportionateScreenWidth(30)),
       ],
     ));
