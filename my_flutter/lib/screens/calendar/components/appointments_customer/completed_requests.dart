@@ -8,15 +8,15 @@ import 'package:wefix/utilis/allert_dialogs.dart';
 
 import '../../../../size_config.dart';
 
-class NewRequestsWorker extends StatefulWidget {
+class CompletedRequestsCustomer extends StatefulWidget {
   final String? userID;
 
-  const NewRequestsWorker({Key? key, this.userID}) : super(key: key);
+  const CompletedRequestsCustomer({Key? key, this.userID}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }
 
-class _AppointmentsState extends State<NewRequestsWorker> {
+class _AppointmentsState extends State<CompletedRequestsCustomer> {
   @override
   Widget build(BuildContext context) {
     String userID = widget.userID!;
@@ -30,9 +30,9 @@ class _AppointmentsState extends State<NewRequestsWorker> {
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: ExpansionTile(
-              initiallyExpanded: true,
+              initiallyExpanded: false,
               title: const Text(
-                "New Requests",
+                "Completed Requests",
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue,
@@ -56,7 +56,7 @@ class _AppointmentsState extends State<NewRequestsWorker> {
                           press: () {}),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           )),
@@ -93,10 +93,9 @@ class ListAppointment extends StatelessWidget {
         trailing: Container(
             height: double.infinity,
             child: IconButton(
-              icon: Icon(Icons.info_outline),
+              icon: Icon(Icons.star),
               onPressed: () {
-                DialogsUI()
-                    .showInfoDialog(context, "Appointment Info", service);
+                DialogsUI().showRatingDialog(context, name);
               },
             )),
         leading:
@@ -108,58 +107,15 @@ class ListAppointment extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        subtitle: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 5),
-              child: Text(
-                service,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                ),
-              ),
+        subtitle: Container(
+          padding: EdgeInsets.only(top: 5),
+          child: Text(
+            service,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
             ),
-            Row(
-              children: [
-                OutlinedButton(
-                  onPressed: () => {},
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.all(5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                  ),
-                  child: const Text(
-                    "Accept",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.zero,
-                  margin: EdgeInsets.only(left: 5),
-                  child: OutlinedButton(
-                    onPressed: () => {},
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.grey[400],
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.all(5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    child: const Text(
-                      "Decline",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-          crossAxisAlignment: CrossAxisAlignment.start,
+          ),
         ),
       ),
     );

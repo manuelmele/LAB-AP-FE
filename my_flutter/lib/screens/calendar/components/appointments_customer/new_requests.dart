@@ -8,15 +8,15 @@ import 'package:wefix/utilis/allert_dialogs.dart';
 
 import '../../../../size_config.dart';
 
-class NewRequestsWorker extends StatefulWidget {
+class NewRequestsCustomer extends StatefulWidget {
   final String? userID;
 
-  const NewRequestsWorker({Key? key, this.userID}) : super(key: key);
+  const NewRequestsCustomer({Key? key, this.userID}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }
 
-class _AppointmentsState extends State<NewRequestsWorker> {
+class _AppointmentsState extends State<NewRequestsCustomer> {
   @override
   Widget build(BuildContext context) {
     String userID = widget.userID!;
@@ -32,7 +32,7 @@ class _AppointmentsState extends State<NewRequestsWorker> {
             child: ExpansionTile(
               initiallyExpanded: true,
               title: const Text(
-                "New Requests",
+                "Pending Requests",
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue,
@@ -120,44 +120,6 @@ class ListAppointment extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              children: [
-                OutlinedButton(
-                  onPressed: () => {},
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.all(5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                  ),
-                  child: const Text(
-                    "Accept",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.zero,
-                  margin: EdgeInsets.only(left: 5),
-                  child: OutlinedButton(
-                    onPressed: () => {},
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.grey[400],
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.all(5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    child: const Text(
-                      "Decline",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            )
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),

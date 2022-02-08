@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
+import 'package:wefix/utilis/allert_dialogs.dart';
 
 import '../../../../size_config.dart';
 
@@ -19,6 +20,8 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
   @override
   Widget build(BuildContext context) {
     String userID = widget.userID!;
+    String imageUrl =
+        "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png";
 
     return Container(
       padding: EdgeInsets.only(left: 20),
@@ -44,12 +47,12 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
                       ListAppointment(
                           name: 'Marco Prova',
                           service: "Type of service: Gardener",
-                          image: Icon(Icons.person),
+                          imageUrl: imageUrl,
                           press: () {}),
                       ListAppointment(
                           name: 'Marco Prova2',
                           service: "Type of service: Gardener",
-                          image: Icon(Icons.person),
+                          imageUrl: imageUrl,
                           press: () {}),
                     ],
                   ),
@@ -66,13 +69,13 @@ class ListAppointment extends StatelessWidget {
     Key? key,
     required this.name,
     required this.service,
-    required this.image,
+    required this.imageUrl,
     required this.press,
   }) : super(key: key);
 
   final String name;
   final String service;
-  final Icon image;
+  final String imageUrl;
   final VoidCallback press;
 
   @override
@@ -87,13 +90,17 @@ class ListAppointment extends StatelessWidget {
       child: ListTile(
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
-        trailing:
-            Container(height: double.infinity, child: Icon(Icons.info_outline)),
-        leading: const CircleAvatar(
-          radius: 32,
-          backgroundImage: NetworkImage(
-              "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png"),
-        ),
+        trailing: Container(
+            height: double.infinity,
+            child: IconButton(
+              icon: Icon(Icons.info_outline),
+              onPressed: () {
+                DialogsUI()
+                    .showInfoDialog(context, "Appointment Info", service);
+              },
+            )),
+        leading:
+            CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl)),
         title: Text(
           name,
           style: const TextStyle(

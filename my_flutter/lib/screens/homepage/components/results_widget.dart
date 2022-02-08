@@ -21,6 +21,8 @@ class _ResultsState extends State<ResultsWidget> {
   @override
   Widget build(BuildContext context) {
     String category = widget.category!;
+    String imageUrl =
+        "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png";
 
     return Scaffold(
         body: Column(
@@ -33,12 +35,12 @@ class _ResultsState extends State<ResultsWidget> {
             ListProfile(
                 name: 'Marco Prova',
                 description: "Sono un $category",
-                image: Icon(Icons.person),
+                imageUrl: imageUrl,
                 press: () {}),
             ListProfile(
                 name: 'Marco Prova2',
                 description: "Sono un $category",
-                image: Icon(Icons.person),
+                imageUrl: imageUrl,
                 press: () {}),
           ],
         )),
@@ -53,13 +55,13 @@ class ListProfile extends StatelessWidget {
     Key? key,
     required this.name,
     required this.description,
-    required this.image,
+    required this.imageUrl,
     required this.press,
   }) : super(key: key);
 
   final String name;
   final String description;
-  final Icon image;
+  final String imageUrl;
   final VoidCallback press;
 
   @override
@@ -75,11 +77,8 @@ class ListProfile extends StatelessWidget {
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
         trailing: Icon(Icons.arrow_forward_ios),
-        leading: const CircleAvatar(
-          radius: 32,
-          backgroundImage: NetworkImage(
-              "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png"),
-        ),
+        leading:
+            CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl)),
         title: Text(
           name,
           style: const TextStyle(

@@ -8,15 +8,15 @@ import 'package:wefix/utilis/allert_dialogs.dart';
 
 import '../../../../size_config.dart';
 
-class NewRequestsWorker extends StatefulWidget {
+class BookedRequestsCustomer extends StatefulWidget {
   final String? userID;
 
-  const NewRequestsWorker({Key? key, this.userID}) : super(key: key);
+  const BookedRequestsCustomer({Key? key, this.userID}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }
 
-class _AppointmentsState extends State<NewRequestsWorker> {
+class _AppointmentsState extends State<BookedRequestsCustomer> {
   @override
   Widget build(BuildContext context) {
     String userID = widget.userID!;
@@ -30,9 +30,9 @@ class _AppointmentsState extends State<NewRequestsWorker> {
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: ExpansionTile(
-              initiallyExpanded: true,
+              initiallyExpanded: false,
               title: const Text(
-                "New Requests",
+                "Accepted Requests",
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.blue,
@@ -56,7 +56,7 @@ class _AppointmentsState extends State<NewRequestsWorker> {
                           press: () {}),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           )),
@@ -120,44 +120,21 @@ class ListAppointment extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              children: [
-                OutlinedButton(
-                  onPressed: () => {},
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    minimumSize: Size.zero,
-                    padding: EdgeInsets.all(5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ),
-                  ),
-                  child: const Text(
-                    "Accept",
-                    style: TextStyle(color: Colors.white),
-                  ),
+            OutlinedButton(
+              onPressed: () => {},
+              style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                minimumSize: Size.zero,
+                padding: EdgeInsets.all(5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
                 ),
-                Container(
-                  padding: EdgeInsets.zero,
-                  margin: EdgeInsets.only(left: 5),
-                  child: OutlinedButton(
-                    onPressed: () => {},
-                    style: OutlinedButton.styleFrom(
-                      backgroundColor: Colors.grey[400],
-                      minimumSize: Size.zero,
-                      padding: EdgeInsets.all(5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
-                    ),
-                    child: const Text(
-                      "Decline",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            )
+              ),
+              child: const Text(
+                "Track",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
