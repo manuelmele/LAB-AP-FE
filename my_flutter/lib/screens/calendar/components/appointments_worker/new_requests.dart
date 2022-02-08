@@ -27,7 +27,7 @@ class _AppointmentsState extends State<NewRequestsWorker> {
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: ExpansionTile(
-              initiallyExpanded: false,
+              initiallyExpanded: true,
               title: const Text(
                 "New Requests",
                 style: TextStyle(
@@ -38,7 +38,7 @@ class _AppointmentsState extends State<NewRequestsWorker> {
               ),
               children: [
                 SizedBox(
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight / 2,
                   child: ListView(
                     children: [
                       ListAppointment(

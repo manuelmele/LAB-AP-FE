@@ -38,7 +38,7 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
               ),
               children: [
                 SizedBox(
-                  height: SizeConfig.screenHeight,
+                  height: SizeConfig.screenHeight / 2,
                   child: ListView(
                     children: [
                       ListAppointment(
