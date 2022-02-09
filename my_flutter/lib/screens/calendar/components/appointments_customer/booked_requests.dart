@@ -5,6 +5,7 @@ import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 import 'package:wefix/utilis/allert_dialogs.dart';
+import 'package:wefix/utilis/maps_tracking.dart';
 
 import '../../../../size_config.dart';
 
@@ -45,15 +46,17 @@ class _AppointmentsState extends State<BookedRequestsCustomer> {
                   child: ListView(
                     children: [
                       ListAppointment(
-                          name: 'Marco Prova',
-                          service: "Type of service: Gardener",
-                          imageUrl: imageUrl,
-                          press: () {}),
+                        name: 'Marco Prova',
+                        service: "Type of service: Gardener",
+                        imageUrl: imageUrl,
+                        press: () {},
+                      ),
                       ListAppointment(
-                          name: 'Marco Prova2',
-                          service: "Type of service: Gardener",
-                          imageUrl: imageUrl,
-                          press: () {}),
+                        name: 'Marco Prova2',
+                        service: "Type of service: Gardener",
+                        imageUrl: imageUrl,
+                        press: () {},
+                      ),
                     ],
                   ),
                 ),
@@ -121,7 +124,7 @@ class ListAppointment extends StatelessWidget {
               ),
             ),
             OutlinedButton(
-              onPressed: () => {},
+              onPressed: () => {showMapDialog(context)},
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 minimumSize: Size.zero,
@@ -141,4 +144,35 @@ class ListAppointment extends StatelessWidget {
       ),
     );
   }
+}
+
+showMapDialog(BuildContext context) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("Close"),
+    onPressed: () {
+      Navigator.of(context, rootNavigator: true).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Tracking..."),
+    content:
+        SizedBox(height: SizeConfig.screenHeight / 2, child: TrackingWidget()),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
