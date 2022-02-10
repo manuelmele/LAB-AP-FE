@@ -5,8 +5,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 //[BE] server.port must be localhost:8000
-String baseUrl = '10.0.2.2:8000';
-//String baseUrl = '192.168.1.9:8000';
+//String baseUrl = '10.0.2.2:8000';
+String baseUrl = '192.168.1.9:8000';
 
 Future<String> signUpService(String _firstName, String _secondName,
     String _email, String _userPassword, String _userConfirmPassword) async {

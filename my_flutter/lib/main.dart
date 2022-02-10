@@ -17,6 +17,11 @@ class MyApp extends StatelessWidget {
       title: 'WeFix',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: 'Dosis',
+              fontSizeFactor: 1.1,
+              fontSizeDelta: 2.0,
+            ),
         primarySwatch: kPrimaryColor_material,
       ),
       initialRoute: Intro.routeName, //this is set to "/intro"

@@ -3,6 +3,8 @@ import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/services/auth_service.dart';
+
+import 'package:form_field_validator/form_field_validator.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
 //import 'package:shop_app/components/form_error.dart';
 //import 'package:shop_app/helper/keyboard.dart';
@@ -80,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               Checkbox(
                 value: remember,
-                activeColor: kPrimaryColor,
+                activeColor: kLightOrange,
                 onChanged: (value) {
                   setState(() {
                     remember = value;
@@ -105,8 +107,14 @@ class _LoginFormState extends State<LoginForm> {
           Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: kLightOrange,
+              ),
               child: const Text('Login'),
               onPressed: () async {
+                //if (_formKey.currentState.validate()) {
+                //print("Validated");
+                //}
                 //print(email! + " - " + password!);
                 String jwt = await signIn();
 
@@ -146,7 +154,7 @@ class _LoginFormState extends State<LoginForm> {
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: "Please, enter your password!");
-          return "";
+          return "Please, enter your password";
         } //else if (value.length < 8) {
         //addError(error: "Your password is too short!");
         //return "";
@@ -154,7 +162,14 @@ class _LoginFormState extends State<LoginForm> {
         return null;
       },
       decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
+
         labelText: "Password",
+        //focusColor: kOrange,
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
@@ -198,8 +213,14 @@ class _LoginFormState extends State<LoginForm> {
         return null;
       },
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
         labelText: "Email",
         hintText: "Enter your email",
+
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

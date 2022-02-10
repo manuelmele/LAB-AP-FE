@@ -22,18 +22,27 @@ class _BodyState extends State<Body> {
 
   List<Map<String, String>> introData = [
     {
-      "text": "Welcome to WeFix, Let's Start!",
-      "image": "assets/images/intro1.png"
+      "title": "WEFIX",
+      "text": "Join us and discover our services, \nLet's start!",
+      "image": "assets/images/tips.jpg"
     },
     {
+      "title": "Our purpose",
       "text":
           "We help people solve their problems \nconnecting them to local artisans",
-      "image": "assets/images/intro2.png"
+      "image": "assets/images/handshake.jpg"
     },
     {
+      "title": "Look for what you need",
       "text":
-          "We give visibility to small local enterpreneurs \nby offering an easy-to-use platform",
-      "image": "assets/images/intro3.png"
+          "There are several categories of service available, \nsuch as electrician, plumber, gardener and so much more",
+      "image": "assets/images/workers.jpg"
+    },
+    {
+      "title": "Sign up as an expert",
+      "text":
+          "We give visibility to small local enterpreneurs \nby offering an easy-to-use platform. \nUpdate your showcase with the services you provide.",
+      "image": "assets/images/shop.jpg"
     },
   ];
 
@@ -93,6 +102,7 @@ class _BodyState extends State<Body> {
                 },
                 itemCount: introData.length,
                 itemBuilder: (context, index) => IntroContent(
+                  title: introData[index]['title'],
                   image: introData[index]["image"],
                   text: introData[index]['text'],
                 ),
@@ -142,7 +152,7 @@ class _BodyState extends State<Body> {
       //il primo valore di width indica quanto deve essere largo il dot evidenziato, 240 lo fa diventare una barra
       width: currentPage == index ? 200 : 6,
       decoration: BoxDecoration(
-        color: currentPage == index ? kPrimaryColor : kGrey,
+        color: currentPage == index ? kLightOrange : kGrey,
         borderRadius: BorderRadius.circular(3),
       ),
     );
