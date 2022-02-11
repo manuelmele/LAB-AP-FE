@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/services/auth_service.dart';
+import 'package:wefix/constants.dart';
 
-import 'package:form_field_validator/form_field_validator.dart';
+//import 'package:form_field_validator/form_field_validator.dart';
 //import 'package:shop_app/components/custom_surfix_icon.dart';
 //import 'package:shop_app/components/form_error.dart';
 //import 'package:shop_app/helper/keyboard.dart';
 //import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 //import 'package:shop_app/screens/login_success/login_success_screen.dart';
 
-import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class LoginForm extends StatefulWidget {
@@ -36,10 +37,15 @@ class _LoginFormState extends State<LoginForm> {
       removeError(error: 'Invalid email or password');
       if (email == null || email == "") {
         addError(error: "Please, enter your email!");
+      } else {
+        removeError(error: "Please, enter your email!");
       }
       if (password == null || password == "") {
         addError(error: "Please, enter your password!");
+      } else {
+        removeError(error: "Please, enter your password!");
       }
+      print(errors);
       return "";
     }
 
@@ -51,6 +57,7 @@ class _LoginFormState extends State<LoginForm> {
       String error = response;
       //errore in caso di credenziali errate
       addError(error: 'Invalid email or password');
+      print(errors);
     } else {
       String jwt = response;
       return jwt;
@@ -130,8 +137,8 @@ class _LoginFormState extends State<LoginForm> {
                   Navigator.pushNamed(context, NavigatorScreen.routeName);
                 }
                 //chiamo la funzione validate per mostrare gli errori a schermo
-                if (_formKey.currentState!.validate()) {
-                  print("valid");
+                if (!_formKey.currentState!.validate()) {
+                  print("not valid");
                 }
               },
             ),
@@ -156,9 +163,6 @@ class _LoginFormState extends State<LoginForm> {
       obscureText: !_passwordVisible,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please, enter your password!");
-        }
         password = value;
       },
       validator: (value) {
@@ -184,6 +188,10 @@ class _LoginFormState extends State<LoginForm> {
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: IconButton(
+          color: (errors.contains("Please, enter your password!") ||
+                  errors.contains("Invalid email or password"))
+              ? kRed
+              : kOrange,
           icon: Icon(
             //cambia l'icona in base alla visibility della pw
             _passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -204,9 +212,6 @@ class _LoginFormState extends State<LoginForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please, enter your email!");
-        }
         email = value;
       },
       validator: (value) {
@@ -218,9 +223,9 @@ class _LoginFormState extends State<LoginForm> {
         }
         return null;
       },
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        focusedBorder: const OutlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
           borderSide: BorderSide(color: kLightOrange),
         ),
@@ -235,6 +240,10 @@ class _LoginFormState extends State<LoginForm> {
           heightFactor: 1.0,
           child: Icon(
             Icons.email,
+            color: (errors.contains("Please, enter your email!") ||
+                    errors.contains("Invalid email or password"))
+                ? kRed
+                : kOrange,
           ),
         ),
         //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
