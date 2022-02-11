@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 
 import 'body.dart';
 
@@ -7,9 +8,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Sign Up"),
-      ),
+      backgroundColor: kBackground,
       body: Body(),
     );
   }

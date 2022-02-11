@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//------------------- COLORS --------------------//
 //this is the value to modify to change base color of the application
 //its an hexadecimal value
 const int kBackgroundColorCode = 0xFFfbf8ef;
@@ -35,5 +36,14 @@ Map<int, Color> colormap = {
   900: Color.fromRGBO(147, 205, 72, 1),
 };
 
+//--------------------- ERRORS -----------------------//
+//per la login
+const String wrong = "Error: Invalid username o password";
 
-// costanti per le frasi di errore?
+//per la signup
+const String mandatory = "* Required field";
+const String usedEmail = "Error: Email already used";
+//----------errori che mario deve specificare nel backend
+const String shortPw = "Weak password";
+const String notMatchingPw = "Passwords don't match!";
+const String invalidEmail = "Please, enter a valid email";

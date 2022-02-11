@@ -31,21 +31,9 @@ class _LoginFormState extends State<LoginForm> {
 
   //funzione che verifica le credenziali
   Future<String> signIn() async {
+    errors = [];
     //prima di tutto controllo se i campi sono stati lasciati vuoti
     if (email == null || email == "" || password == null || password == "") {
-      //quando i campi sono vuoti non voglio mostrare invalid email or password
-      removeError(error: 'Invalid email or password');
-      if (email == null || email == "") {
-        addError(error: "Please, enter your email!");
-      } else {
-        removeError(error: "Please, enter your email!");
-      }
-      if (password == null || password == "") {
-        addError(error: "Please, enter your password!");
-      } else {
-        removeError(error: "Please, enter your password!");
-      }
-      print(errors);
       return "";
     }
 
@@ -56,8 +44,7 @@ class _LoginFormState extends State<LoginForm> {
     if (response.contains('Error')) {
       String error = response;
       //errore in caso di credenziali errate
-      addError(error: 'Invalid email or password');
-      print(errors);
+      addError(error: error);
     } else {
       String jwt = response;
       return jwt;
@@ -70,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
     _passwordVisible = false; //setta inizialmente la password oscurata
   }
 
-  final List<String?> errors = [];
+  List<String?> errors = [];
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -138,7 +125,7 @@ class _LoginFormState extends State<LoginForm> {
                 }
                 //chiamo la funzione validate per mostrare gli errori a schermo
                 if (!_formKey.currentState!.validate()) {
-                  print("not valid");
+                  print("login form not valid");
                 }
               },
             ),
@@ -166,10 +153,10 @@ class _LoginFormState extends State<LoginForm> {
         password = value;
       },
       validator: (value) {
-        if (value!.isEmpty && errors.contains('Please, enter your password!')) {
-          return "Please, enter your password";
+        if (value!.isEmpty) {
+          return mandatory;
         }
-        if (value.isNotEmpty && errors.contains("Invalid email or password")) {
+        if (errors.contains(wrong)) {
           return "Invalid email or password";
         }
         return null;
@@ -188,10 +175,6 @@ class _LoginFormState extends State<LoginForm> {
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: IconButton(
-          color: (errors.contains("Please, enter your password!") ||
-                  errors.contains("Invalid email or password"))
-              ? kRed
-              : kOrange,
           icon: Icon(
             //cambia l'icona in base alla visibility della pw
             _passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -215,17 +198,17 @@ class _LoginFormState extends State<LoginForm> {
         email = value;
       },
       validator: (value) {
-        if (value!.isEmpty && errors.contains('Please, enter your email!')) {
-          return "Please, enter your email";
+        if (value!.isEmpty) {
+          return mandatory;
         }
-        if (value.isNotEmpty && errors.contains("Invalid email or password")) {
+        if (errors.contains(wrong)) {
           return "Invalid email or password";
         }
         return null;
       },
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(),
-        focusedBorder: const OutlineInputBorder(
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
           borderSide: BorderSide(color: kLightOrange),
         ),
@@ -240,13 +223,8 @@ class _LoginFormState extends State<LoginForm> {
           heightFactor: 1.0,
           child: Icon(
             Icons.email,
-            color: (errors.contains("Please, enter your email!") ||
-                    errors.contains("Invalid email or password"))
-                ? kRed
-                : kOrange,
           ),
         ),
-        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
     );
   }
