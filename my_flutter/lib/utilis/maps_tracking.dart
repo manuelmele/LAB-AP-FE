@@ -15,8 +15,6 @@ class TrackingWidgetState extends State<TrackingWidget> {
 
   GoogleMapController? _googleMapController;
 
-  MapType selectedMapType = MapType.normal;
-
   @override
   void dispose() {
     if (_googleMapController != null) {
@@ -28,7 +26,6 @@ class TrackingWidgetState extends State<TrackingWidget> {
   @override
   Widget build(BuildContext context) {
     return GoogleMap(
-      mapType: selectedMapType,
       initialCameraPosition: CameraPosition(
         target: userPosition!,
         zoom: 12,
