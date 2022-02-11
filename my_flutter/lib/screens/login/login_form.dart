@@ -28,22 +28,33 @@ class _LoginFormState extends State<LoginForm> {
   bool _passwordVisible = false; //makes the password readable or dotted
   //note the underscore in front of the variable name means that the variable is private to this file
 
+  //funzione che verifica le credenziali
   Future<String> signIn() async {
-    if (email == null || password == null) return '';
+    //prima di tutto controllo se i campi sono stati lasciati vuoti
+    if (email == null || email == "" || password == null || password == "") {
+      //quando i campi sono vuoti non voglio mostrare invalid email or password
+      removeError(error: 'Invalid email or password');
+      if (email == null || email == "") {
+        addError(error: "Please, enter your email!");
+      }
+      if (password == null || password == "") {
+        addError(error: "Please, enter your password!");
+      }
+      return "";
+    }
 
     String response = await signInService(email!, password!);
-
-    //print(response);
+    //la funzione signInService va a verificare se le credenziali sono corrette nel db
+    //la chiamo solo se le credenziali non sono vuote
 
     if (response.contains('Error')) {
       String error = response;
-      print(error);
-      //errors.add(error);
+      //errore in caso di credenziali errate
+      addError(error: 'Invalid email or password');
     } else {
       String jwt = response;
       return jwt;
     }
-
     return '';
   }
 
@@ -112,14 +123,15 @@ class _LoginFormState extends State<LoginForm> {
               ),
               child: const Text('Login'),
               onPressed: () async {
-                //if (_formKey.currentState.validate()) {
-                //print("Validated");
-                //}
-                //print(email! + " - " + password!);
+                //chiama la funzione signin per verificare le credenziali
+                //signin ritorna "" se c'è qualche problema
                 String jwt = await signIn();
-
                 if (jwt.isNotEmpty) {
                   Navigator.pushNamed(context, NavigatorScreen.routeName);
+                }
+                //chiamo la funzione validate per mostrare gli errori a schermo
+                if (_formKey.currentState!.validate()) {
+                  print("valid");
                 }
               },
             ),
@@ -146,24 +158,21 @@ class _LoginFormState extends State<LoginForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: "Please, enter your password!");
-        } //else if (value.length >= 8) {
-        //removeError(error: "Your password is too short!");
-        //}
+        }
         password = value;
       },
       validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: "Please, enter your password!");
+        if (value!.isEmpty && errors.contains('Please, enter your password!')) {
           return "Please, enter your password";
-        } //else if (value.length < 8) {
-        //addError(error: "Your password is too short!");
-        //return "";
-        //}
+        }
+        if (value.isNotEmpty && errors.contains("Invalid email or password")) {
+          return "Invalid email or password";
+        }
         return null;
       },
       decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
+        border: const OutlineInputBorder(),
+        focusedBorder: const OutlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
           borderSide: BorderSide(color: kLightOrange),
         ),
@@ -197,19 +206,16 @@ class _LoginFormState extends State<LoginForm> {
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: "Please, enter your email!");
-        } //else if (emailValidatorRegExp.hasMatch(value)) {
-        //removeError(error: "Please, enter valid email!");
-        //}
+        }
         email = value;
       },
       validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: "Please, enter your email!");
-          return "";
-        } //else if (!emailValidatorRegExp.hasMatch(value)) {
-        //addError(error: "Please, enter valid email!");
-        //return "";
-        //}
+        if (value!.isEmpty && errors.contains('Please, enter your email!')) {
+          return "Please, enter your email";
+        }
+        if (value.isNotEmpty && errors.contains("Invalid email or password")) {
+          return "Invalid email or password";
+        }
         return null;
       },
       decoration: const InputDecoration(
