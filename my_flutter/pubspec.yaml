@@ -39,6 +39,7 @@ dependencies:
   rating_dialog: ^2.0.3
   google_maps_flutter: ^2.1.1
   geolocator: ^8.1.1
+  form_field_validator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -64,9 +66,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/intro1.png
-     - assets/images/intro2.png
-     - assets/images/intro3.png
+     - assets/images/tips.jpg
+     - assets/images/handshake.jpg
+     - assets/images/workers.jpg
+     - assets/images/shop.jpg
+     - assets/images/parrot_cut.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -91,6 +95,15 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+  fonts:
+    - family: Ubuntu
+      fonts:
+      - asset: fonts/Ubuntu-Light.ttf
+    - family: Dosis
+      fonts:
+      - asset: fonts/Dosis/static/Dosis-Regular.ttf
+  
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -95,6 +95,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -156,6 +157,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+
+  form_field_validator:
+    dependency: "direct main"
+    description:
+      name: form_field_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+
   http:
     dependency: "direct main"
     description:
@@ -170,6 +180,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+<<<<<<< HEAD
   js:
     dependency: transitive
     description:
@@ -177,6 +188,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+=======
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.17.0"
+>>>>>>> 2e19fa52f2e9e036a27ebc61097f0221ad1a0ced
   lints:
     dependency: transitive
     description:

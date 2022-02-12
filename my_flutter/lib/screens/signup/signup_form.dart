@@ -19,18 +19,24 @@ class _SignUpFormState extends State<SignUpForm> {
   String? password;
   String? confirm_password;
   bool remember = false;
-  final List<String?> errors = [];
+  List<String?> errors = [];
 
   Future<String> signUp() async {
+    if (name == null ||
+        surname == null ||
+        email == null ||
+        password == null ||
+        confirm_password == null) {
+      return '';
+    }
+    errors = [];
     String response = await signUpService(
         name!, surname!, email!, password!, confirm_password!);
 
-    //print(response);
-
     if (response.contains('Error')) {
       String error = response;
-      print(error);
-      //errors.add(error);
+      addError(error: error);
+      print(errors);
     } else {
       String jwt = response;
       return jwt;
@@ -68,19 +74,21 @@ class _SignUpFormState extends State<SignUpForm> {
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildConfirmPassFormField(),
-          //FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: kLightOrange,
+            ),
             child: const Text('Continue'),
             onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
+              String jwt = await signUp();
 
-                String jwt = await signUp();
-
-                if (jwt.isNotEmpty) {
-                  Navigator.pushNamed(context, NavigatorScreen.routeName);
-                }
+              if (jwt.isNotEmpty) {
+                Navigator.pushNamed(context, NavigatorScreen.routeName);
+              }
+              if (!_formKey.currentState!.validate()) {
+                //_formKey.currentState!.save();
+                print("sign up form not valid");
               }
             },
           ),
@@ -94,24 +102,23 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: true,
       onSaved: (newValue) => confirm_password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please, enter your password!");
-        } else if (value.isNotEmpty && password == confirm_password) {
-          removeError(error: "Passwords don't match");
-        }
         confirm_password = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: "Please, enter your password!");
-          return "";
-        } else if ((password != value)) {
-          addError(error: "Passwords don't match");
-          return "";
+          return mandatory;
+        }
+        if (errors.contains(notMatchingPw)) {
+          return notMatchingPw;
         }
         return null;
       },
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
         labelText: "Confirm Password",
         hintText: "Re-enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -133,24 +140,26 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: true,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please, enter your password!");
-        } else if (value.length >= 8) {
-          removeError(error: "Password is too short");
-        }
         password = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: "Please, enter your password!");
-          return "";
-        } else if (value.length < 8) {
-          addError(error: "Password is too short");
-          return "";
+          return mandatory;
+        }
+        if (errors.contains(shortPw)) {
+          return shortPw;
+        }
+        if (errors.contains(notMatchingPw)) {
+          return notMatchingPw;
         }
         return null;
       },
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
         labelText: "Password",
         hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -172,24 +181,26 @@ class _SignUpFormState extends State<SignUpForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please Enter your email");
-        } //else if (emailValidatorRegExp.hasMatch(value)) {
-        //removeError(error: "Please Enter Valid Email");
-        //}
-        return null;
+        email = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: "Please Enter your email");
-          return "";
-        } //else if (!emailValidatorRegExp.hasMatch(value)) {
-        //addError(error: "Please Enter Valid Email");
-        //return "";
-        //}
+          return mandatory;
+        }
+        if (errors.contains(usedEmail)) {
+          return "This email is already registered";
+        }
+        if (errors.contains(invalidEmail)) {
+          return invalidEmail;
+        }
         return null;
       },
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
         labelText: "Email",
         hintText: "Enter your email",
         // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -211,19 +222,20 @@ class _SignUpFormState extends State<SignUpForm> {
       keyboardType: TextInputType.name,
       onSaved: (newValue) => name = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please Enter your name");
-        }
-        return null;
+        name = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: "Please Enter your name");
-          return "";
+          return mandatory;
         }
         return null;
       },
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
         labelText: "Name",
         hintText: "Enter your name",
         // If  you are using latest version of flutter then lable text and hint text shown like this
@@ -245,19 +257,20 @@ class _SignUpFormState extends State<SignUpForm> {
       keyboardType: TextInputType.name,
       onSaved: (newValue) => surname = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: "Please Enter your surname");
-        }
-        return null;
+        surname = value;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: "Please Enter your surname");
-          return "";
+          return mandatory;
         }
         return null;
       },
       decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
         labelText: "Surname",
         hintText: "Enter your surname",
         // If  you are using latest version of flutter then lable text and hint text shown like this

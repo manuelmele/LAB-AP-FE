@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 
+//------------------- COLORS --------------------//
 //this is the value to modify to change base color of the application
 //its an hexadecimal value
+const int kBackgroundColorCode = 0xFFfbf8ef;
 const int kPrimaryColorCode = 0xFFfe7062;
 
-const kOrange = Color(0xFFfe7062);
+const kBackground = Color(kBackgroundColorCode);
+const kBlue = Color(0xFFb5d9f4);
+const kLightGreen = Color(0xFFebf1b2);
+const kLightOrange = Color(0xFFecc08a);
+const kYellow = Color(0xFFf7e4aa);
+const kRed = Color(0xFFC70039);
+
+const kOrange = Color(0xFFe78549);
 const kBluScuro = Color(0xFFfe7062);
 const kPrimaryColor = Color(kPrimaryColorCode);
 const kGrey = Color(0xFFD8D8D8);
@@ -12,8 +21,7 @@ const kGrey = Color(0xFFD8D8D8);
 // questa parte di codice serve a convertire il kPrimaryColor scelto in un colore di tipo MaterialColor
 // non ho trovato un metodo piu pulito di usare questa mappa
 // in ogni situazione in cui serve un materialColor va utilizzata questa costante qui
-MaterialColor kPrimaryColor_material =
-    MaterialColor(kPrimaryColorCode, colormap);
+MaterialColor kPrimaryColor_material = MaterialColor(0xFFe78549, colormap);
 
 Map<int, Color> colormap = {
   50: Color.fromRGBO(147, 205, 72, .1),
@@ -28,5 +36,14 @@ Map<int, Color> colormap = {
   900: Color.fromRGBO(147, 205, 72, 1),
 };
 
+//--------------------- ERRORS -----------------------//
+//per la login
+const String wrong = "Error: Invalid username o password";
 
-// costanti per le frasi di errore?
+//per la signup
+const String mandatory = "* Required field";
+const String usedEmail = "Error: Email already used";
+//----------errori che mario deve specificare nel backend
+const String shortPw = "Weak password";
+const String notMatchingPw = "Passwords don't match!";
+const String invalidEmail = "Please, enter a valid email";

@@ -5,37 +5,40 @@ import 'package:wefix/constants.dart';
 class IntroContent extends StatelessWidget {
   const IntroContent({
     Key? key,
+    this.title,
     this.text,
     this.image,
   }) : super(key: key);
-  final String? text, image;
+  final String? title, text, image;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        //Spacer(),
-        Text(
-          "WEFIX",
-          style: TextStyle(
-            fontSize: getProportionateScreenWidth(36),
-            color: kPrimaryColor,
-            fontWeight: FontWeight.bold,
+        //mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            title!,
+            style: TextStyle(
+              fontSize: getProportionateScreenWidth(36),
+              color: kOrange,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        Text(
-          text!,
-          textAlign: TextAlign.center,
-        ),
-        //Spacer(flex: 2),
-        Expanded(
-          child: Image.asset(
-            image!,
-            height: getProportionateScreenHeight(626),
-            width: getProportionateScreenWidth(626),
+          Container(
+            child: Image.asset(
+              image!,
+              height: getProportionateScreenHeight(400),
+              width: getProportionateScreenWidth(400),
+            ),
           ),
-        ),
-      ],
-    );
+          Text(
+            text!,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: getProportionateScreenWidth(15),
+            ),
+          ),
+        ]);
   }
 }

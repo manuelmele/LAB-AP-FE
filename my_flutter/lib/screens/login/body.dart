@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 //import 'package:shop_app/components/no_account_text.dart';
 //import 'package:shop_app/components/socal_card.dart';
 import '../../../size_config.dart';
@@ -18,16 +19,21 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Image.asset(
+                  'assets/images/parrot_cut.png',
+                  height: 100,
+                  width: 100,
+                ),
                 const SizedBox(height: 0.04),
                 Text(
                   "Welcome!",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: kOrange,
                     fontSize: getProportionateScreenWidth(28),
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
-                Text(
+                const Text(
                   "Sign in with your email and password",
                   textAlign: TextAlign.center,
                 ),
