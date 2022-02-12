@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class TrackingWidget extends StatefulWidget {
   @override
@@ -23,15 +24,28 @@ class TrackingWidgetState extends State<TrackingWidget> {
     super.dispose();
   }
 
+  void requestLocationPermission() async {
+    await Geolocator.requestPermission().then((permission) {
+      if (permission == LocationPermission.whileInUse ||
+          permission == LocationPermission.always) {
+        //permission is now granted
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    requestLocationPermission();
+
     return GoogleMap(
       initialCameraPosition: CameraPosition(
         target: userPosition!,
         zoom: 12,
         tilt: 50.0,
       ),
-      myLocationButtonEnabled: false,
+      myLocationButtonEnabled: true,
+      myLocationEnabled: true,
+      compassEnabled: true,
       onMapCreated: (controller) => _googleMapController = controller,
     );
   }
