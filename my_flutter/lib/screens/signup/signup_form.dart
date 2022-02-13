@@ -108,8 +108,11 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value!.isEmpty) {
           return mandatory;
         }
+        if (errors.contains(shortPw)) {
+          return "This password is too weak!";
+        }
         if (errors.contains(notMatchingPw)) {
-          return notMatchingPw;
+          return "The passwords don't match!";
         }
         return null;
       },
@@ -147,10 +150,10 @@ class _SignUpFormState extends State<SignUpForm> {
           return mandatory;
         }
         if (errors.contains(shortPw)) {
-          return shortPw;
+          return "This password is too weak!";
         }
         if (errors.contains(notMatchingPw)) {
-          return notMatchingPw;
+          return "The passwords don't match!";
         }
         return null;
       },
@@ -191,7 +194,7 @@ class _SignUpFormState extends State<SignUpForm> {
           return "This email is already registered";
         }
         if (errors.contains(invalidEmail)) {
-          return invalidEmail;
+          return "Please, enter a valid email";
         }
         return null;
       },
@@ -228,6 +231,9 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value!.isEmpty) {
           return mandatory;
         }
+        if (errors.contains(invalidName)) {
+          return "Please, enter a valid name";
+        }
         return null;
       },
       decoration: const InputDecoration(
@@ -262,6 +268,9 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value!.isEmpty) {
           return mandatory;
+        }
+        if (errors.contains(invalidSurname)) {
+          return "Please, enter a valid surname";
         }
         return null;
       },

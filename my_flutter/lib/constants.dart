@@ -44,6 +44,9 @@ const String wrong = "Error: Invalid username o password";
 const String mandatory = "* Required field";
 const String usedEmail = "Error: Email already used";
 //----------errori che mario deve specificare nel backend
-const String shortPw = "Weak password";
-const String notMatchingPw = "Passwords don't match!";
-const String invalidEmail = "Please, enter a valid email";
+const String shortPw = "Error: Json field \"password\" is invalid";
+const String notMatchingPw =
+    "Error: Json field \"password and confirmPassword\" don't match";
+const String invalidEmail = "Error: Json field \"email\" is invalid";
+const String invalidName = "Error: Json field \"firstName\" is invalid";
+const String invalidSurname = "Error: Json field \"surname\" is invalid";

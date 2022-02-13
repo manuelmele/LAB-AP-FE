@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 
 import 'components/body.dart';
 
@@ -12,13 +13,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Body(),
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.blue,
-          centerTitle: true,
-          title: Text(
-            "Categories",
-          )),
+      backgroundColor: kBackground,
     );
   }
 }
