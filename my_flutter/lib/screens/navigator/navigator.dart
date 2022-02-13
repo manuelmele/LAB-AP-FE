@@ -5,6 +5,7 @@ import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 
 import '../../constants.dart';
+import '../../size_config.dart';
 
 class NavigatorScreen extends StatefulWidget {
   static String routeName = "/navigator";
@@ -25,6 +26,7 @@ class _NavigatorState extends State<NavigatorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       body: IndexedStack(
         // to leave the children state alive

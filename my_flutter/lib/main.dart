@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/routes.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
 
-void main() {
+import '../../../size_config.dart';
+
+String? email;
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  email = prefs.getString('email');
+  print(email);
   runApp(MyApp());
 }
 
@@ -24,7 +33,10 @@ class MyApp extends StatelessWidget {
             ),
         primarySwatch: kPrimaryColor_material,
       ),
-      initialRoute: Intro.routeName, //this is set to "/intro"
+      initialRoute: email == null
+          ? Intro.routeName
+          : NavigatorScreen
+              .routeName, //Intro.routeName, //this is set to "/intro"
       routes: routes,
     );
   }
