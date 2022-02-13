@@ -32,10 +32,12 @@ class _NavigatorState extends State<NavigatorScreen> {
         children: screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
+        backgroundColor: kOrange,
+        selectedItemColor: kBackground,
+        unselectedItemColor: kYellow,
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         items: const [

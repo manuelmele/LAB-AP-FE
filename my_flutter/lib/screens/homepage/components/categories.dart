@@ -53,6 +53,8 @@ class Categories extends StatelessWidget {
     ];
     return Expanded(
       child: GridView.builder(
+        physics:
+            NeverScrollableScrollPhysics(), //makes the category grid non scrollable
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: SizeConfig.screenWidth / 2,
             childAspectRatio: 1,
