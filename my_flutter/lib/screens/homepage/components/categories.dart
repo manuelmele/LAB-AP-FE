@@ -9,45 +9,28 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
       {
-        "icon": const Icon(
-          Icons.plumbing,
-          color: Colors.blue,
-        ),
+        "icon": const AssetImage("assets/images/gardner.png"),
         "text": "Plumber"
       },
+      {"icon": const AssetImage("assets/images/gardner.png"), "text": "Tailor"},
       {
-        "icon": const Icon(
-          Icons.cut,
-          color: Colors.blue,
-        ),
-        "text": "Tailor"
-      },
-      {
-        "icon": const Icon(
-          Icons.electrical_services,
-          color: Colors.blue,
-        ),
+        "icon": const AssetImage("assets/images/gardner.png"),
         "text": "Electrician"
       },
       {
-        "icon": const Icon(
-          Icons.window_rounded,
-          color: Colors.blue,
-        ),
+        "icon": const AssetImage("assets/images/gardner.png"),
         "text": "Glass Maker"
       },
       {
-        "icon": const Icon(
-          Icons.photo_size_select_actual_outlined,
-          color: Colors.blue,
-        ),
+        "icon": const AssetImage("assets/images/gardner.png"),
+        //"icon": const Icon(
+        //Icons.photo_size_select_actual_outlined,
+        //color: Colors.blue,
+        //),
         "text": "Gardner"
       },
       {
-        "icon": const Icon(
-          Icons.sensor_window_outlined,
-          color: Colors.blue,
-        ),
+        "icon": const AssetImage("assets/images/gardner.png"),
         "text": "Carpenter"
       },
     ];
@@ -63,7 +46,7 @@ class Categories extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (BuildContext ctx, int index) {
           return CategoryCard(
-            icon: categories[index]["icon"],
+            image: categories[index]["icon"],
             text: categories[index]["text"],
             press: () {
               String _category = categories[index]["text"];
@@ -83,12 +66,12 @@ class Categories extends StatelessWidget {
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     Key? key,
-    required this.icon,
+    required this.image,
     required this.text,
     required this.press,
   }) : super(key: key);
 
-  final Icon? icon;
+  final AssetImage? image;
   final String? text;
   final GestureTapCallback press;
 
@@ -102,10 +85,13 @@ class CategoryCard extends StatelessWidget {
             height: getProportionateScreenWidth(100),
             width: getProportionateScreenWidth(100),
             decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: icon!,
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(100),
+                image: DecorationImage(
+                  image: image!,
+                  fit: BoxFit.fill,
+                )),
+            //child: icon!,
           ),
           const SizedBox(height: 5),
           Text(text!, textAlign: TextAlign.center)
