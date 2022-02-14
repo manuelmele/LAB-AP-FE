@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
@@ -24,7 +25,7 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
-  bool? remember = false;
+  bool? _rememberMe = false;
 
   bool _passwordVisible = false; //makes the password readable or dotted
   //note the underscore in front of the variable name means that the variable is private to this file
@@ -55,6 +56,8 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     _passwordVisible = false; //setta inizialmente la password oscurata
+    //_loadUserEmailPassword();
+    super.initState();
   }
 
   List<String?> errors = [];
@@ -73,6 +76,40 @@ class _LoginFormState extends State<LoginForm> {
       });
   }
 
+  //mi sa che è inutile si può cancellare
+  void _handleRemeberme(bool value) {
+    _rememberMe = value;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('email', email!);
+        prefs.setString('password', password!);
+      },
+    );
+    setState(() {
+      _rememberMe = value;
+    });
+  }
+
+  //mi sa che pure questa  è inutile e si può cancellare
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _email = _prefs.getString("email") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+      if (_remeberMe) {
+        setState(() {
+          _rememberMe = true;
+        });
+        email = _email;
+        password = _password;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -86,11 +123,11 @@ class _LoginFormState extends State<LoginForm> {
           Row(
             children: [
               Checkbox(
-                value: remember,
+                value: _rememberMe,
                 activeColor: kLightOrange,
                 onChanged: (value) {
                   setState(() {
-                    remember = value;
+                    _rememberMe = value;
                   });
                 },
               ),
@@ -121,6 +158,11 @@ class _LoginFormState extends State<LoginForm> {
                 //signin ritorna "" se c'è qualche problema
                 String jwt = await signIn();
                 if (jwt.isNotEmpty) {
+                  if (_rememberMe == true) {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString('jwt', jwt);
+                  }
                   Navigator.pushNamed(context, NavigatorScreen.routeName);
                 }
                 //chiamo la funzione validate per mostrare gli errori a schermo
