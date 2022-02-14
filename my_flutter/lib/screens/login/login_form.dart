@@ -135,7 +135,7 @@ class _LoginFormState extends State<LoginForm> {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Intro.routeName);
+                  Navigator.pushReplacementNamed(context, Intro.routeName);
                 }, //add forgotpasswordScreen.routeName and .dart
                 child: const Text(
                   "Forgot Password",
@@ -163,7 +163,8 @@ class _LoginFormState extends State<LoginForm> {
                         await SharedPreferences.getInstance();
                     prefs.setString('jwt', jwt);
                   }
-                  Navigator.pushNamed(context, NavigatorScreen.routeName);
+                  Navigator.pushReplacementNamed(
+                      context, NavigatorScreen.routeName);
                 }
                 //chiamo la funzione validate per mostrare gli errori a schermo
                 if (!_formKey.currentState!.validate()) {
@@ -175,7 +176,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, SignUpScreen.routeName);
+              Navigator.pushReplacementNamed(context, SignUpScreen.routeName);
             }, //add forgotpasswordScreen.routeName and .dart
             child: const Text(
               "Don't have an account? Sign up",

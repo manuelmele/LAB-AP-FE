@@ -56,13 +56,13 @@ class _BodyState extends State<Body> {
       //child: widget.skip,
       //color: widget.skipColor ?? widget.color,
       onPressed: () {
-        Navigator.pushNamed(context, LoginScreen.routeName);
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       },
     );*/
 
     final skipBtn = TextButton(
       onPressed: () {
-        Navigator.pushNamed(context, LoginScreen.routeName);
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       },
       child: const Text("SKIP", style: TextStyle(fontSize: 15, color: kOrange)),
     );
@@ -79,7 +79,7 @@ class _BodyState extends State<Body> {
 
     final doneBtn = TextButton(
       onPressed: () {
-        Navigator.pushNamed(context, LoginScreen.routeName);
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       },
       child: const Text("DONE", style: TextStyle(fontSize: 15, color: kOrange)),
     );
