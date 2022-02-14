@@ -158,10 +158,11 @@ class _LoginFormState extends State<LoginForm> {
                 //signin ritorna "" se c'è qualche problema
                 String jwt = await signIn();
                 if (jwt.isNotEmpty) {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setString('email', email!);
-                  prefs.setString('password', password!);
+                  if (_rememberMe == true) {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString('jwt', jwt);
+                  }
                   Navigator.pushNamed(context, NavigatorScreen.routeName);
                 }
                 //chiamo la funzione validate per mostrare gli errori a schermo
