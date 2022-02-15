@@ -157,6 +157,7 @@ class _LoginFormState extends State<LoginForm> {
                 //chiama la funzione signin per verificare le credenziali
                 //signin ritorna "" se c'è qualche problema
                 String jwt = await signIn();
+                print(jwt);
                 if (jwt.isNotEmpty) {
                   if (_rememberMe == true) {
                     SharedPreferences prefs =

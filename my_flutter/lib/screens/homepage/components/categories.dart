@@ -77,11 +77,11 @@ class CategoryCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: getProportionateScreenWidth(100),
-            width: getProportionateScreenWidth(100),
+            height: getProportionateScreenWidth(130),
+            width: getProportionateScreenWidth(130),
             decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(130),
                 image: DecorationImage(
                   image: image!,
                   fit: BoxFit.fill,

@@ -12,7 +12,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: getProportionateScreenHeight(30)),
+        SizedBox(height: getProportionateScreenHeight(80)),
         Text(
           "What do you need?",
           style: TextStyle(
@@ -36,7 +36,9 @@ class Body extends StatelessWidget {
           },
           child: Text('Logout'),
         ),
+        //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
+        //SizedBox(height: getProportionateScreenWidth(30)),
       ],
     );
   }

@@ -18,7 +18,7 @@ class Body extends StatelessWidget {
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
                 Image.asset(
-                  'assets/images/parrot_cut.png',
+                  'assets/images/parrot_contrast.jpg',
                   height: 100,
                   width: 100,
                 ),

@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 //[BE] server.port must be localhost:8000
 //String baseUrl = '10.0.2.2:8000'; //indirizzo per emulatore
@@ -37,6 +38,31 @@ Future<String> signUpService(String _firstName, String _secondName,
   }
 }
 
+Future<String> completeSignUpService(String _bio, XFile _photoProfile) async {
+  final uri = Uri.http(baseUrl, '/wefix/public/signup');
+
+  final response = await http.post(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, String>{
+      'bio': _bio,
+      'photoProfile': _bio,
+    }),
+  );
+  String jwt = jsonDecode(response.body)["jwt"].toString();
+  String message = jsonDecode(response.body)["message"].toString();
+
+  if (message.isNotEmpty && message != "null") {
+    return "Error: " + message;
+  } else if (jwt.isNotEmpty && jwt != "null") {
+    return jwt;
+  } else {
+    return "Unknown Error";
+  }
+}
+
 Future<String> signInService(String _email, String _password) async {
   final queryParameters = {
     'email': _email,
@@ -44,10 +70,10 @@ Future<String> signInService(String _email, String _password) async {
   };
 
   final uri = Uri.http(baseUrl, '/wefix/public/login', queryParameters);
-
   final response = await http.post(
     uri,
   );
+
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
 

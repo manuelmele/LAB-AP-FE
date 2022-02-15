@@ -21,7 +21,6 @@ class _SignUpFormState extends State<SignUpFormOptional> {
   String? email;
   String? password;
   String? confirm_password;
-  String? photo;
   String? bio;
   bool remember = false;
   List<String?> errors = [];
@@ -74,10 +73,6 @@ class _SignUpFormState extends State<SignUpFormOptional> {
       child: Column(
         children: [
           imageProfile(),
-          //const Text(
-          //"Choose a picture for your profile",
-          //textAlign: TextAlign.center,
-          //),
           SizedBox(height: getProportionateScreenHeight(40)),
           buildBioField(),
           SizedBox(height: getProportionateScreenHeight(30)),
@@ -87,11 +82,11 @@ class _SignUpFormState extends State<SignUpFormOptional> {
             ),
             child: const Text('Continue'),
             onPressed: () async {
-              String jwt = await completeSignUp();
+              //String jwt = await completeSignUp();
 
-              if (jwt.isNotEmpty) {
-                Navigator.pushNamed(context, NavigatorScreen.routeName);
-              }
+              //if (jwt.isNotEmpty) {
+              //Navigator.pushNamed(context, NavigatorScreen.routeName);
+              //}
               if (!_formKey.currentState!.validate()) {
                 //_formKey.currentState!.save();
                 print("sign up optional form not valid");
@@ -110,7 +105,7 @@ class _SignUpFormState extends State<SignUpFormOptional> {
       maxLines: 5,
       onSaved: (newValue) => confirm_password = newValue,
       onChanged: (value) {
-        confirm_password = value;
+        bio = value;
       },
       validator: (value) {
         return null;
@@ -123,30 +118,6 @@ class _SignUpFormState extends State<SignUpFormOptional> {
         ),
         labelText: "Tell something about yourself",
         hintText: "Write here...",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-      ),
-    );
-  }
-
-  TextFormField buildPhotoField() {
-    return TextFormField(
-      onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        password = value;
-      },
-      validator: (value) {
-        return null;
-      },
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
-          // width: 0.0 produces a thin "hairline" border
-          borderSide: BorderSide(color: kLightOrange),
-        ),
-        labelText: "Campo da sostituire con caricamento immagine",
-        //hintText: "Enter your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -184,8 +155,8 @@ class _SignUpFormState extends State<SignUpFormOptional> {
             },
             child: const Icon(
               Icons.camera_alt,
-              color: Colors.teal,
-              size: 28.0,
+              color: kOrange,
+              size: 38.0,
             ),
           ),
         ),
@@ -197,31 +168,31 @@ class _SignUpFormState extends State<SignUpFormOptional> {
     return Container(
       height: 100.0,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
       ),
       child: Column(
         children: <Widget>[
-          Text(
+          const Text(
             "Choose Profile photo",
             style: TextStyle(
               fontSize: 20.0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             FlatButton.icon(
-              icon: Icon(Icons.camera),
+              icon: Icon(Icons.camera, color: kOrange),
               onPressed: () {
                 takePhoto(ImageSource.camera);
               },
               label: Text("Camera"),
             ),
             FlatButton.icon(
-              icon: Icon(Icons.image),
+              icon: Icon(Icons.image, color: kOrange),
               onPressed: () {
                 takePhoto(ImageSource.gallery);
               },

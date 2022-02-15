@@ -80,6 +80,9 @@ flutter:
      - assets/images/plumber.png
      - assets/images/Electrician.png
      - assets/images/profile.jpeg
+     - assets/images/parrot_light.jpg
+     - assets/images/parrot_contrast.jpg
+
      
 
 

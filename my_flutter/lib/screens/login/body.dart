@@ -20,7 +20,7 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/images/parrot_cut.png',
+                  'assets/images/parrot_contrast.jpg',
                   height: 100,
                   width: 100,
                 ),
