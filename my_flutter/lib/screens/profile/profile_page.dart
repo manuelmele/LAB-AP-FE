@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/constants.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Profile"),
+        title: const Text("Profile Page"),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
@@ -44,8 +45,21 @@ class ProfilePageState extends State<ProfilePage> {
                           "Professione",
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
-                        SizedBox(
-                          height: 40,
+                        Text(
+                          "Zona di lavoro",
+                          style: TextStyle(fontSize: 19, color: Colors.grey),
+                        ),
+                        Text(
+                          "...Altre informazioni...",
+                          style: TextStyle(fontSize: 19, color: Colors.grey),
+                        ),
+                        Text(
+                          "About",
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        Text(
+                          "Brief description or presentation of the worker",
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
                     ),
@@ -53,99 +67,88 @@ class ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               SizedBox(
-                height: 26,
+                height: 10,
               ),
               Text(
-                "About",
-                style: TextStyle(fontSize: 22),
+                "Gallery",
+                style: TextStyle(
+                    color: Color(0xff242424),
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600),
               ),
               SizedBox(
-                height: 16,
-              ),
-              Text(
-                "Brief description or presentation of the worker",
-                style: TextStyle(color: Colors.grey, fontSize: 16),
-              ),
-              SizedBox(
-                height: 24,
+                height: 10,
               ),
               Row(
+                //insert here the column, problem with expanded class
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Row(
+                  Expanded(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                      decoration: BoxDecoration(
+                          color: kPurple,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          // Image.asset(
-                          //     "assets/images/parrot_cut.png"), //field used for mapping, useful?
+                          Container(
+                              //insert the image here
+                              //child:
+                              //Image.asset("assets/images/parrot_cut.png")
+                              ),
                           SizedBox(
-                            width: 20,
+                            width: 16,
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Zona di lavoro",
-                                style: TextStyle(
-                                    color: Colors.black87.withOpacity(0.7),
-                                    fontSize: 20),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 268,
-                                  child: Text(
-                                    "House # 2, Road # 5, Green Road Dhanmondi, Dhaka, Bangladesh",
-                                    style: TextStyle(color: Colors.grey),
-                                  ))
-                            ],
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 130,
+                            child: Text(
+                              "First image",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 17),
+                            ),
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          // Image.asset(
-                          //     "assets/images/parrot_cut.png"), //clock????
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Daily Practict",
-                                style: TextStyle(
-                                    color: Colors.black87.withOpacity(0.7),
-                                    fontSize: 20),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Container(
-                                  width:
-                                      MediaQuery.of(context).size.width - 268,
-                                  child: Text(
-                                    '''Giorni di lavoro: ...''',
-                                    style: TextStyle(color: Colors.grey),
-                                  ))
-                            ],
-                          )
-                        ],
-                      )
-                    ],
+                    ),
                   ),
-                  //Image.asset(
-                  //  "assets/images/parrot_cut.png", //icon for the map here!!
-                  //  width: 180,
-                  // )
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                      decoration: BoxDecoration(
+                          color: kPurple,
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                              //insert the image here
+                              //child:
+                              //Image.asset("assets/images/parrot_cut.png")
+                              ),
+                          SizedBox(
+                            width: 16,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2 - 130,
+                            child: Text(
+                              "Second image",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 17),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Text(
-                "Gallery or Price List(choose)",
+                "Price List",
                 style: TextStyle(
                     color: Color(0xff242424),
                     fontSize: 28,
@@ -154,14 +157,17 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 22,
               ),
+
+              //here start the price list
               Row(
+                //insert here the column, problem with expanded class
                 children: <Widget>[
                   Expanded(
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                       decoration: BoxDecoration(
-                          color: Color(0xffFBB97C),
+                          color: Color(0xffA5A5A5),
                           borderRadius: BorderRadius.circular(20)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -169,7 +175,7 @@ class ProfilePageState extends State<ProfilePage> {
                           Container(
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                                color: Color(0xffFCCA9B),
+                                color: Color(0xffBBBBBB),
                                 borderRadius: BorderRadius.circular(16)),
                             //child:
                             //Image.asset("assets/images/parrot_cut.png")
@@ -180,7 +186,7 @@ class ProfilePageState extends State<ProfilePage> {
                           Container(
                             width: MediaQuery.of(context).size.width / 2 - 130,
                             child: Text(
-                              "List Of Schedule",
+                              "First element, Price:...",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 17),
                             ),
@@ -216,7 +222,7 @@ class ProfilePageState extends State<ProfilePage> {
                           Container(
                             width: MediaQuery.of(context).size.width / 2 - 130,
                             child: Text(
-                              "???",
+                              "Second element, Price:...",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 17),
                             ),
