@@ -76,76 +76,33 @@ class ProfilePageState extends State<ProfilePage> {
                     fontSize: 28,
                     fontWeight: FontWeight.w600),
               ),
+              ConstrainedBox(
+                  constraints: new BoxConstraints(
+                    maxHeight: 100.0,
+                  ),
+                  child: ListView.builder(
+                    //scroll horizontal
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 18, //number of photos uploaded by the user
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 2),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        decoration: BoxDecoration(
+                            color: kPurple,
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image: const AssetImage(
+                                  "assets/images/parrot_cut.png"),
+                              fit: BoxFit.fill,
+                            )),
+                      );
+                    },
+                  )),
               SizedBox(
                 height: 10,
-              ),
-              Row(
-                //insert here the column, problem with expanded class
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: kPurple,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                              //insert the image here
-                              //child:
-                              //Image.asset("assets/images/parrot_cut.png")
-                              ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2 - 130,
-                            child: Text(
-                              "First image",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: kPurple,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                              //insert the image here
-                              //child:
-                              //Image.asset("assets/images/parrot_cut.png")
-                              ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2 - 130,
-                            child: Text(
-                              "Second image",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
               ),
               Text(
                 "Price List",
@@ -157,82 +114,52 @@ class ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 22,
               ),
-
-              //here start the price list
-              Row(
-                //insert here the column, problem with expanded class
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: Color(0xffA5A5A5),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: Color(0xffBBBBBB),
-                                borderRadius: BorderRadius.circular(16)),
-                            //child:
-                            //Image.asset("assets/images/parrot_cut.png")
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2 - 130,
-                            child: Text(
-                              "First element, Price:...",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
+              ConstrainedBox(
+                  constraints: new BoxConstraints(
+                    maxHeight: 100.0,
+                  ),
+                  child: ListView.builder(
+                    //controller: controller, doesn't work fine
+                    scrollDirection: Axis.vertical,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: 2, //number of photos uploaded by the user
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 2, vertical: 2),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                        decoration: BoxDecoration(
+                            color: kPurple,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  color: Color(0xffBBBBBB),
+                                  borderRadius: BorderRadius.circular(16)),
+                              //child:
+                              //Image.asset("assets/images/parrot_cut.png")
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                      decoration: BoxDecoration(
-                          color: Color(0xffA5A5A5),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: Color(0xffBBBBBB),
-                                borderRadius: BorderRadius.circular(16)),
-                            //child:
-                            //Image.asset("assets/images/parrot_cut.png")
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 2 - 130,
-                            child: Text(
-                              "Second element, Price:...",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17),
+                            SizedBox(
+                              width: 16,
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
+                            Container(
+                              width:
+                                  MediaQuery.of(context).size.width / 2 - 130,
+                              child: Text(
+                                "First element, Price:...",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  )),
             ],
           ),
         ),
