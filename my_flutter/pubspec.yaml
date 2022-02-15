@@ -33,6 +33,9 @@ dependencies:
   # used for the remember me function in the login
   shared_preferences: ^2.0.13
 
+  #used to get profile pic from gallery or camera
+  image_picker: ^0.8.4+8
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -73,6 +76,11 @@ flutter:
      - assets/images/workers.jpg
      - assets/images/shop.jpg
      - assets/images/parrot_cut.png
+     - assets/images/gardner.png
+     - assets/images/plumber.png
+     - assets/images/Electrician.png
+     - assets/images/profile.jpeg
+     
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

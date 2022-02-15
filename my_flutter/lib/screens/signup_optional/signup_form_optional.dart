@@ -1,0 +1,244 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
+import 'package:wefix/screens/signup_optional/signup_optional.dart';
+import 'package:wefix/services/auth_service.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../../constants.dart';
+import '../../../size_config.dart';
+
+class SignUpFormOptional extends StatefulWidget {
+  @override
+  _SignUpFormState createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpFormOptional> {
+  final _formKey = GlobalKey<FormState>();
+  String? name;
+  String? surname;
+  String? email;
+  String? password;
+  String? confirm_password;
+  String? photo;
+  String? bio;
+  bool remember = false;
+  List<String?> errors = [];
+
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<String> completeSignUp() async {
+    if (name == null ||
+        surname == null ||
+        email == null ||
+        password == null ||
+        confirm_password == null) {
+      return '';
+    }
+    errors = [];
+    String response = await signUpService(
+        name!, surname!, email!, password!, confirm_password!);
+
+    if (response.contains('Error')) {
+      String error = response;
+      addError(error: error);
+      print(errors);
+    } else {
+      String jwt = response;
+      return jwt;
+    }
+
+    return '';
+  }
+
+  void addError({String? error}) {
+    if (!errors.contains(error))
+      setState(() {
+        errors.add(error);
+      });
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error))
+      setState(() {
+        errors.remove(error);
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          imageProfile(),
+          //const Text(
+          //"Choose a picture for your profile",
+          //textAlign: TextAlign.center,
+          //),
+          SizedBox(height: getProportionateScreenHeight(40)),
+          buildBioField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: kLightOrange,
+            ),
+            child: const Text('Continue'),
+            onPressed: () async {
+              String jwt = await completeSignUp();
+
+              if (jwt.isNotEmpty) {
+                Navigator.pushNamed(context, NavigatorScreen.routeName);
+              }
+              if (!_formKey.currentState!.validate()) {
+                //_formKey.currentState!.save();
+                print("sign up optional form not valid");
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  TextFormField buildBioField() {
+    return TextFormField(
+      keyboardType: TextInputType.multiline,
+      //minLines: 1, //Normal textInputField will be displayed
+      maxLines: 5,
+      onSaved: (newValue) => confirm_password = newValue,
+      onChanged: (value) {
+        confirm_password = value;
+      },
+      validator: (value) {
+        return null;
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
+        labelText: "Tell something about yourself",
+        hintText: "Write here...",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+      ),
+    );
+  }
+
+  TextFormField buildPhotoField() {
+    return TextFormField(
+      onSaved: (newValue) => password = newValue,
+      onChanged: (value) {
+        password = value;
+      },
+      validator: (value) {
+        return null;
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
+        labelText: "Campo da sostituire con caricamento immagine",
+        //hintText: "Enter your password",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+      ),
+    );
+  }
+
+  Widget imageProfile() {
+    return Center(
+      child: Stack(children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+                context: context, builder: ((builder) => bottomSheet()));
+          },
+          child: CircleAvatar(
+            backgroundImage: _imageFile == null
+                ? AssetImage("assets/images/profile.jpeg")
+                : Image.file(
+                    File(_imageFile!.path),
+                    fit: BoxFit.cover,
+                  ).image,
+            radius: 80.0,
+          ),
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 20.0,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => bottomSheet()),
+              );
+            },
+            child: const Icon(
+              Icons.camera_alt,
+              color: Colors.teal,
+              size: 28.0,
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.camera),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.image),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+}

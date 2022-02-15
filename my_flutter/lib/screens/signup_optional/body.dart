@@ -17,13 +17,26 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                //Text("Register Account", style: headingStyle),
+                Image.asset(
+                  'assets/images/parrot_cut.png',
+                  height: 100,
+                  width: 100,
+                ),
+                const SizedBox(height: 0.04),
                 Text(
-                  "Complete your details or continue \nwith social media",
+                  "Sign up",
+                  style: TextStyle(
+                    color: kOrange,
+                    fontSize: getProportionateScreenWidth(28),
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                const Text(
+                  "Complete your profile",
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                //SignUpForm(),
+                SignUpFormOptional(),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 Text(
