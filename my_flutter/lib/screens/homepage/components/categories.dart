@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
-import 'package:wefix/screens/homepage/components/results_widget.dart';
 
 import '../../../size_config.dart';
 
@@ -9,12 +8,12 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
+        "icon": const AssetImage("assets/images/plumber.png"),
         "text": "Plumber"
       },
       {"icon": const AssetImage("assets/images/gardner.png"), "text": "Tailor"},
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
+        "icon": const AssetImage("assets/images/Electrician.png"),
         "text": "Electrician"
       },
       {
@@ -23,10 +22,6 @@ class Categories extends StatelessWidget {
       },
       {
         "icon": const AssetImage("assets/images/gardner.png"),
-        //"icon": const Icon(
-        //Icons.photo_size_select_actual_outlined,
-        //color: Colors.blue,
-        //),
         "text": "Gardner"
       },
       {

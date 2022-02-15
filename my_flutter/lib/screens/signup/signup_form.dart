@@ -84,7 +84,7 @@ class _SignUpFormState extends State<SignUpForm> {
               String jwt = await signUp();
 
               if (jwt.isNotEmpty) {
-                Navigator.pushNamed(context, NavigatorScreen.routeName);
+                Navigator.pushNamed(context, SignUpOptionalScreen.routeName);
               }
               if (!_formKey.currentState!.validate()) {
                 //_formKey.currentState!.save();
