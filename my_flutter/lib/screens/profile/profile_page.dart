@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
+import 'package:wefix/screens/homepage/components/results_widget.dart';
+import 'package:wefix/screens/login/login.dart';
+
+import '../../../size_config.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -10,11 +15,6 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Profile Page"),
-        automaticallyImplyLeading: false,
-      ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24),
@@ -23,10 +23,30 @@ class ProfilePageState extends State<ProfilePage> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Image.asset("assets/images/parrot_cut.png",
-                      height: 110,
-                      fit: BoxFit
-                          .fitHeight), // overflowed - need to redemension the image!!
+                  CircleAvatar(
+                    radius: 75,
+                    backgroundColor: kLightOrange,
+                    child: CircleAvatar(
+                      backgroundImage: Image.asset(
+                              "assets/images/parrot_cut.png",
+                              height: 110,
+                              fit: BoxFit.scaleDown)
+                          .image,
+                      radius: 70,
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: kLightOrange,
+                          child: Icon(
+                            Icons.edit,
+                            color: kWhite,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     width: 20,
                   ),
@@ -37,28 +57,64 @@ class ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Nome",
-                          style: TextStyle(fontSize: 32),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Name",
+                              style: TextStyle(fontSize: 32),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: kLightOrange,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: kWhite,
+                                  size: 20,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         Text(
-                          "Professione",
+                          "Profession",
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
                         Text(
-                          "Zona di lavoro",
+                          "Email",
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
-                        Text(
-                          "...Altre informazioni...",
-                          style: TextStyle(fontSize: 19, color: Colors.grey),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "About",
+                              style: TextStyle(fontSize: 22),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              alignment: Alignment.topRight,
+                              child: CircleAvatar(
+                                radius: 13,
+                                backgroundColor: kLightOrange,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: kWhite,
+                                  size: 17,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         Text(
-                          "About",
-                          style: TextStyle(fontSize: 22),
-                        ),
-                        Text(
-                          "Brief description or presentation of the worker",
+                          "Brief description or presentation of the worker (info from the db)",
                           style: TextStyle(color: Colors.grey, fontSize: 16),
                         ),
                       ],
@@ -66,16 +122,39 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
+
+              //starts the gallery
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Gallery",
+                    style: TextStyle(
+                        color: Color(0xff242424),
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: kLightOrange,
+                      child: Icon(
+                        Icons.edit,
+                        color: kWhite,
+                        size: 20,
+                      ),
+                    ),
+                  )
+                ],
+              ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
-              Text(
-                "Gallery",
-                style: TextStyle(
-                    color: Color(0xff242424),
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600),
-              ),
+              //here starts the list of images
               ConstrainedBox(
                   constraints: new BoxConstraints(
                     maxHeight: 100.0,
@@ -83,40 +162,63 @@ class ProfilePageState extends State<ProfilePage> {
                   child: ListView.builder(
                     //scroll horizontal
                     scrollDirection: Axis.horizontal,
-                    itemCount: 18, //number of photos uploaded by the user
+                    itemCount:
+                        18, //number of photos uploaded by the user, input from the databases
                     itemBuilder: (context, index) {
                       return Container(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 2, vertical: 2),
                         padding:
-                            EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                            EdgeInsets.symmetric(vertical: 35, horizontal: 35),
                         decoration: BoxDecoration(
-                            color: kPurple,
+                            color: kLightOrange,
                             borderRadius: BorderRadius.circular(20),
                             image: DecorationImage(
                               image: const AssetImage(
                                   "assets/images/parrot_cut.png"),
-                              fit: BoxFit.fill,
+                              fit: BoxFit.scaleDown,
                             )),
                       );
                     },
                   )),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
-              Text(
-                "Price List",
-                style: TextStyle(
-                    color: Color(0xff242424),
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600),
+              //here starts the price list code
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "Price List",
+                    style: TextStyle(
+                        color: Color(0xff242424),
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    alignment: Alignment.topRight,
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: kLightOrange,
+                      child: Icon(
+                        Icons.edit,
+                        color: kWhite,
+                        size: 20,
+                      ),
+                    ),
+                  )
+                ],
               ),
               SizedBox(
-                height: 22,
+                height: 5,
               ),
+              //here starts the list of items
               ConstrainedBox(
                   constraints: new BoxConstraints(
-                    maxHeight: 100.0,
+                    maxHeight: 170.0,
                   ),
                   child: ListView.builder(
                     //controller: controller, doesn't work fine
@@ -130,29 +232,29 @@ class ProfilePageState extends State<ProfilePage> {
                         padding:
                             EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                         decoration: BoxDecoration(
-                            color: kPurple,
+                            color: kLightOrange,
                             borderRadius: BorderRadius.circular(20)),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                  color: Color(0xffBBBBBB),
+                                  color: kOrange,
                                   borderRadius: BorderRadius.circular(16)),
                               //child:
-                              //Image.asset("assets/images/parrot_cut.png")
+                              //Image.asset("assets/images/parrot_cut.png") useful i I want to import an image
                             ),
                             SizedBox(
-                              width: 16,
+                              width: 15,
                             ),
                             Container(
-                              width:
-                                  MediaQuery.of(context).size.width / 2 - 130,
+                              width: 100,
+                              //MediaQuery.of(context).size.width / 2 - 130, ??? utile quando inseriremo i dati real time
                               child: Text(
                                 "First element, Price:...",
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 17),
+                                    color: Colors.black, fontSize: 17),
                               ),
                             )
                           ],
@@ -160,6 +262,26 @@ class ProfilePageState extends State<ProfilePage> {
                       );
                     },
                   )),
+
+              //button for the log out
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    alignment: Alignment.center,
+                  ),
+                  onPressed: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.remove('jwt');
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext ctx) => LoginScreen()));
+                  },
+                  child: Text('Logout', textAlign: TextAlign.center),
+                ),
+              ),
             ],
           ),
         ),
