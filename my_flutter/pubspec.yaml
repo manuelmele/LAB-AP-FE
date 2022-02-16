@@ -116,7 +116,9 @@ flutter:
     - family: Dosis
       fonts:
       - asset: fonts/Dosis/static/Dosis-Regular.ttf
-  
+    - family: Outfit
+      fonts:
+      - asset: fonts/Outfit/static/Outfit-Medium.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

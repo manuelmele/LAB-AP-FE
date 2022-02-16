@@ -7,6 +7,8 @@ import '../../../size_config.dart';
 import 'categories.dart';
 import 'home_header.dart';
 
+import 'package:wefix/screens/payment/payment.dart';
+
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,24 @@ class Body extends StatelessWidget {
           },
           child: Text('Logout'),
         ),
+
+
+
+
+
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: kLightOrange,
+              ),
+              child: const Text('Payment'),
+                onPressed: () {
+                    Navigator.pushReplacementNamed(context, PaymentPage.routeName);
+                }
+            ),
+        ),
+        
         //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
         //SizedBox(height: getProportionateScreenWidth(30)),
