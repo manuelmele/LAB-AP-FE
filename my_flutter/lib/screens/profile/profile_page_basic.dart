@@ -7,12 +7,12 @@ import 'package:wefix/screens/profile/edit_photo.dart';
 
 import '../../../size_config.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePageBasic extends StatefulWidget {
   @override
-  ProfilePageState createState() => ProfilePageState();
+  ProfilePageStateBasic createState() => ProfilePageStateBasic();
 }
 
-class ProfilePageState extends State<ProfilePage> {
+class ProfilePageStateBasic extends State<ProfilePageBasic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,14 +90,15 @@ class ProfilePageState extends State<ProfilePage> {
                             )
                           ],
                         ),
-                        Text(
-                          "Profession",
-                          style: TextStyle(fontSize: 19, color: Colors.grey),
-                        ),
+                        //Text(
+                        //  "Profession",
+                        //  style: TextStyle(fontSize: 19, color: Colors.grey),
+                        //),
                         Text(
                           "Email",
                           style: TextStyle(fontSize: 19, color: Colors.grey),
                         ),
+                        //spostare l'about in un altro container
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -135,151 +136,16 @@ class ProfilePageState extends State<ProfilePage> {
                 ],
               ),
 
-              //starts the gallery
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Gallery",
-                    style: TextStyle(
-                        color: Color(0xff242424),
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      //onTap: () => Navigator.pushNamed(context, routeName), //here insert the edit gallery route
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: kLightOrange,
-                        child: Icon(
-                          Icons.edit,
-                          color: kWhite,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              //here starts the list of images
-              ConstrainedBox(
-                  constraints: new BoxConstraints(
-                    maxHeight: 100.0,
-                  ),
-                  child: ListView.builder(
-                    //scroll horizontal
-                    scrollDirection: Axis.horizontal,
-                    itemCount:
-                        18, //number of photos uploaded by the user, input from the databases
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 2),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 35, horizontal: 35),
-                        decoration: BoxDecoration(
-                            color: kLightOrange,
-                            borderRadius: BorderRadius.circular(20),
-                            image: DecorationImage(
-                              image: const AssetImage(
-                                  "assets/images/parrot_cut.png"),
-                              fit: BoxFit.scaleDown,
-                            )),
-                      );
-                    },
-                  )),
-              SizedBox(
-                height: 5,
-              ),
-              //here starts the price list code
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    "Price List",
-                    style: TextStyle(
-                        color: Color(0xff242424),
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      //onTap: () => Navigator.pushNamed(context, routeName), //here insert the edit gallery route
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: kLightOrange,
-                        child: Icon(
-                          Icons.edit,
-                          color: kWhite,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+              //insert bottone "passa a pro"
+
+              //insert container for rating
+
+              //insert container for reviews
+
               SizedBox(
                 height: 5,
               ),
               //here starts the list of items
-              ConstrainedBox(
-                  constraints: new BoxConstraints(
-                    maxHeight: 170.0,
-                  ),
-                  child: ListView.builder(
-                    //controller: controller, doesn't work fine
-                    scrollDirection: Axis.vertical,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: 4, //number of photos uploaded by the user
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 2, vertical: 2),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-                        decoration: BoxDecoration(
-                            color: kLightOrange,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                  color: kOrange,
-                                  borderRadius: BorderRadius.circular(16)),
-                              //child:
-                              //Image.asset("assets/images/parrot_cut.png") useful i I want to import an image
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Container(
-                              width:
-                                  MediaQuery.of(context).size.width / 2 - 100,
-                              child: Text(
-                                "First element, Price:...",
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 17),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  )),
 
               //button for the log out
               Container(

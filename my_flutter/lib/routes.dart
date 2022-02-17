@@ -7,6 +7,7 @@ import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
+import 'package:wefix/screens/profile/edit_photo.dart';
 
 import 'package:flutter/widgets.dart'; //per importare il tipo WidgetBuilder
 
@@ -16,4 +17,5 @@ final Map<String, WidgetBuilder> routes = {
   SignUpScreen.routeName: (context) => SignUpScreen(),
   SignUpOptionalScreen.routeName: (context) => SignUpOptionalScreen(),
   NavigatorScreen.routeName: (context) => NavigatorScreen(),
+  EditPhoto.routeName: (context) => EditPhoto(),
 };
