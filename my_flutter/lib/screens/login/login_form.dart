@@ -63,50 +63,18 @@ class _LoginFormState extends State<LoginForm> {
   List<String?> errors = [];
 
   void addError({String? error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
       });
+    }
   }
 
   void removeError({String? error}) {
-    if (errors.contains(error))
+    if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
       });
-  }
-
-  //mi sa che è inutile si può cancellare
-  void _handleRemeberme(bool value) {
-    _rememberMe = value;
-    SharedPreferences.getInstance().then(
-      (prefs) {
-        prefs.setBool("remember_me", value);
-        prefs.setString('email', email!);
-        prefs.setString('password', password!);
-      },
-    );
-    setState(() {
-      _rememberMe = value;
-    });
-  }
-
-  //mi sa che pure questa  è inutile e si può cancellare
-  void _loadUserEmailPassword() async {
-    try {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var _email = _prefs.getString("email") ?? "";
-      var _password = _prefs.getString("password") ?? "";
-      var _remeberMe = _prefs.getBool("remember_me") ?? false;
-      if (_remeberMe) {
-        setState(() {
-          _rememberMe = true;
-        });
-        email = _email;
-        password = _password;
-      }
-    } catch (e) {
-      print(e);
     }
   }
 

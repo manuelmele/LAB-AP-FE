@@ -51,3 +51,6 @@ const String notMatchingPw =
 const String invalidEmail = "Error: Json field \"email\" is invalid";
 const String invalidName = "Error: Json field \"firstName\" is invalid";
 const String invalidSurname = "Error: Json field \"surname\" is invalid";
+//per la signupOptional
+const String imageTooBig = "Error: Image should have maximum size 30KB";
+const String invalidBio = "Error: Invalid bio";
