@@ -37,8 +37,8 @@ class _NavigatorState extends State<NavigatorScreen> {
 
   final screens = [
     HomePage(),
-    CalendarPage(),
     ProfilePage(),
+    CalendarPage(),
   ];
 
   @override
@@ -75,10 +75,10 @@ class _NavigatorState extends State<NavigatorScreen> {
                 icon: Icon(Icons.date_range),
                 title: Text('Calendar'),
                 activeColor: kOrange),
-            BottomNavyBarItem(
-                icon: Icon(Icons.toc),
-                title: Text('Settings'),
-                activeColor: kOrange),
+            // BottomNavyBarItem(
+            //     icon: Icon(Icons.toc),
+            //     title: Text('Settings'),
+            //     activeColor: kOrange),
           ],
         )
         /*
