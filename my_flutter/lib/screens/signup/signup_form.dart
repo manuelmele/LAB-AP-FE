@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
 import 'package:wefix/services/auth_service.dart';
@@ -18,8 +19,36 @@ class _SignUpFormState extends State<SignUpForm> {
   String? email;
   String? password;
   String? confirm_password;
-  bool remember = false;
+  bool loggedin = true;
   List<String?> errors = [];
+
+  Future<String> signIn() async {
+    errors = [];
+    //prima di tutto controllo se i campi sono stati lasciati vuoti
+    if (email == null || email == "" || password == null || password == "") {
+      return "";
+    }
+
+    String response = await signInService(email!, password!);
+    print("eseguo la login e ricevo:");
+    print(response);
+    //la funzione signInService va a verificare se le credenziali sono corrette nel db
+    //la chiamo solo se le credenziali non sono vuote
+
+    if (response.contains('Error')) {
+      String error = response;
+      //errore in caso di credenziali errate
+      addError(error: error);
+    } else {
+      String jwt = response;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('jwt', jwt);
+      print("ho appena settato questa jwt come shared preference:");
+      print(prefs.getString('jwt'));
+      return jwt;
+    }
+    return '';
+  }
 
   Future<String> signUp() async {
     if (name == null ||
@@ -82,8 +111,10 @@ class _SignUpFormState extends State<SignUpForm> {
             child: const Text('Continue'),
             onPressed: () async {
               String jwt = await signUp();
-
               if (jwt.isNotEmpty) {
+                jwt = await signIn();
+                print("eccoci dopo la signin:");
+                print(jwt);
                 Navigator.pushNamed(context, SignUpOptionalScreen.routeName);
               }
               if (!_formKey.currentState!.validate()) {

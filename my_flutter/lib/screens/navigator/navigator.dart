@@ -4,6 +4,8 @@ import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+
 import '../../constants.dart';
 import '../../size_config.dart';
 
@@ -18,6 +20,21 @@ class NavigatorScreen extends StatefulWidget {
 class _NavigatorState extends State<NavigatorScreen> {
   int currentIndex = 0;
 
+  List listOfColors = [
+    Container(
+      color: kBlue,
+    ),
+    Container(
+      color: kOrange,
+    ),
+    Container(
+      color: kYellow,
+    ),
+    Container(
+      color: kPurple,
+    )
+  ];
+
   final screens = [
     HomePage(),
     CalendarPage(),
@@ -28,11 +45,43 @@ class _NavigatorState extends State<NavigatorScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      body: IndexedStack(
-        // to leave the children state alive
-        index: currentIndex,
-        children: screens,
-      ),
+        body: IndexedStack(
+          // to leave the children state alive
+          index: currentIndex,
+          children: screens,
+        ),
+        bottomNavigationBar: BottomNavyBar(
+          iconSize: 27,
+          backgroundColor: kBackground,
+
+          selectedIndex: currentIndex,
+          showElevation: true, // use this to remove appBar's elevation
+          onItemSelected: (index) => setState(() {
+            currentIndex = index;
+            //_pageController.animateToPage(index,
+            //duration: Duration(milliseconds: 300), curve: Curves.ease);
+          }),
+          items: [
+            BottomNavyBarItem(
+              icon: Icon(Icons.home_rounded),
+              title: Text('Home Page'),
+              activeColor: kOrange,
+            ),
+            BottomNavyBarItem(
+                icon: Icon(Icons.account_circle),
+                title: Text('User Page'),
+                activeColor: kOrange),
+            BottomNavyBarItem(
+                icon: Icon(Icons.date_range),
+                title: Text('Calendar'),
+                activeColor: kOrange),
+            BottomNavyBarItem(
+                icon: Icon(Icons.toc),
+                title: Text('Settings'),
+                activeColor: kOrange),
+          ],
+        )
+        /*
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -56,7 +105,7 @@ class _NavigatorState extends State<NavigatorScreen> {
             label: 'Profile',
           ),
         ],
-      ),
-    );
+      ),*/
+        );
   }
 }
