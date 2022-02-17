@@ -22,6 +22,13 @@ class ResultsWidget extends StatefulWidget {
 
 class _ResultsState extends State<ResultsWidget> {
   List<UserModel> results = [];
+  bool disposed = false;
+
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
+  }
 
   void searchByCategory(String category) {
     if (results.isNotEmpty) return;
@@ -29,9 +36,11 @@ class _ResultsState extends State<ResultsWidget> {
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
       filterByCategory(jwt, category).then((newResults) {
-        setState(() {
-          results = newResults;
-        });
+        if (!disposed) {
+          setState(() {
+            results = newResults;
+          });
+        }
       });
     });
   }
