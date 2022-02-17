@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
+import 'package:wefix/services/filters_service.dart';
 
 import '../../../size_config.dart';
 import 'categories.dart';
@@ -18,11 +21,25 @@ class ResultsWidget extends StatefulWidget {
 }
 
 class _ResultsState extends State<ResultsWidget> {
+  List<UserModel> results = [];
+
+  void searchByCategory(String category) {
+    if (results.isNotEmpty) return;
+
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      filterByCategory(jwt, category).then((newResults) {
+        setState(() {
+          results = newResults;
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     String category = widget.category!;
-    String imageUrl =
-        "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png";
+    searchByCategory(category);
 
     return Scaffold(
         body: Column(
@@ -30,19 +47,15 @@ class _ResultsState extends State<ResultsWidget> {
         SizedBox(height: getProportionateScreenHeight(20)),
         HomeHeader(),
         Expanded(
-            child: ListView(
-          children: [
-            ListProfile(
-                name: 'Marco Prova',
-                description: "Sono un $category",
-                imageUrl: imageUrl,
-                press: () {}),
-            ListProfile(
-                name: 'Marco Prova2',
-                description: "Sono un $category",
-                imageUrl: imageUrl,
-                press: () {}),
-          ],
+            child: ListView.builder(
+          itemCount: results.length,
+          itemBuilder: (context, i) {
+            return ListProfile(
+                name: results[i].firstName + " " + results[i].secondName,
+                description: results[i].bio,
+                imageUrl: results[i].photoProfile,
+                press: () {});
+          },
         )),
         SizedBox(height: getProportionateScreenWidth(30)),
       ],

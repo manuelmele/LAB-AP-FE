@@ -11,18 +11,18 @@ class Categories extends StatelessWidget {
         "icon": const AssetImage("assets/images/plumber.png"),
         "text": "Plumber"
       },
-      {"icon": const AssetImage("assets/images/gardner.png"), "text": "Tailor"},
+      {"icon": const AssetImage("assets/images/gardner.png"), "text": "Tiler"},
       {
         "icon": const AssetImage("assets/images/Electrician.png"),
         "text": "Electrician"
       },
       {
         "icon": const AssetImage("assets/images/gardner.png"),
-        "text": "Glass Maker"
+        "text": "Glazier"
       },
       {
         "icon": const AssetImage("assets/images/gardner.png"),
-        "text": "Gardner"
+        "text": "Gardener"
       },
       {
         "icon": const AssetImage("assets/images/gardner.png"),
