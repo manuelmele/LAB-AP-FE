@@ -44,8 +44,7 @@ class _SignUpFormState extends State<SignUpForm> {
       String jwt = response;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('jwt', jwt);
-      print("ho appena settato questa jwt come shared preference:");
-      print(prefs.getString('jwt'));
+      prefs.setString('email', email!);
       return jwt;
     }
     return '';

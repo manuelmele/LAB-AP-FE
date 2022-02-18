@@ -132,6 +132,7 @@ class _LoginFormState extends State<LoginForm> {
                     prefs.setBool('rememberMe', true);
                   }
                   prefs.setString('jwt', jwt);
+                  prefs.setString('email', email!);
                   Navigator.pushReplacementNamed(
                       context, NavigatorScreen.routeName);
                 }

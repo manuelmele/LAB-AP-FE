@@ -25,18 +25,6 @@ class Body extends StatelessWidget {
           "Start your search by choosing the category",
           textAlign: TextAlign.center,
         ),
-        /*ElevatedButton(
-          onPressed: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.remove('jwt');
-            prefs.setBool('rememberMe', false);
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext ctx) => LoginScreen()));
-          },
-          child: Text('Logout'),
-        ),*/
         //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
         //SizedBox(height: getProportionateScreenWidth(30)),
