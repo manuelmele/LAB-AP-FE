@@ -46,11 +46,13 @@ class _NavigatorState extends State<NavigatorScreen> {
   ];
 
   void _onItemTapped(int index) {
-    index == 3
-        ? _key.currentState!.openDrawer()
-        : setState(() {
-            currentIndex = index;
-          });
+    if (index == 3) {
+      _key.currentState!.openDrawer();
+    } else {
+      setState(() {
+        currentIndex = index;
+      });
+    }
   }
 
   @override
@@ -76,19 +78,26 @@ class _NavigatorState extends State<NavigatorScreen> {
               icon: Icon(Icons.home_rounded),
               title: Text('Home Page'),
               activeColor: kOrange,
+              inactiveColor: kGrey,
             ),
             BottomNavyBarItem(
-                icon: Icon(Icons.account_circle),
-                title: Text('User Page'),
-                activeColor: kOrange),
+              icon: Icon(Icons.account_circle),
+              title: Text('User Page'),
+              activeColor: kOrange,
+              inactiveColor: kGrey,
+            ),
             BottomNavyBarItem(
-                icon: Icon(Icons.date_range),
-                title: Text('Calendar'),
-                activeColor: kOrange),
+              icon: Icon(Icons.date_range),
+              title: Text('Calendar'),
+              activeColor: kOrange,
+              inactiveColor: kGrey,
+            ),
             BottomNavyBarItem(
-                icon: Icon(Icons.toc),
-                title: Text('Settings'),
-                activeColor: kOrange),
+              icon: Icon(Icons.toc),
+              title: Text('Settings'),
+              activeColor: kLightGreen,
+              inactiveColor: kGrey,
+            ),
           ],
         )
         /*

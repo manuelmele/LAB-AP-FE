@@ -1,20 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
+import 'package:wefix/models/user_model.dart';
+import 'package:wefix/services/user_service.dart';
 import 'package:wefix/size_config.dart';
 
-class SettingsDrawer extends StatelessWidget {
+class SettingsDrawer extends StatefulWidget {
+  const SettingsDrawer({Key? key}) : super(key: key);
+
+  @override
+  _SettingsDrawerState createState() => _SettingsDrawerState();
+}
+
+class _SettingsDrawerState extends State<SettingsDrawer> {
+  String? name;
+  String? surname;
+  String? email;
+  String? jwt;
+  var role;
+  var data;
+  Future<Map<String, String>>? userData;
+  Future<Album>? futureAlbum;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      futureAlbum = fetchAlbum();
+    });
+  }
+
+/*
+  Future<Map<String, String>> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    email = prefs.getString('email');
+    jwt = prefs.getString('jwt');
+
+    getUserDataService(email!, jwt!).then((newResults) {
+      setState(() {
+        userData = newResults;
+      });
+    });
+    return userData;
+  }
+  */
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      // Add a ListView to the drawer. This ensures the user can scroll
-      // through the options in the drawer if there isn't enough vertical
-      // space to fit everything.
       backgroundColor: kBackground,
       child: ListView(
-        // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          Container(
+          SizedBox(
             height: getProportionateScreenHeight(200),
             child: DrawerHeader(
               decoration: const BoxDecoration(
@@ -30,20 +68,36 @@ class SettingsDrawer extends StatelessWidget {
                       radius: getProportionateScreenHeight(40),
                     ),
                     SizedBox(height: getProportionateScreenHeight(10)),
-                    Text("Laura Papi"),
-                    Text("laura@test.com"),
+                    FutureBuilder<Album>(
+                      future: futureAlbum,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          data = snapshot.data;
+                          name = snapshot.data!.name;
+                          surname = snapshot.data!.surname;
+                          email = snapshot.data!.email;
+                          role = snapshot.data!.role;
+                          return Text(name! + " " + surname! + "\n" + email!);
+                        }
+                        return const SizedBox(
+                          height: 0,
+                        );
+                      },
+                    ),
+
+                    //Text(data!.name),
                   ]),
             ),
           ),
           ListTile(
-            title: true
+            title: role == null
                 ? const Text('Upgrade to PRO')
                 : const Text('Manage your subscription'),
             iconColor: kOrange,
             //tileColor: kOrange,
             textColor: kOrange,
             //subtitle: const Text('subscribe now to enjoy all the benefits'),
-            trailing: true ? Icon(Icons.star) : Icon(Icons.paid),
+            trailing: role == null ? Icon(Icons.star) : Icon(Icons.paid),
             onTap: () {
               // Update the state of the app
               // ...

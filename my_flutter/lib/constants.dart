@@ -18,7 +18,7 @@ const kOrange = Color(0xFFe78549);
 //const kBluScuro = Color(0xFFfe7062);
 const kPurple = Color(0xffa598a6);
 const kPrimaryColor = Color(kPrimaryColorCode);
-const kGrey = Color(0xFFD8D8D8);
+const kGrey = Color(0xFF888888);
 const kWhite = Color(0xffFFFFFF);
 
 // questa parte di codice serve a convertire il kPrimaryColor scelto in un colore di tipo MaterialColor
