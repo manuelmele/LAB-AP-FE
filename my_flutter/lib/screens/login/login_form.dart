@@ -41,7 +41,6 @@ class _LoginFormState extends State<LoginForm> {
     String response = await signInService(email!, password!);
     //la funzione signInService va a verificare se le credenziali sono corrette nel db
     //la chiamo solo se le credenziali non sono vuote
-
     if (response.contains('Error')) {
       String error = response;
       //errore in caso di credenziali errate
@@ -127,11 +126,12 @@ class _LoginFormState extends State<LoginForm> {
                 String jwt = await signIn();
                 print(jwt);
                 if (jwt.isNotEmpty) {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   if (_rememberMe == true) {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.setString('jwt', jwt);
+                    prefs.setBool('rememberMe', true);
                   }
+                  prefs.setString('jwt', jwt);
                   Navigator.pushReplacementNamed(
                       context, NavigatorScreen.routeName);
                 }

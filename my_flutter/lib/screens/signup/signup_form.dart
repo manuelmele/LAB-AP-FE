@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/main.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
 import 'package:wefix/services/auth_service.dart';
@@ -110,11 +111,11 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             child: const Text('Continue'),
             onPressed: () async {
-              String jwt = await signUp();
-              if (jwt.isNotEmpty) {
+              jwt = await signUp();
+              if (jwt!.isNotEmpty) {
                 jwt = await signIn();
-                print("eccoci dopo la signin:");
-                print(jwt);
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool('rememberMe', true);
                 Navigator.pushNamed(context, SignUpOptionalScreen.routeName);
               }
               if (!_formKey.currentState!.validate()) {
