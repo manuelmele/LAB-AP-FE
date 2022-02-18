@@ -76,20 +76,24 @@ class CategoryCard extends StatelessWidget {
       onTap: press,
       child: Column(
         children: [
-          Container(
-            height: getProportionateScreenWidth(130),
-            width: getProportionateScreenWidth(130),
-            decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(130),
-                image: DecorationImage(
-                  image: image!,
-                  fit: BoxFit.fill,
-                )),
-            //child: icon!,
-          ),
-          const SizedBox(height: 5),
-          Text(text!, textAlign: TextAlign.center)
+          Expanded(
+            child: Column(children: [
+              Container(
+                height: getProportionateScreenWidth(130),
+                width: getProportionateScreenWidth(130),
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(130),
+                    image: DecorationImage(
+                      image: image!,
+                      fit: BoxFit.fill,
+                    )),
+                //child: icon!,
+              ),
+              SizedBox(height: getProportionateScreenHeight(5)),
+              Text(text!, textAlign: TextAlign.center)
+            ]),
+          )
         ],
       ),
     );

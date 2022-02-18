@@ -12,7 +12,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: getProportionateScreenHeight(80)),
+        SizedBox(height: getProportionateScreenHeight(60)),
         Text(
           "What do you need?",
           style: TextStyle(
@@ -25,7 +25,7 @@ class Body extends StatelessWidget {
           "Start your search by choosing the category",
           textAlign: TextAlign.center,
         ),
-        ElevatedButton(
+        /*ElevatedButton(
           onPressed: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.remove('jwt');
@@ -35,7 +35,7 @@ class Body extends StatelessWidget {
                     builder: (BuildContext ctx) => LoginScreen()));
           },
           child: Text('Logout'),
-        ),
+        ),*/
         //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
         //SizedBox(height: getProportionateScreenWidth(30)),

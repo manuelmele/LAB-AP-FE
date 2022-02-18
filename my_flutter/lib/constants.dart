@@ -45,12 +45,11 @@ const String wrong = "Error: Invalid username o password";
 const String mandatory = "* Required field";
 const String usedEmail = "Error: Email already used";
 //----------errori che mario deve specificare nel backend
-const String shortPw = "Error: Json field \"password\" is invalid";
-const String notMatchingPw =
-    "Error: Json field \"password and confirmPassword\" don't match";
-const String invalidEmail = "Error: Json field \"email\" is invalid";
-const String invalidName = "Error: Json field \"firstName\" is invalid";
-const String invalidSurname = "Error: Json field \"surname\" is invalid";
+const String shortPw = "Error: Weak password";
+const String notMatchingPw = "Error: Passwords don't match";
+const String invalidEmail = "Error: Invalid email";
+const String invalidName = "Error: Json field 'firstName' is invalid";
+const String invalidSurname = "Error: Json field 'surname' is invalid";
 //per la signupOptional
 const String imageTooBig = "Error: Image should have maximum size 30KB";
 const String invalidBio = "Error: Invalid bio";

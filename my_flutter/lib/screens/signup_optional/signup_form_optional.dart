@@ -32,12 +32,12 @@ class _SignUpFormState extends State<SignUpFormOptional> {
     errors = [];
     //per ora se l'utente lascia qualche campo vuoto la sua richiesta viene ignorata
     //vedere con mario come gestire meglio questa situazione
-    if (_imageFile == null || bio == null || bio == "") {
-      print("se non metti foto e bio non faccio nulla");
-      return "";
-    }
+    //if (_imageFile == null || bio == null || bio == "") {
+    //print("se non metti foto e bio non faccio nulla");
+    //return "";
+    //}
 
-    String response = await completeSignUpService(bio!, _imageFile!, jwt!);
+    String response = await completeSignUpService(bio, _imageFile, jwt!);
 
     if (response.contains('Error')) {
       String error = response;
@@ -90,6 +90,7 @@ class _SignUpFormState extends State<SignUpFormOptional> {
               print("provo a recuperare i dati dell'utente");
               SharedPreferences prefs = await SharedPreferences.getInstance();
               print(prefs.getString('jwt'));
+              jwt = prefs.getString('jwt');
               String response = await completeSignUp();
               print(response);
               if (response.isNotEmpty) {
