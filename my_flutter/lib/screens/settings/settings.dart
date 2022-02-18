@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/models/user_model.dart';
+import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/services/user_service.dart';
 import 'package:wefix/size_config.dart';
 
@@ -118,11 +119,15 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
           ListTile(
             title: const Text('Log Out'),
             trailing: Icon(Icons.logout),
-            onTap: () {
+            onTap: () async {
               // Update the state of the app
-              // ...
-              // Then close the drawer
-              Navigator.pop(context);
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove('jwt');
+              prefs.setBool('rememberMe', false);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext ctx) => LoginScreen()));
             },
           ),
         ],

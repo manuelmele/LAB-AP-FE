@@ -11,8 +11,8 @@ import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 //[BE] server.port must be localhost:8000
-String baseUrl = '10.0.2.2:8000'; //indirizzo per emulatore
-//String baseUrl = '192.168.1.9:8000'; //indirizzo IP laura
+//String baseUrl = '10.0.2.2:8000'; //indirizzo per emulatore
+String baseUrl = '192.168.1.9:8000'; //indirizzo IP laura
 
 Future<String> signUpService(String _firstName, String _secondName,
     String _email, String _userPassword, String _userConfirmPassword) async {
