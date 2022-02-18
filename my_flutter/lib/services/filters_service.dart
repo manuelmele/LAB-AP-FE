@@ -37,3 +37,34 @@ Future<List<UserModel>> filterByCategory(String _jwt, String _category) async {
   //print("msg:" + response.body.toString());
   return results;
 }
+
+Future<List<UserModel>> filterByQuery(String _jwt, String _value) async {
+  final queryParameters = {
+    'value': _value,
+  };
+
+  print("Calling BE");
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/workers-filter', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  print(response.body);
+
+  List<UserModel> results = json
+      .decode(response.body)
+      .map<UserModel>((data) => UserModel.fromJson(data))
+      .toList();
+
+  for (UserModel result in results) {
+    print(result.toString());
+  }
+
+  //print("msg:" + response.body.toString());
+  return results;
+}

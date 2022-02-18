@@ -4,8 +4,11 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class HomeHeader extends StatelessWidget {
+  final ValueChanged<String> onSubmit;
+
   const HomeHeader({
     Key? key,
+    required this.onSubmit,
   }) : super(key: key);
 
   @override
@@ -19,7 +22,7 @@ class HomeHeader extends StatelessWidget {
       ),
       child: TextField(
         textAlignVertical: TextAlignVertical.center,
-        onChanged: (value) => print(value),
+        onSubmitted: (value) => onSubmit(value),
         decoration: const InputDecoration(
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
