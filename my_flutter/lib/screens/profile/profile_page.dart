@@ -29,7 +29,7 @@ class ProfilePageState extends State<ProfilePage> {
                     backgroundColor: kLightOrange,
                     child: CircleAvatar(
                       backgroundImage: Image.asset(
-                              "assets/images/parrot_cut.png",
+                              "assets/images/parrot_cut.png", // caricare l'immagine del database
                               height: 110,
                               fit: BoxFit.scaleDown)
                           .image,
@@ -38,8 +38,10 @@ class ProfilePageState extends State<ProfilePage> {
                         alignment: Alignment.topRight,
                         child: GestureDetector(
                           // doesn't change the edit button, good
-                          onTap: () =>
-                              Navigator.pushNamed(context, EditPhoto.routeName),
+                          onTap: () => Navigator.pushNamed(
+                              context,
+                              EditPhoto
+                                  .routeName), //connect directly to the imagepicker function
                           child: CircleAvatar(
                             radius: 15,
                             backgroundColor: kLightOrange,
@@ -191,6 +193,7 @@ class ProfilePageState extends State<ProfilePage> {
                             image: DecorationImage(
                               image: const AssetImage(
                                   "assets/images/parrot_cut.png"),
+                              //take the image input from the database
                               fit: BoxFit.scaleDown,
                             )),
                       );
