@@ -44,18 +44,21 @@ Future<String> signUpService(String _firstName, String _secondName,
 }
 
 Future<String> completeSignUpService(
-    String _bio, XFile _photoProfile, String _jwt) async {
+    String? _bio, XFile? _photoProfile, String _jwt) async {
   final queryParameters = {'bio': _bio};
 
   final uri =
       Uri.http(baseUrl, '/wefix/account/complete/signup/', queryParameters);
 
   var request = http.MultipartRequest("PUT", uri);
-  request.files.add(http.MultipartFile.fromBytes(
-      'photoProfile', File(_photoProfile.path).readAsBytesSync(),
-      contentType:
-          MediaType('image', 'jpeg'), //MediaType.parse('multipart/form-data'),
-      filename: _photoProfile.path.split("/").last));
+  if (_photoProfile == null) {
+  } else {
+    request.files.add(http.MultipartFile.fromBytes(
+        'photoProfile', File(_photoProfile.path).readAsBytesSync(),
+        contentType: MediaType(
+            'image', 'jpeg'), //MediaType.parse('multipart/form-data'),
+        filename: _photoProfile.path.split("/").last));
+  }
   request.headers.addAll({
     'Authorization': "Bearer " + _jwt,
   });
