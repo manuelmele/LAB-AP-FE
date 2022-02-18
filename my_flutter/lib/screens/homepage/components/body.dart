@@ -25,17 +25,6 @@ class Body extends StatelessWidget {
           "Start your search by choosing the category",
           textAlign: TextAlign.center,
         ),
-        ElevatedButton(
-          onPressed: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.remove('jwt');
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext ctx) => LoginScreen()));
-          },
-          child: Text('Logout'),
-        ),
         Categories(),
       ],
     );

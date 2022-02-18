@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
-import 'package:wefix/screens/profile/edit_photo.dart';
 
 import '../../../size_config.dart';
 
@@ -37,11 +36,9 @@ class ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         alignment: Alignment.topRight,
                         child: GestureDetector(
-                          // doesn't change the edit button, good
-                          onTap: () => Navigator.pushNamed(
-                              context,
-                              EditPhoto
-                                  .routeName), //connect directly to the imagepicker function
+                          onTap: () =>
+                              {}, //connect directly to the imagepicker function
+                          //see laura code
                           child: CircleAvatar(
                             radius: 15,
                             backgroundColor: kLightOrange,
@@ -78,7 +75,7 @@ class ProfilePageState extends State<ProfilePage> {
                             Container(
                               alignment: Alignment.topRight,
                               child: GestureDetector(
-                                //onTap: () => Navigator.pushNamed(context, routeName), //insert the edit name route
+                                onTap: () => {}, //show dialog for modify name
                                 child: CircleAvatar(
                                   radius: 15,
                                   backgroundColor: kLightOrange,
@@ -92,39 +89,20 @@ class ProfilePageState extends State<ProfilePage> {
                             )
                           ],
                         ),
-                        Text(
-                          "Profession",
-                          style: TextStyle(fontSize: 19, color: Colors.grey),
-                        ),
-                        Text(
-                          "Email",
-                          style: TextStyle(fontSize: 19, color: Colors.grey),
-                        ),
+                        Row(children: [
+                          Text(
+                            "Profession",
+                            style: TextStyle(fontSize: 19, color: Colors.grey),
+                          ),
+                          //here insert the rating!!!!
+                        ]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              "About",
-                              style: TextStyle(fontSize: 22),
-                            ),
                             SizedBox(
                               width: 10,
+                              height: 5,
                             ),
-                            Container(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                //onTap: () => Navigator.pushNamed(context, routeName), //insert the edit bio route
-                                child: CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: kLightOrange,
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: kWhite,
-                                    size: 17,
-                                  ),
-                                ),
-                              ),
-                            )
                           ],
                         ),
                         Text(
@@ -154,7 +132,7 @@ class ProfilePageState extends State<ProfilePage> {
                   Container(
                     alignment: Alignment.topRight,
                     child: GestureDetector(
-                      //onTap: () => Navigator.pushNamed(context, routeName), //here insert the edit gallery route
+                      //onTap: () => {}, //show dialog for adding photos to the gallery
                       child: CircleAvatar(
                         radius: 15,
                         backgroundColor: kLightOrange,
@@ -219,7 +197,7 @@ class ProfilePageState extends State<ProfilePage> {
                   Container(
                     alignment: Alignment.topRight,
                     child: GestureDetector(
-                      //onTap: () => Navigator.pushNamed(context, routeName), //here insert the edit gallery route
+                      //onTap: () => {}, //show dialog function for adding price list item
                       child: CircleAvatar(
                         radius: 15,
                         backgroundColor: kLightOrange,
@@ -239,7 +217,7 @@ class ProfilePageState extends State<ProfilePage> {
               //here starts the list of items
               ConstrainedBox(
                   constraints: new BoxConstraints(
-                    maxHeight: 170.0,
+                    maxHeight: 200.0,
                   ),
                   child: ListView.builder(
                     //controller: controller, doesn't work fine
@@ -283,26 +261,6 @@ class ProfilePageState extends State<ProfilePage> {
                       );
                     },
                   )),
-
-              //button for the log out
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    alignment: Alignment.center,
-                  ),
-                  onPressed: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    prefs.remove('jwt');
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext ctx) => LoginScreen()));
-                  },
-                  child: Text('Logout', textAlign: TextAlign.center),
-                ),
-              ),
             ],
           ),
         ),

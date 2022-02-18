@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
-import 'package:wefix/screens/profile/edit_photo.dart';
 
 import '../../../size_config.dart';
 
@@ -38,8 +37,8 @@ class ProfilePageStateBasic extends State<ProfilePageBasic> {
                         alignment: Alignment.topRight,
                         child: GestureDetector(
                           // doesn't change the edit button, good
-                          onTap: () =>
-                              Navigator.pushNamed(context, EditPhoto.routeName),
+                          //onTap: () =>
+                          //    Navigator.pushNamed(context, EditPhoto.routeName),
                           child: CircleAvatar(
                             radius: 15,
                             backgroundColor: kLightOrange,
