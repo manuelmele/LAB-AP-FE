@@ -8,10 +8,13 @@ import 'package:wefix/screens/navigator/navigator.dart';
 import '../../../size_config.dart';
 
 String? jwt;
+bool? rememberMe;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  rememberMe = prefs.getBool('rememberMe');
   jwt = prefs.getString('jwt');
+  print(rememberMe);
   print(jwt);
   runApp(MyApp());
 }
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
             ),
         primarySwatch: kPrimaryColor_material,
       ),
-      initialRoute: jwt == null
+      initialRoute: jwt == null || rememberMe == false
           ? Intro.routeName
           : NavigatorScreen
               .routeName, //Intro.routeName, //this is set to "/intro"

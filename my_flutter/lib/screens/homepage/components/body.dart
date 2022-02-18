@@ -29,6 +29,7 @@ class Body extends StatelessWidget {
           onPressed: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.remove('jwt');
+            prefs.setBool('rememberMe', false);
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

@@ -85,7 +85,7 @@ Future<String> signInService(String _email, String _password) async {
   final response = await http.post(
     uri,
   );
-
+  print("eccomi");
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
 
