@@ -7,15 +7,16 @@ const int kBackgroundColorCode = 0xFFfbf8ef;
 const int kPrimaryColorCode = 0xFFfe7062;
 
 const kBackground = Color(kBackgroundColorCode);
-const kBlue = Color(0xFFb5d9f4);
-const kLightGreen = Color(0xFFebf1b2);
+const kBlue = Color(0xFF8fb2d0);
+const kLightBlue = Color(0xFFb5d9f4);
+const kLightGreen = Color(0xFFcfdc9e);
 const kLightOrange = Color(0xFFecc08a);
 const kYellow = Color(0xFFf7e4aa);
 const kRed = Color(0xFFC70039);
 
 const kOrange = Color(0xFFe78549);
 //const kBluScuro = Color(0xFFfe7062);
-const kPurple = Color(0xffA598A6);
+const kPurple = Color(0xffa598a6);
 const kPrimaryColor = Color(kPrimaryColorCode);
 const kGrey = Color(0xFFD8D8D8);
 const kWhite = Color(0xffFFFFFF);

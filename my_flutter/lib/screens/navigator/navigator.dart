@@ -5,9 +5,11 @@ import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:wefix/screens/settings/settings.dart';
 
 import '../../constants.dart';
 import '../../size_config.dart';
+import '../settings/settings.dart';
 
 class NavigatorScreen extends StatefulWidget {
   static String routeName = "/navigator";
@@ -18,6 +20,7 @@ class NavigatorScreen extends StatefulWidget {
 }
 
 class _NavigatorState extends State<NavigatorScreen> {
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
   int currentIndex = 0;
 
   List listOfColors = [
@@ -39,12 +42,23 @@ class _NavigatorState extends State<NavigatorScreen> {
     HomePage(),
     ProfilePage(),
     CalendarPage(),
+    //SettingsPage(),
   ];
+
+  void _onItemTapped(int index) {
+    index == 3
+        ? _key.currentState!.openDrawer()
+        : setState(() {
+            currentIndex = index;
+          });
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+        key: _key,
+        drawer: SettingsDrawer(),
         body: IndexedStack(
           // to leave the children state alive
           index: currentIndex,
@@ -56,11 +70,7 @@ class _NavigatorState extends State<NavigatorScreen> {
 
           selectedIndex: currentIndex,
           showElevation: true, // use this to remove appBar's elevation
-          onItemSelected: (index) => setState(() {
-            currentIndex = index;
-            //_pageController.animateToPage(index,
-            //duration: Duration(milliseconds: 300), curve: Curves.ease);
-          }),
+          onItemSelected: _onItemTapped,
           items: [
             BottomNavyBarItem(
               icon: Icon(Icons.home_rounded),
@@ -75,10 +85,10 @@ class _NavigatorState extends State<NavigatorScreen> {
                 icon: Icon(Icons.date_range),
                 title: Text('Calendar'),
                 activeColor: kOrange),
-            // BottomNavyBarItem(
-            //     icon: Icon(Icons.toc),
-            //     title: Text('Settings'),
-            //     activeColor: kOrange),
+            BottomNavyBarItem(
+                icon: Icon(Icons.toc),
+                title: Text('Settings'),
+                activeColor: kOrange),
           ],
         )
         /*
