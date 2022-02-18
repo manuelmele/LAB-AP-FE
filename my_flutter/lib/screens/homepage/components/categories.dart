@@ -8,10 +8,10 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
       {
-        "icon": const AssetImage("assets/images/plumber.png"),
+        "icon": const AssetImage("assets/images/plumber_blue.jpg"),
         "text": "Plumber"
       },
-      {"icon": const AssetImage("assets/images/gardner.png"), "text": "Tiler"},
+      {"icon": const AssetImage("assets/images/painter.png"), "text": "Tiler"},
       {
         "icon": const AssetImage("assets/images/Electrician.png"),
         "text": "Electrician"
@@ -21,11 +21,11 @@ class Categories extends StatelessWidget {
         "text": "Glazier"
       },
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
+        "icon": const AssetImage("assets/images/gardner_green.png"),
         "text": "Gardener"
       },
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
+        "icon": const AssetImage("assets/images/carpenter.png"),
         "text": "Carpenter"
       },
     ];

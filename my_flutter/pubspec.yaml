@@ -86,6 +86,13 @@ flutter:
      - assets/images/parrot_light.jpg
      - assets/images/parrot_contrast.jpg
 
+     - assets/images/electrician_green.png
+     - assets/images/Plumber-blu.png
+     - assets/images/plumber_blue.jpg
+     - assets/images/gardner_green.png
+     - assets/images/painter.png
+     - assets/images/carpenter.png
+     
      
 
 
