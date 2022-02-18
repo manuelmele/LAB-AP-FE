@@ -18,6 +18,7 @@ const kOrange = Color(0xFFe78549);
 const kPurple = Color(0xffA598A6);
 const kPrimaryColor = Color(kPrimaryColorCode);
 const kGrey = Color(0xFFD8D8D8);
+const kWhite = Color(0xffFFFFFF);
 
 // questa parte di codice serve a convertire il kPrimaryColor scelto in un colore di tipo MaterialColor
 // non ho trovato un metodo piu pulito di usare questa mappa
