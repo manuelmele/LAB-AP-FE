@@ -7,6 +7,8 @@ import 'package:wefix/screens/profile/profile_page.dart';
 import '../../constants.dart';
 import '../../size_config.dart';
 
+import 'package:wefix/screens/payment/payment.dart';
+
 class NavigatorScreen extends StatefulWidget {
   static String routeName = "/navigator";
 
@@ -22,6 +24,7 @@ class _NavigatorState extends State<NavigatorScreen> {
     HomePage(),
     CalendarPage(),
     ProfilePage(),
+    PaymentPage(),
   ];
 
   @override
@@ -54,6 +57,10 @@ class _NavigatorState extends State<NavigatorScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_police_rounded),
+            label: 'Upgrade',
           ),
         ],
       ),

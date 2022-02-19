@@ -8,9 +8,10 @@ class IntroContent extends StatelessWidget {
     this.title,
     this.discount,
     this.cost,
+    this.image,
     this.pay,
   }) : super(key: key);
-  final String? title, discount, cost, pay;
+  final String? title, discount, cost, image, pay;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,8 @@ class IntroContent extends StatelessWidget {
             ),
           ),
           Container(
-              margin: EdgeInsets.all(30),
-              padding: EdgeInsets.all(1),
+              margin: EdgeInsets.all(5),
+              //padding: EdgeInsets.all(1),
               decoration: BoxDecoration(
                 color: kBackground,
                 borderRadius: BorderRadius.only(
@@ -58,7 +59,7 @@ class IntroContent extends StatelessWidget {
             child: new Column (
               children: [
                   new Container(
-                    margin: EdgeInsets.all(40),
+                    margin: const EdgeInsets.only(top:30),
                     child: new Text(
                       cost!,
                       style: TextStyle(
@@ -69,14 +70,26 @@ class IntroContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                   
+                  
+
                   new Container(
-                    margin: EdgeInsets.all(40),
+                    //margin: EdgeInsets.all(40),
+                    child: Image.asset(
+                      image!,
+                      height: getProportionateScreenHeight(120),
+                      width: getProportionateScreenWidth(120),
+                    ),
+                  ),
+
+
+
+                  new Container(
+                    margin: const EdgeInsets.only(bottom:30, left:45, right:45),
                     child: new Text(
                       pay!,
-                      textAlign: TextAlign.center,
+                      //textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(19),
+                        fontSize: getProportionateScreenWidth(18),
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
                         

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wefix/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wefix/screens/payment/payment.dart';
 import 'payment_content.dart';
@@ -30,13 +31,15 @@ class _BodyState extends State<Body> {
         "title": "Monthly plan",
         "discount": " ",
         "cost": "\$x/month",
-        "pay": "Subscribe with your Partita IVA\nCreate your virtual shop\nExpand your business\nCancel your subscription at any time"
+        "image": "assets/images/card.jpeg",
+        "pay": "\u{2713}  Subscribe with your Partita IVA\n\u{2713}  Create your virtual shop\n\u{2713}  Expand your business\n\u{2713}  100% secure payments with PayPal\n\u{2713}  Cancel your subscription at any time"
       },
       {
         "title": "Yearly plan",
         "discount": "*5% discount on the monthly plan",
         "cost": "\$y/year",
-        "pay": "Subscribe with your Partita IVA\nCreate your virtual shop\nExpand your business\nCancel your subscription at any time"
+        "image": "assets/images/card.jpeg",
+        "pay": "\u{2713}  Subscribe with your Partita IVA\n\u{2713}  Create your virtual shop\n\u{2713}  Expand your business\n\u{2713}  100% secure payments with PayPal\n\u{2713}  Cancel your subscription at any time"
       },
     ];
 
@@ -45,6 +48,11 @@ class _BodyState extends State<Body> {
       return SafeArea(
       child: SizedBox(
         width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: getProportionateScreenWidth(20),
+            vertical: getProportionateScreenHeight(30),
+          ),
         child: Column(
 
 
@@ -65,7 +73,7 @@ class _BodyState extends State<Body> {
               ),
             ),
             const Text(
-              "Subscribe and create your virtual shop to enjoy more benefits",
+              "Subscribe to enjoy more benefits",
               textAlign: TextAlign.center,
               /*style: TextStyle(
                 fontSize: 19,
@@ -90,12 +98,13 @@ class _BodyState extends State<Body> {
                   title: plan[index]['title'],
                   discount: plan[index]['discount'],
                   cost: plan[index]['cost'],
+                  image: plan[index]['image'],
                   pay: plan[index]['pay']
                 ),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex:3,
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
@@ -113,11 +122,29 @@ class _BodyState extends State<Body> {
                               plan.length,
                               (index) => buildDot(index: index),
                             ),
+                            
+                          ),  
+                        ),
+
+                      
+                        SizedBox(height: getProportionateScreenWidth(33))
+                      ],
+                    ),
+       
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: kLightOrange,
+                          shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20.0),
                           ),
                         ),
-                      
-                        SizedBox(height: getProportionateScreenWidth(0))
-                      ],
+                        child: const Text('Get started'),
+                        onPressed: () {
+                            Navigator.pushReplacementNamed(context, PaymentPage.routeName);
+                        }
+                      ),
                     ),
                   ],
                 ),
@@ -125,6 +152,7 @@ class _BodyState extends State<Body> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -134,7 +162,7 @@ class _BodyState extends State<Body> {
       margin: EdgeInsets.only(right: 5),
       height: 6,
       //il primo valore di width indica quanto deve essere largo il dot evidenziato, 240 lo fa diventare una barra
-      width: currentPage == index ? 200 : 6,
+      width: currentPage == index ? 6 : 6,
       decoration: BoxDecoration(
         color: currentPage == index ? kLightOrange : kGrey,
         borderRadius: BorderRadius.circular(3),
