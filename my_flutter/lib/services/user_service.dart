@@ -10,6 +10,32 @@ import 'package:wefix/models/user_model.dart';
 //String baseUrl = '10.0.2.2:8000'; //indirizzo per emulatore
 String baseUrl = '192.168.1.9:8000'; //indirizzo IP laura
 
+Future<UserModel> getUserDataService(String _jwt) async {
+  final uri = Uri.http(baseUrl, '/wefix/account/profile');
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  //print(response.body);
+
+  Map<String, dynamic> map = json.decode(response.body);
+  UserModel result = UserModel.fromJson(map);
+
+/*
+  UserModel result = json.decode(response.body).map<UserModel>(
+      UserModel.fromJson(response)); //.map((data) => UserModel.fromJson(data));
+*/
+  //print(result.toString());
+
+  //print("msg:" + response.body.toString());
+  return result;
+}
+
+
+/* //PARTE DI CODICE CHE SERVE PER L'IMPLEMENTAZIONE CON FUTURE ALBUM
 class Album {
   final String name;
   final String surname;
@@ -55,8 +81,9 @@ Future<Album> fetchAlbum() async {
     throw Exception('Failed to load album');
   }
 }
+*/
 
-/*
+/* // BOH MI SA CHE NON FUNZIONA
 Future<Map<String, String>> getUserDataService(
     String email, String _jwt) async {
   final uri = Uri.http(baseUrl, '/wefix/account/profile');

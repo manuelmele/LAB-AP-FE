@@ -48,7 +48,7 @@ Future<String> completeSignUpService(
   final queryParameters = {'bio': _bio};
 
   final uri =
-      Uri.http(baseUrl, '/wefix/account/complete/signup/', queryParameters);
+      Uri.http(baseUrl, '/wefix/account/complete/signup', queryParameters);
 
   var request = http.MultipartRequest("PUT", uri);
   if (_photoProfile == null) {

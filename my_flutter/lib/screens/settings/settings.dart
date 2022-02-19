@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
@@ -20,9 +23,33 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
   String? jwt;
   var role;
   var data;
-  Future<Map<String, String>>? userData;
-  Future<Album>? futureAlbum;
+  //Future<Map<String, String>>? userData;
+  //Future<Album>? futureAlbum;
+  UserModel? userData;
+  bool initialResults = false;
 
+  //CODICE PRESO DA MANUEL
+  void getUserData() {
+    //search by category just the first time
+    if (initialResults) return;
+
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      getUserDataService(jwt).then((newResults) {
+        //if (!disposed) {
+        setState(() {
+          userData = newResults;
+          initialResults = true;
+          print(userData);
+
+          //initialResults = true;
+        });
+        //}
+      });
+    });
+  }
+
+/* //DA USARE INSIEME ALLA SOLUZIONE DI TIPO FUTURE ALBUM
   @override
   void initState() {
     super.initState();
@@ -30,8 +57,8 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
       futureAlbum = fetchAlbum();
     });
   }
-
-/*
+*/
+/* //BOH MI SA CHE E' SBAGLIATA
   Future<Map<String, String>> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     email = prefs.getString('email');
@@ -48,6 +75,7 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    getUserData();
     return Drawer(
       backgroundColor: kBackground,
       child: ListView(
@@ -64,11 +92,16 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          const AssetImage("assets/images/profile.jpeg"),
+                      backgroundImage: userData == null
+                          ? null
+                          : Image.memory(base64Decode(userData!.photoProfile))
+                              .image,
+                      //const AssetImage("assets/images/profile.jpeg"),
                       radius: getProportionateScreenHeight(40),
                     ),
                     SizedBox(height: getProportionateScreenHeight(10)),
+                    /*
+                    //FutureBuilder funziona con l'implementazione che usa Future Album
                     FutureBuilder<Album>(
                       future: futureAlbum,
                       builder: (context, snapshot) {
@@ -85,8 +118,15 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                         );
                       },
                     ),
+                    */
 
-                    //Text(data!.name),
+                    Text(userData == null
+                        ? ""
+                        : userData!.firstName +
+                            " " +
+                            userData!.secondName +
+                            "\n" +
+                            userData!.email),
                   ]),
             ),
           ),
