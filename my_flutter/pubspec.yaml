@@ -74,6 +74,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+     - assets/avatar/default_avatar.jpg
+
      - assets/images/tips.jpg
      - assets/images/handshake.jpg
      - assets/images/workers.jpg
@@ -85,6 +87,7 @@ flutter:
      - assets/images/profile.jpeg
      - assets/images/parrot_light.jpg
      - assets/images/parrot_contrast.jpg
+     - assets/images/card.jpeg
 
      - assets/images/electrician_green.png
      - assets/images/Plumber-blu.png
@@ -126,7 +129,9 @@ flutter:
     - family: Dosis
       fonts:
       - asset: fonts/Dosis/static/Dosis-Regular.ttf
-  
+    - family: Outfit
+      fonts:
+      - asset: fonts/Outfit/static/Outfit-Medium.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

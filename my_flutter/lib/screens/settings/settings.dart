@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/login/login.dart';
+import 'package:wefix/screens/payment/body.dart';
+import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/user_service.dart';
 import 'package:wefix/size_config.dart';
 
@@ -141,9 +143,14 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
             trailing: role == null ? Icon(Icons.star) : Icon(Icons.paid),
             onTap: () {
               // Update the state of the app
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext ctx) => PaymentPage()));
+              // Update the state of the app
               // ...
               // Then close the drawer
-              Navigator.pop(context);
+              //Navigator.pop(context);
             },
           ),
           ListTile(

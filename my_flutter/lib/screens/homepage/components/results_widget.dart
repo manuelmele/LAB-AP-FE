@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
@@ -23,6 +26,7 @@ class ResultsWidget extends StatefulWidget {
 class _ResultsState extends State<ResultsWidget> {
   List<UserModel> results = [];
   bool disposed = false;
+  bool initialResults = false;
 
   @override
   void dispose() {
@@ -31,7 +35,8 @@ class _ResultsState extends State<ResultsWidget> {
   }
 
   void searchByCategory(String category) {
-    if (results.isNotEmpty) return;
+    //search by category just the first time
+    if (initialResults) return;
 
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
@@ -39,6 +44,21 @@ class _ResultsState extends State<ResultsWidget> {
         if (!disposed) {
           setState(() {
             results = newResults;
+            initialResults = true;
+          });
+        }
+      });
+    });
+  }
+
+  void searchByQuery(String value) {
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      filterByQuery(jwt, value).then((newResults) {
+        if (!disposed) {
+          setState(() {
+            results = newResults;
+            initialResults = true;
           });
         }
       });
@@ -54,7 +74,12 @@ class _ResultsState extends State<ResultsWidget> {
         body: Column(
       children: [
         SizedBox(height: getProportionateScreenHeight(20)),
-        HomeHeader(),
+        HomeHeader(
+          onSubmit: (String value) {
+            print("Searching for value: $value");
+            searchByQuery(value);
+          },
+        ),
         Expanded(
             child: ListView.builder(
           itemCount: results.length,
@@ -62,7 +87,7 @@ class _ResultsState extends State<ResultsWidget> {
             return ListProfile(
                 name: results[i].firstName + " " + results[i].secondName,
                 description: results[i].bio,
-                imageUrl: results[i].photoProfile,
+                image: results[i].photoProfile,
                 press: () {});
           },
         )),
@@ -77,13 +102,13 @@ class ListProfile extends StatelessWidget {
     Key? key,
     required this.name,
     required this.description,
-    required this.imageUrl,
+    required this.image,
     required this.press,
   }) : super(key: key);
 
   final String name;
   final String description;
-  final String imageUrl;
+  final String image;
   final VoidCallback press;
 
   @override
@@ -99,8 +124,13 @@ class ListProfile extends StatelessWidget {
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
         trailing: Icon(Icons.arrow_forward_ios),
-        leading:
-            CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl)),
+        leading: CircleAvatar(
+            radius: 32,
+            child: ClipOval(
+                child: image == null || image.isEmpty
+                    ? const Image(
+                        image: AssetImage('assets/avatar/default_avatar.jpg'))
+                    : Image.memory(base64Decode(image)))),
         title: Text(
           name,
           style: const TextStyle(
