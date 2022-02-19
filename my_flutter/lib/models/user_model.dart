@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 
 class UserModel {
   final String firstName;
@@ -27,18 +28,15 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<dynamic, dynamic> data) {
-    String defaultAvatarUrl =
-        "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png";
-
     return UserModel(
       firstName: data['firstName'],
       secondName: data['secondName'],
       email: data['email'],
       bio: data['bio'] ?? "No description yet.",
-      photoProfile: data['photoProfile'] ?? defaultAvatarUrl,
+      photoProfile: data['photoProfile'] ?? "",
       identityCardNumber: data['identityCardNumber'] ?? "Not provided",
       userRole: data['userRole'],
-      category: data['category'],
+      category: data['category'] ?? "",
       piva: data['piva'] ?? "Not provided",
     );
   }
