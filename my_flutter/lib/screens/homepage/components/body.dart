@@ -14,7 +14,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: getProportionateScreenHeight(80)),
+        SizedBox(height: getProportionateScreenHeight(60)),
         Text(
           "What do you need?",
           style: TextStyle(

@@ -7,17 +7,19 @@ const int kBackgroundColorCode = 0xFFfbf8ef;
 const int kPrimaryColorCode = 0xFFfe7062;
 
 const kBackground = Color(kBackgroundColorCode);
-const kBlue = Color(0xFFb5d9f4);
-const kLightGreen = Color(0xFFebf1b2);
+const kBlue = Color(0xFF8fb2d0);
+const kLightBlue = Color(0xFFb5d9f4);
+const kLightGreen = Color(0xFFcfdc9e);
 const kLightOrange = Color(0xFFecc08a);
 const kYellow = Color(0xFFf7e4aa);
 const kRed = Color(0xFFC70039);
 
 const kOrange = Color(0xFFe78549);
 //const kBluScuro = Color(0xFFfe7062);
-const kPurple = Color(0xffA598A6);
+const kPurple = Color(0xffa598a6);
 const kPrimaryColor = Color(kPrimaryColorCode);
-const kGrey = Color(0xFFD8D8D8);
+const kGrey = Color(0xFF888888);
+const kWhite = Color(0xffFFFFFF);
 
 // questa parte di codice serve a convertire il kPrimaryColor scelto in un colore di tipo MaterialColor
 // non ho trovato un metodo piu pulito di usare questa mappa
@@ -45,9 +47,11 @@ const String wrong = "Error: Invalid username o password";
 const String mandatory = "* Required field";
 const String usedEmail = "Error: Email already used";
 //----------errori che mario deve specificare nel backend
-const String shortPw = "Error: Json field \"password\" is invalid";
-const String notMatchingPw =
-    "Error: Json field \"password and confirmPassword\" don't match";
-const String invalidEmail = "Error: Json field \"email\" is invalid";
-const String invalidName = "Error: Json field \"firstName\" is invalid";
-const String invalidSurname = "Error: Json field \"surname\" is invalid";
+const String shortPw = "Error: Weak password";
+const String notMatchingPw = "Error: Passwords don't match";
+const String invalidEmail = "Error: Invalid email";
+const String invalidName = "Error: Json field 'firstName' is invalid";
+const String invalidSurname = "Error: Json field 'surname' is invalid";
+//per la signupOptional
+const String imageTooBig = "Error: Image should have maximum size 30KB";
+const String invalidBio = "Error: Invalid bio";

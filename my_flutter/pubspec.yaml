@@ -36,6 +36,9 @@ dependencies:
   #used to get profile pic from gallery or camera
   image_picker: ^0.8.4+8
 
+  #libreria per la navbar
+  bottom_navy_bar: ^6.0.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -84,6 +87,13 @@ flutter:
      - assets/images/parrot_contrast.jpg
      - assets/images/card.jpeg
 
+     - assets/images/electrician_green.png
+     - assets/images/Plumber-blu.png
+     - assets/images/plumber_blue.jpg
+     - assets/images/gardner_green.png
+     - assets/images/painter.png
+     - assets/images/carpenter.png
+     
      
 
 

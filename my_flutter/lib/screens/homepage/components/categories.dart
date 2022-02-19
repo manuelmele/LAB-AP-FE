@@ -8,31 +8,31 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
       {
-        "icon": const AssetImage("assets/images/plumber.png"),
+        "icon": const AssetImage("assets/images/plumber_blue.jpg"),
         "text": "Plumber"
       },
-      {"icon": const AssetImage("assets/images/gardner.png"), "text": "Tailor"},
+      {"icon": const AssetImage("assets/images/painter.png"), "text": "Tiler"},
       {
         "icon": const AssetImage("assets/images/Electrician.png"),
         "text": "Electrician"
       },
       {
         "icon": const AssetImage("assets/images/gardner.png"),
-        "text": "Glass Maker"
+        "text": "Glazier"
       },
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
-        "text": "Gardner"
+        "icon": const AssetImage("assets/images/gardner_green.png"),
+        "text": "Gardener"
       },
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
+        "icon": const AssetImage("assets/images/carpenter.png"),
         "text": "Carpenter"
       },
     ];
     return Expanded(
       child: GridView.builder(
-        physics:
-            NeverScrollableScrollPhysics(), //makes the category grid non scrollable
+        //physics:
+        //    NeverScrollableScrollPhysics(), //makes the category grid non scrollable
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: SizeConfig.screenWidth / 2,
             childAspectRatio: 1,
@@ -76,20 +76,24 @@ class CategoryCard extends StatelessWidget {
       onTap: press,
       child: Column(
         children: [
-          Container(
-            height: getProportionateScreenWidth(130),
-            width: getProportionateScreenWidth(130),
-            decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(130),
-                image: DecorationImage(
-                  image: image!,
-                  fit: BoxFit.fill,
-                )),
-            //child: icon!,
-          ),
-          const SizedBox(height: 5),
-          Text(text!, textAlign: TextAlign.center)
+          Expanded(
+            child: Column(children: [
+              Container(
+                height: getProportionateScreenWidth(130),
+                width: getProportionateScreenWidth(130),
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(130),
+                    image: DecorationImage(
+                      image: image!,
+                      fit: BoxFit.fill,
+                    )),
+                //child: icon!,
+              ),
+              SizedBox(height: getProportionateScreenHeight(5)),
+              Text(text!, textAlign: TextAlign.center)
+            ]),
+          )
         ],
       ),
     );

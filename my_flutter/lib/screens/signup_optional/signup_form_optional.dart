@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/main.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
-import 'package:wefix/screens/signup_optional/signup_optional.dart';
 import 'package:wefix/services/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,7 +21,6 @@ class _SignUpFormState extends State<SignUpFormOptional> {
   String? surname;
   String? email;
   String? password;
-  String? confirm_password;
   String? bio;
   bool remember = false;
   List<String?> errors = [];
@@ -29,41 +29,33 @@ class _SignUpFormState extends State<SignUpFormOptional> {
   final ImagePicker _picker = ImagePicker();
 
   Future<String> completeSignUp() async {
-    if (name == null ||
-        surname == null ||
-        email == null ||
-        password == null ||
-        confirm_password == null) {
-      return '';
-    }
     errors = [];
-    String response = await signUpService(
-        name!, surname!, email!, password!, confirm_password!);
+
+    String response = await completeSignUpService(bio, _imageFile, jwt!);
 
     if (response.contains('Error')) {
       String error = response;
       addError(error: error);
-      print(errors);
     } else {
-      String jwt = response;
-      return jwt;
+      return jwt!;
     }
-
     return '';
   }
 
   void addError({String? error}) {
-    if (!errors.contains(error))
+    if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
       });
+    }
   }
 
   void removeError({String? error}) {
-    if (errors.contains(error))
+    if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
       });
+    }
   }
 
   @override
@@ -73,7 +65,14 @@ class _SignUpFormState extends State<SignUpFormOptional> {
       child: Column(
         children: [
           imageProfile(),
-          SizedBox(height: getProportionateScreenHeight(40)),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          Container(
+            child: errors.contains(imageTooBig)
+                ? Text("Image should have maximum size 30KB",
+                    style: TextStyle(color: kRed))
+                : null,
+          ),
+          SizedBox(height: getProportionateScreenHeight(20)),
           buildBioField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           ElevatedButton(
@@ -82,11 +81,12 @@ class _SignUpFormState extends State<SignUpFormOptional> {
             ),
             child: const Text('Continue'),
             onPressed: () async {
-              //String jwt = await completeSignUp();
-
-              //if (jwt.isNotEmpty) {
-              //Navigator.pushNamed(context, NavigatorScreen.routeName);
-              //}
+              String response = await completeSignUp();
+              print(response);
+              if (response.isNotEmpty) {
+                Navigator.pushNamed(context, NavigatorScreen.routeName);
+              }
+              print(errors);
               if (!_formKey.currentState!.validate()) {
                 //_formKey.currentState!.save();
                 print("sign up optional form not valid");
@@ -103,12 +103,14 @@ class _SignUpFormState extends State<SignUpFormOptional> {
       keyboardType: TextInputType.multiline,
       //minLines: 1, //Normal textInputField will be displayed
       maxLines: 5,
-      onSaved: (newValue) => confirm_password = newValue,
+      onSaved: (newValue) => bio = newValue,
       onChanged: (value) {
         bio = value;
       },
       validator: (value) {
-        return null;
+        if (errors.contains(invalidBio)) {
+          return "Invalid Bio";
+        }
       },
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
@@ -135,7 +137,7 @@ class _SignUpFormState extends State<SignUpFormOptional> {
           },
           child: CircleAvatar(
             backgroundImage: _imageFile == null
-                ? AssetImage("assets/images/profile.jpeg")
+                ? const AssetImage("assets/images/profile.jpeg")
                 : Image.file(
                     File(_imageFile!.path),
                     fit: BoxFit.cover,

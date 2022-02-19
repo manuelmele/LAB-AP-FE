@@ -1,8 +1,13 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:http_parser/http_parser.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
 //[BE] server.port must be localhost:8000
@@ -39,29 +44,36 @@ Future<String> signUpService(String _firstName, String _secondName,
   }
 }
 
-Future<String> completeSignUpService(String _bio, XFile _photoProfile) async {
-  final uri = Uri.http(baseUrl, '/wefix/public/signup');
+Future<String> completeSignUpService(
+    String? _bio, XFile? _photoProfile, String _jwt) async {
+  final queryParameters = {'bio': _bio};
 
-  final response = await http.post(
-    uri,
-    headers: <String, String>{
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(<String, String>{
-      'bio': _bio,
-      'photoProfile': _bio,
-    }),
-  );
-  String jwt = jsonDecode(response.body)["jwt"].toString();
-  String message = jsonDecode(response.body)["message"].toString();
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/complete/signup/', queryParameters);
 
-  if (message.isNotEmpty && message != "null") {
-    return "Error: " + message;
-  } else if (jwt.isNotEmpty && jwt != "null") {
-    return jwt;
+  var request = http.MultipartRequest("PUT", uri);
+  if (_photoProfile == null) {
   } else {
-    return "Unknown Error";
+    request.files.add(http.MultipartFile.fromBytes(
+        'photoProfile', File(_photoProfile.path).readAsBytesSync(),
+        contentType: MediaType(
+            'image', 'jpeg'), //MediaType.parse('multipart/form-data'),
+        filename: _photoProfile.path.split("/").last));
   }
+  request.headers.addAll({
+    'Authorization': "Bearer " + _jwt,
+  });
+
+  var streamedResponse = await request.send();
+  var response = await http.Response.fromStream(streamedResponse);
+  if (response.statusCode == 200) {
+    print("Uploaded! ");
+  } else if (response.statusCode == 500) {
+    return 'Error: Image should have maximum size 30KB'; //vedere con mario come gestire meglio questo caso
+  } else {
+    return 'Error: ' + jsonDecode(response.body)["message"].toString();
+  }
+  return '';
 }
 
 Future<String> signInService(String _email, String _password) async {
@@ -74,11 +86,9 @@ Future<String> signInService(String _email, String _password) async {
   final response = await http.post(
     uri,
   );
-
+  print("eccomi");
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
-
-  //print("msg:" + response.body.toString());
 
   if (message.isNotEmpty && message != "null") {
     return "Error: " + message;
