@@ -16,7 +16,7 @@ class PaymentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackground,
-      body: Body(),
+      body: Payment(),
     );
   }
 }

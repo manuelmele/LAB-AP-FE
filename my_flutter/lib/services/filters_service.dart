@@ -8,7 +8,9 @@ import 'package:wefix/models/user_model.dart';
 
 //[BE] server.port must be localhost:8000
 //String baseUrl = '10.0.2.2:8000'; //indirizzo per emulatore
-String baseUrl = '192.168.1.9:8000'; //indirizzo IP laura
+//String baseUrl = '192.168.1.9:8000'; //indirizzo IP laura
+String baseUrl = '192.168.1.239:8000'; //indirizzo IP daniela
+
 
 Future<List<UserModel>> filterByCategory(String _jwt, String _category) async {
   final queryParameters = {

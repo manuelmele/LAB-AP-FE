@@ -10,12 +10,13 @@ import 'package:wefix/size_config.dart';
 //import 'package:shop_app/components/socal_card.dart';
 import '../../../size_config.dart';
 
-class Body extends StatefulWidget {
+
+class Payment extends StatefulWidget {
   @override
-  _BodyState createState() => _BodyState();
+  _PaymentState createState() => _PaymentState();
 }
 
-class _BodyState extends State<Body> {
+class _PaymentState extends State<Payment> {
   int currentPage = 0;
 
   //pageController lets us choose which page of the pageviwe to see
