@@ -6,6 +6,7 @@ import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 import 'package:wefix/utilis/allert_dialogs.dart';
 
+import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
 class BookedRequestsWorker extends StatefulWidget {
@@ -35,7 +36,7 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
                 "Booked Requests",
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: kOrange,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -123,7 +124,7 @@ class ListAppointment extends StatelessWidget {
             OutlinedButton(
               onPressed: () => {},
               style: OutlinedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: kOrange,
                 minimumSize: Size.zero,
                 padding: EdgeInsets.all(5),
                 shape: RoundedRectangleBorder(

@@ -6,6 +6,7 @@ import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 import 'package:wefix/utilis/allert_dialogs.dart';
 
+import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
 class CompletedRequestsCustomer extends StatefulWidget {
@@ -35,7 +36,7 @@ class _AppointmentsState extends State<CompletedRequestsCustomer> {
                 "Completed Requests",
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: kOrange,
                   fontWeight: FontWeight.bold,
                 ),
               ),
