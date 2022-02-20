@@ -41,6 +41,7 @@ class UserModel {
     );
   }
 
+  @override
   String toString() {
     return "firstName: $firstName, secondName: $secondName, identityCardNumber: $identityCardNumber, category: $category,";
   }

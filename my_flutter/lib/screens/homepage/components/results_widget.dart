@@ -51,10 +51,10 @@ class _ResultsState extends State<ResultsWidget> {
     });
   }
 
-  void searchByQuery(String value) {
+  void searchByQuery(String value, String category) {
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
-      filterByQuery(jwt, value).then((newResults) {
+      filterByQuery(jwt, value, category).then((newResults) {
         if (!disposed) {
           setState(() {
             results = newResults;
@@ -77,7 +77,7 @@ class _ResultsState extends State<ResultsWidget> {
         HomeHeader(
           onSubmit: (String value) {
             print("Searching for value: $value");
-            searchByQuery(value);
+            searchByQuery(value, category);
           },
         ),
         Expanded(
