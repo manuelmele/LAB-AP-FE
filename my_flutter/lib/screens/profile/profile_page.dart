@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../size_config.dart';
 
@@ -108,6 +109,17 @@ class ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Brief description or presentation of the worker (info from the db)",
                           style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                        RatingBarIndicator(
+                          rating:
+                              4.5, //get the rating from the media form the db
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 30.0,
+                          direction: Axis.horizontal,
                         ),
                       ],
                     ),
