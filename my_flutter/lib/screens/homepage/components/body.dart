@@ -27,6 +27,7 @@ class Body extends StatelessWidget {
           "Start your search by choosing the category",
           textAlign: TextAlign.center,
         ),
+
         
         //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
