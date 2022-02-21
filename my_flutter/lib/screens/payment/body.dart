@@ -3,6 +3,7 @@ import 'package:wefix/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/screens/payment/summary/summary.dart';
 import 'payment_content.dart';
 
 import 'package:wefix/size_config.dart';
@@ -142,10 +143,13 @@ class _PaymentState extends State<Payment> {
                           ),
                         ),
                         child: const Text('Get started'),
-                        onPressed: () {
-                            Navigator.pushReplacementNamed(context, PaymentPage.routeName);
+                        onPressed: () async {
+                            Navigator.pushReplacementNamed(context, SummaryPage.routeName);
+                            SharedPreferences m = await SharedPreferences.getInstance();
+                            m.setInt('plan', currentPage);
                         }
                       ),
+
                     ),
                   ],
                 ),

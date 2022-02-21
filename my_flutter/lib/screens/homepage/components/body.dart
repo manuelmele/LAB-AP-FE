@@ -28,23 +28,6 @@ class Body extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
 
-
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: kLightBlue,
-            ),
-            child: const Text ('Esci'),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext ctx) => LoginScreen()));
-            
-            }
-          ),
-        ),
         
         //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
