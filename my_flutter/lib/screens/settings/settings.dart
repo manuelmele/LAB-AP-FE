@@ -23,8 +23,7 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
   String? surname;
   String? email;
   String? jwt;
-  var role;
-  var data;
+  String? role;
   UserModel? userData;
   bool initialResults = false;
 
@@ -73,8 +72,10 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
       getUserDataService(jwt).then((newResults) {
         setState(() {
           userData = newResults;
+          role = userData!.userRole;
           initialResults = true;
           print(userData);
+          print(role);
         });
       });
     });
@@ -117,13 +118,17 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
             ),
           ),
           ListTile(
-            title: role == null
+            //il null qui serve per far caricare di default il caso customer
+            //per più info vedi issue su trello
+            title: role == "Customer" || role == null
                 ? const Text('Upgrade to PRO')
                 : const Text('Manage your subscription'),
             iconColor: kOrange,
             textColor: kOrange,
             //subtitle: const Text('subscribe now to enjoy all the benefits'),
-            trailing: role == null ? Icon(Icons.star) : Icon(Icons.paid),
+            trailing: role == "Customer" || role == null
+                ? Icon(Icons.star)
+                : Icon(Icons.paid),
             onTap: () {
               Navigator.pushReplacement(
                   context,
