@@ -62,3 +62,5 @@ const String invalidBio = "Error: Invalid bio";
 //per il change password
 const String invalidOldPw = "Error: Invalid old password";
 const String invalidNewPw = "Error: Invalid new password";
+//per il forgot password
+const String invalidUsername = "Error: Invalid username";

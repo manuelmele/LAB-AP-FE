@@ -23,8 +23,10 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  final _alertKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? jwt;
   bool? _rememberMe = false;
 
   bool _passwordVisible = false; //makes the password readable or dotted
@@ -50,6 +52,27 @@ class _LoginFormState extends State<LoginForm> {
       return jwt;
     }
     return '';
+  }
+
+  Future<String> forgotPassword() async {
+    errors = [];
+    //prima di tutto controllo se i campi sono stati lasciati vuoti
+    if (email == null || email == "") {
+      addError(error: "Error: required field");
+      return "Error: required field";
+    }
+
+    String response = await forgotPasswordService(email!);
+    //la funzione signInService va a verificare se le credenziali sono corrette nel db
+    //la chiamo solo se le credenziali non sono vuote
+    if (response.contains('Error')) {
+      String error = response;
+      //errore in caso di credenziali errate
+      addError(error: error);
+      return error;
+    } else {
+      return "";
+    }
   }
 
   @override
@@ -101,8 +124,8 @@ class _LoginFormState extends State<LoginForm> {
               const Text("Remember me"), //for remaining the current session
               const Spacer(),
               GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, Intro.routeName);
+                onTap: () async {
+                  await showForgotPassword(context);
                 }, //add forgotpasswordScreen.routeName and .dart
                 child: const Text(
                   "Forgot Password",
@@ -240,5 +263,77 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+
+  Future<void> showForgotPassword(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          bool isChecked = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              content: Form(
+                  key: _alertKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        onSaved: (newValue) => email = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            email = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          if (errors.contains(invalidUsername)) {
+                            return "Invalid email";
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            // width: 0.0 produces a thin "hairline" border
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Email",
+                          //focusColor: kOrange,
+                          hintText: "Enter your email",
+                          // If  you are using latest version of flutter then lable text and hint text shown like this
+                          // if you r using flutter less then 1.20.* then maybe this is not working properly
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.email,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              title: const Text('Change your password'),
+              actions: <Widget>[
+                InkWell(
+                  child: Text('OK   '),
+                  onTap: () async {
+                    String res = await forgotPassword();
+                    print(res);
+                    if (res == "") {
+                      Navigator.of(context).pop();
+                    }
+                    if (!_alertKey.currentState!.validate()) {
+                      print("forgot password form not valid");
+                    }
+                  },
+                ),
+              ],
+            );
+          });
+        });
   }
 }

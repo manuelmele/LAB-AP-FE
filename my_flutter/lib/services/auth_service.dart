@@ -86,6 +86,7 @@ Future<String> signInService(String _email, String _password) async {
   final response = await http.post(
     uri,
   );
+
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
 
@@ -95,5 +96,22 @@ Future<String> signInService(String _email, String _password) async {
     return jwt;
   } else {
     return "Unknown Error";
+  }
+}
+
+Future<String> forgotPasswordService(String _email) async {
+  final queryParameters = {
+    'email': _email,
+  };
+
+  final uri = Uri.http(baseUrl, '/wefix/public/reset', queryParameters);
+  final response = await http.post(
+    uri,
+  );
+  if (response.statusCode == 200) {
+    print("new password sent to email!");
+    return "";
+  } else {
+    return 'Error: ' + jsonDecode(response.body)["message"].toString();
   }
 }
