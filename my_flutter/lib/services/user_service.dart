@@ -24,89 +24,37 @@ Future<UserModel> getUserDataService(String _jwt) async {
 
   Map<String, dynamic> map = json.decode(response.body);
   UserModel result = UserModel.fromJson(map);
-
-/*
-  UserModel result = json.decode(response.body).map<UserModel>(
-      UserModel.fromJson(response)); //.map((data) => UserModel.fromJson(data));
-*/
-  //print(result.toString());
-
-  //print("msg:" + response.body.toString());
   return result;
 }
 
-
-/* //PARTE DI CODICE CHE SERVE PER L'IMPLEMENTAZIONE CON FUTURE ALBUM
-class Album {
-  final String name;
-  final String surname;
-  final String email;
-  final role;
-
-  const Album({
-    required this.name,
-    required this.surname,
-    required this.email,
-    required this.role,
-  });
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    //setUserData(
-    //json['firstName'], json['secondName'], json['email'], json['category']);
-    return Album(
-      name: json['firstName'],
-      surname: json['secondName'],
-      email: json['email'],
-      role: json['category'],
-    );
-  }
-
-  void setUserData(name, surname, email, role) async {}
-}
-
-Future<Album> fetchAlbum() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? email = prefs.getString('email');
-  String? jwt = prefs.getString('jwt');
-  final uri = Uri.http(baseUrl, '/wefix/account/profile');
-  final response = await http.get(
-    uri,
-    headers: <String, String>{
-      'Authorization': 'Bearer $jwt',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    return Album.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
-*/
-
-/* // BOH MI SA CHE NON FUNZIONA
-Future<Map<String, String>> getUserDataService(
-    String email, String _jwt) async {
-  final uri = Uri.http(baseUrl, '/wefix/account/profile');
-  final response = await http.get(
+Future<String> changePasswordService(
+    String _jwt, String _oldPw, String _newPw) async {
+  print(_jwt);
+  print(_oldPw);
+  print(_newPw);
+  final queryParameters = {
+    "oldPassword": _oldPw,
+    'newPassword': _newPw,
+  };
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/change-password', queryParameters);
+  final response = await http.post(
     uri,
     headers: <String, String>{
       'Authorization': 'Bearer $_jwt',
     },
   );
 
-  String name = jsonDecode(response.body)["firstName"].toString();
-  String surname = jsonDecode(response.body)["secondName"].toString();
-  String role = jsonDecode(response.body)["userRole"].toString();
-  String photoProfile = jsonDecode(response.body)["photoProfile"].toString();
+  String jwt = jsonDecode(response.body)["jwt"].toString();
+  String message = jsonDecode(response.body)["message"].toString();
+  print(jwt);
+  print(message);
 
-  Map<String, String> result = {
-    "name": name,
-    "surname": surname,
-    "role": role,
-    "photoProfile": photoProfile,
-  };
-
-  //print("msg:" + response.body.toString());
-  return result;
-}*/
+  if (message.isNotEmpty && message != "null") {
+    return "Error: " + message;
+  } else if (jwt.isNotEmpty && jwt != "null") {
+    return jwt;
+  } else {
+    return "Unknown Error";
+  }
+}
