@@ -8,6 +8,7 @@ import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/screens/subscription/subscription.dart';
 import 'package:wefix/services/user_service.dart';
 import 'package:wefix/size_config.dart';
 
@@ -62,13 +63,13 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
     return '';
   }
 
-  //CODICE PRESO DA MANUEL
-  void getUserData() {
+  Future<void> getUserData() async {
     //search by category just the first time
     if (initialResults) return;
 
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
+
       getUserDataService(jwt).then((newResults) {
         setState(() {
           userData = newResults;
@@ -130,10 +131,17 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                 ? Icon(Icons.star)
                 : Icon(Icons.paid),
             onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext ctx) => PaymentPage()));
+              if (role == "Customer") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext ctx) => PaymentPage()));
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext ctx) => SubscriptionPage()));
+              }
             },
           ),
           ListTile(
