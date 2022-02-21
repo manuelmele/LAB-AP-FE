@@ -22,6 +22,7 @@ class Summary extends StatefulWidget {
 class _SummaryState extends State<Summary> {
 
   String? jwt;
+  int? plan;
   var role;
   var data;
   UserModel? userData;
@@ -51,9 +52,9 @@ class _SummaryState extends State<Summary> {
     });
   }
 
-  Future getPlan() {
-      return SharedPreferences.getInstance().then((m) {
-      int plan=m.getInt('plan')!;
+  void getPlan() {
+      SharedPreferences.getInstance().then((m) {
+      plan=m.getInt('plan')!;
     });
   }
 
@@ -61,7 +62,8 @@ class _SummaryState extends State<Summary> {
   @override
   Widget build(BuildContext context) {
     getUserData();
-    
+    getPlan();
+    print(plan);
       return SafeArea(
          child: Column(
           children: <Widget>[
@@ -112,8 +114,12 @@ class _SummaryState extends State<Summary> {
               ),
             ),
             const SizedBox(height: 20),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
             Text(
-              getPlan()==0 ? "Choosen payment plan: Montly plan" : "Choosen payment plan: Yearly plan" ,
+              plan==0 ? "Choosen payment plan: Montly plan" : "Choosen payment plan: Yearly plan" ,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: kOrange,
@@ -136,7 +142,8 @@ class _SummaryState extends State<Summary> {
                 color: kOrange,
                 fontSize: 25,
               )
-            ),         
+            ),   
+              ]),      
 
 
               Align(

@@ -144,7 +144,7 @@ class _PaymentState extends State<Payment> {
                         ),
                         child: const Text('Get started'),
                         onPressed: () async {
-                            Navigator.pushReplacementNamed(context, SummaryPage.routeName);
+                            Navigator.pushNamed(context, SummaryPage.routeName);
                             SharedPreferences m = await SharedPreferences.getInstance();
                             m.setInt('plan', currentPage);
                         }
