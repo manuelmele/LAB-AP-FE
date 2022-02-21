@@ -38,6 +38,8 @@ class IntroContent extends StatelessWidget {
           ),
           Container(
               margin: EdgeInsets.all(5),
+              height: getProportionateScreenHeight(350),
+              width: getProportionateScreenWidth(350),
               //padding: EdgeInsets.all(1),
               decoration: BoxDecoration(
                 color: kBackground,
