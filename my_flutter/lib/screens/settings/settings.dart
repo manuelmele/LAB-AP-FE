@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/models/user_model.dart';
+import 'package:wefix/screens/book_appointment/booking.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
@@ -164,6 +165,16 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext ctx) => LoginScreen()));
+            },
+          ),
+          ListTile(
+            //momentanea per testare il booking appointment
+            title: const Text('Book Appointment'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext ctx) => BookAppointmentPage()));
             },
           ),
         ],
