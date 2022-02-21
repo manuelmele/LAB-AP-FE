@@ -29,9 +29,6 @@ Future<UserModel> getUserDataService(String _jwt) async {
 
 Future<String> changePasswordService(
     String _jwt, String _oldPw, String _newPw) async {
-  print(_jwt);
-  print(_oldPw);
-  print(_newPw);
   final queryParameters = {
     "oldPassword": _oldPw,
     'newPassword': _newPw,
@@ -47,8 +44,6 @@ Future<String> changePasswordService(
 
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
-  print(jwt);
-  print(message);
 
   if (message.isNotEmpty && message != "null") {
     return "Error: " + message;

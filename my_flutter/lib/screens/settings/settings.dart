@@ -10,8 +10,6 @@ import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/user_service.dart';
 import 'package:wefix/size_config.dart';
-import 'package:wefix/utilis/allert_dialogs.dart';
-import 'package:wefix/utilis/alert_dialogs_stateful.dart';
 
 class SettingsDrawer extends StatefulWidget {
   const SettingsDrawer({Key? key}) : super(key: key);
@@ -58,7 +56,6 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
       String error = response;
       //errore in caso di credenziali errate
       addError(error: error);
-      print(errors);
     } else {
       String jwt = response;
       return jwt;
