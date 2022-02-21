@@ -10,10 +10,10 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../constants.dart';
+
 //[BE] server.port must be localhost:8000
-//String baseUrl = '10.0.2.2:8000'; //indirizzo per emulatore
-//String baseUrl = '192.168.1.9:8000'; //indirizzo IP laura
-String baseUrl = '192.168.1.239:8000'; //indirizzo IP daniela
+String baseUrl = BASE_URL;
 
 Future<String> signUpService(String _firstName, String _secondName,
     String _email, String _userPassword, String _userConfirmPassword) async {
@@ -49,7 +49,7 @@ Future<String> completeSignUpService(
   final queryParameters = {'bio': _bio};
 
   final uri =
-      Uri.http(baseUrl, '/wefix/account/complete/signup/', queryParameters);
+      Uri.http(baseUrl, '/wefix/account/complete/signup', queryParameters);
 
   var request = http.MultipartRequest("PUT", uri);
   if (_photoProfile == null) {
@@ -86,7 +86,7 @@ Future<String> signInService(String _email, String _password) async {
   final response = await http.post(
     uri,
   );
-  print("eccomi");
+
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
 
@@ -96,5 +96,22 @@ Future<String> signInService(String _email, String _password) async {
     return jwt;
   } else {
     return "Unknown Error";
+  }
+}
+
+Future<String> forgotPasswordService(String _email) async {
+  final queryParameters = {
+    'email': _email,
+  };
+
+  final uri = Uri.http(baseUrl, '/wefix/public/reset', queryParameters);
+  final response = await http.post(
+    uri,
+  );
+  if (response.statusCode == 200) {
+    print("new password sent to email!");
+    return "";
+  } else {
+    return 'Error: ' + jsonDecode(response.body)["message"].toString();
   }
 }

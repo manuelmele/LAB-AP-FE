@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+//------------------- BASE URLs --------------------//
+//String BASE_URL = '10.0.2.2:8000'; //indirizzo per emulatore
+String BASE_URL = '192.168.1.9:8000'; //indirizzo IP laura
+
 //------------------- COLORS --------------------//
 //this is the value to modify to change base color of the application
 //its an hexadecimal value
@@ -55,3 +59,8 @@ const String invalidSurname = "Error: Json field 'surname' is invalid";
 //per la signupOptional
 const String imageTooBig = "Error: Image should have maximum size 30KB";
 const String invalidBio = "Error: Invalid bio";
+//per il change password
+const String invalidOldPw = "Error: Invalid old password";
+const String invalidNewPw = "Error: Invalid new password";
+//per il forgot password
+const String invalidUsername = "Error: Invalid username";

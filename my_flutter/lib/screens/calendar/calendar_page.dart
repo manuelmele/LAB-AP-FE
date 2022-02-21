@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
 import 'components/body.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -14,10 +15,13 @@ class CalendarPageState extends State<CalendarPage> {
       body: Body(),
       appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text(
+          title: const Text(
             "Your Appointments",
+            style: TextStyle(
+              color: kOrange,
+            ),
           )),
     );
   }

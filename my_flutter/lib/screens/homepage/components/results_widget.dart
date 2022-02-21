@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
@@ -48,10 +51,10 @@ class _ResultsState extends State<ResultsWidget> {
     });
   }
 
-  void searchByQuery(String value) {
+  void searchByQuery(String value, String category) {
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
-      filterByQuery(jwt, value).then((newResults) {
+      filterByQuery(jwt, value, category).then((newResults) {
         if (!disposed) {
           setState(() {
             results = newResults;
@@ -74,7 +77,7 @@ class _ResultsState extends State<ResultsWidget> {
         HomeHeader(
           onSubmit: (String value) {
             print("Searching for value: $value");
-            searchByQuery(value);
+            searchByQuery(value, category);
           },
         ),
         Expanded(
@@ -84,7 +87,7 @@ class _ResultsState extends State<ResultsWidget> {
             return ListProfile(
                 name: results[i].firstName + " " + results[i].secondName,
                 description: results[i].bio,
-                imageUrl: results[i].photoProfile,
+                image: results[i].photoProfile,
                 press: () {});
           },
         )),
@@ -99,13 +102,13 @@ class ListProfile extends StatelessWidget {
     Key? key,
     required this.name,
     required this.description,
-    required this.imageUrl,
+    required this.image,
     required this.press,
   }) : super(key: key);
 
   final String name;
   final String description;
-  final String imageUrl;
+  final String image;
   final VoidCallback press;
 
   @override
@@ -121,8 +124,13 @@ class ListProfile extends StatelessWidget {
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
         trailing: Icon(Icons.arrow_forward_ios),
-        leading:
-            CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl)),
+        leading: CircleAvatar(
+            radius: 32,
+            child: ClipOval(
+                child: image == null || image.isEmpty
+                    ? const Image(
+                        image: AssetImage('assets/avatar/default_avatar.jpg'))
+                    : Image.memory(base64Decode(image)))),
         title: Text(
           name,
           style: const TextStyle(
