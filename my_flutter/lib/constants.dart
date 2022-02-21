@@ -59,3 +59,6 @@ const String invalidSurname = "Error: Json field 'surname' is invalid";
 //per la signupOptional
 const String imageTooBig = "Error: Image should have maximum size 30KB";
 const String invalidBio = "Error: Invalid bio";
+//per il change password
+const String invalidOldPw = "Error: Invalid old password";
+const String invalidNewPw = "Error: Invalid new password";

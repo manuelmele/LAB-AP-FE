@@ -49,7 +49,7 @@ Future<String> completeSignUpService(
   final queryParameters = {'bio': _bio};
 
   final uri =
-      Uri.http(baseUrl, '/wefix/account/complete/signup/', queryParameters);
+      Uri.http(baseUrl, '/wefix/account/complete/signup', queryParameters);
 
   var request = http.MultipartRequest("PUT", uri);
   if (_photoProfile == null) {
@@ -86,7 +86,6 @@ Future<String> signInService(String _email, String _password) async {
   final response = await http.post(
     uri,
   );
-  //print("eccomi");
   String jwt = jsonDecode(response.body)["jwt"].toString();
   String message = jsonDecode(response.body)["message"].toString();
 
