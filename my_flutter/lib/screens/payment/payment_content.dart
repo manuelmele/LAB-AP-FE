@@ -37,9 +37,9 @@ class IntroContent extends StatelessWidget {
             ),
           ),
           Container(
-              margin: EdgeInsets.all(5),
-              height: getProportionateScreenHeight(350),
-              width: getProportionateScreenWidth(350),
+              margin: EdgeInsets.all(15),
+              height: getProportionateScreenHeight(330),
+              width: getProportionateScreenWidth(330),
               //padding: EdgeInsets.all(1),
               decoration: BoxDecoration(
                 color: kBackground,
@@ -91,7 +91,7 @@ class IntroContent extends StatelessWidget {
                       pay!,
                       //textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: getProportionateScreenWidth(18),
+                        fontSize: getProportionateScreenWidth(16),
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
                         

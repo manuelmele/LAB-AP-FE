@@ -82,7 +82,7 @@ class _PaymentState extends State<Payment> {
             ),
          
 
-            SizedBox(height: getProportionateScreenWidth(60)),
+            SizedBox(height: getProportionateScreenWidth(47)),
             Expanded(
               //box with image and text
               flex: 15,
@@ -128,7 +128,7 @@ class _PaymentState extends State<Payment> {
                         ),
 
                       
-                        SizedBox(height: getProportionateScreenWidth(33))
+                        SizedBox(height: getProportionateScreenWidth(27))
                       ],
                     ),
        

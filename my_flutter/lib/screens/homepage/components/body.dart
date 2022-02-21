@@ -27,6 +27,24 @@ class Body extends StatelessWidget {
           "Start your search by choosing the category",
           textAlign: TextAlign.center,
         ),
+
+
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: kLightBlue,
+            ),
+            child: const Text ('Esci'),
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext ctx) => LoginScreen()));
+            
+            }
+          ),
+        ),
         
         //SizedBox(height: getProportionateScreenHeight(20)),
         Categories(),
