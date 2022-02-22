@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
+import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
@@ -19,6 +21,10 @@ class CustomerPageState extends State<CustomerPage> {
   String? jwt;
   UserModel? userData;
   bool initialResults = false;
+  List<ReviewModel> reviewData = [];
+
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
 
   void getUserData() {
     //search by category just the first time
@@ -36,9 +42,109 @@ class CustomerPageState extends State<CustomerPage> {
     });
   }
 
+  void getReviews() {
+    if (userData != null) {
+      getReviewService(userData!.email).then((newResults) {
+        setState(() {
+          reviewData = newResults;
+          initialResults = true;
+          print(reviewData);
+        });
+      });
+    }
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          const Text(
+            "Choose Profile photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.camera, color: kOrange),
+              onPressed: () {
+                takePhoto(ImageSource.camera);
+              },
+              label: Text("Camera"),
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.image, color: kOrange),
+              onPressed: () {
+                takePhoto(ImageSource.gallery);
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(
+      source: source,
+    );
+    setState(() {
+      _imageFile = pickedFile;
+    });
+  }
+
+//function for the pop up of the info
+  Future openDialog() => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text("Edit your info:"),
+            content: Column(children: [
+              Text("Your Name"),
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(hintText: "Enter your Name"),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Text("Your Surname"),
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(hintText: "Enter your Surname"),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Text("Your Bio"),
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(hintText: "Enter your Bio"),
+              ),
+            ]),
+            actions: [
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  "SUBMIT",
+                ),
+              ),
+            ],
+          ));
+
   @override
   Widget build(BuildContext context) {
     getUserData();
+    getReviews();
     if (userData != null) {
       return Scaffold(
         body: SingleChildScrollView(
@@ -72,8 +178,12 @@ class CustomerPageState extends State<CustomerPage> {
                           child: Container(
                             alignment: Alignment.topRight,
                             child: GestureDetector(
-                              //onTap: () =>
-                              //    Navigator.pushNamed(context, EditPhoto.routeName),
+                              onTap: () => {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: ((builder) => bottomSheet()),
+                                ),
+                              },
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: kLightOrange,
@@ -124,7 +234,9 @@ class CustomerPageState extends State<CustomerPage> {
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
-                                    //onTap: () => Navigator.pushNamed(context, routeName), //insert the edit name route
+                                    onTap: () => {
+                                      openDialog(),
+                                    },
                                     child: CircleAvatar(
                                       radius: 15,
                                       backgroundColor: kLightOrange,
@@ -207,7 +319,7 @@ class CustomerPageState extends State<CustomerPage> {
                 //here starts the list of contents of the reviews
                 ConstrainedBox(
                     constraints: new BoxConstraints(
-                      maxHeight: 250.0, //get max height from the db??
+                      maxHeight: 250.0,
                     ),
                     child: ListView.builder(
                       //scroll horizontal

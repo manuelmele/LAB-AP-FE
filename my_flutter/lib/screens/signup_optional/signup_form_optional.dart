@@ -166,6 +166,7 @@ class _SignUpFormState extends State<SignUpFormOptional> {
     );
   }
 
+//apre la telecamera o la galleria
   Widget bottomSheet() {
     return Container(
       height: 100.0,

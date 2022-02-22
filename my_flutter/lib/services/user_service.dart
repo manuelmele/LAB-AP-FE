@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'dart:convert';
 
@@ -52,4 +53,31 @@ Future<String> changePasswordService(
   } else {
     return "Unknown Error";
   }
+}
+
+Future<List<ReviewModel>> getReviewService(String _email) async {
+  final queryParameters = {
+    "emailCustomer": _email,
+  };
+  final uri = Uri.http(baseUrl, '/wefix/account/user-reviews', queryParameters);
+  final response = await http.get(
+    uri,
+    //headers: <String, String>{
+    //  'Authorization': 'Bearer $_jwt',
+    //},
+  );
+
+  print(response.body);
+
+  List<ReviewModel> results = json
+      .decode(response.body)
+      .map<ReviewModel>((data) => ReviewModel.fromJson(data))
+      .toList();
+
+  for (ReviewModel result in results) {
+    print(result.toString());
+  }
+
+  //print("msg:" + response.body.toString());
+  return results;
 }
