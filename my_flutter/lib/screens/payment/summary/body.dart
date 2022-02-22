@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'summary_content.dart';
+import 'package:intl/intl.dart';
 
 import 'package:wefix/size_config.dart';
 //import 'package:shop_app/components/no_account_text.dart';
@@ -64,16 +65,24 @@ class _SummaryState extends State<Summary> {
     getUserData();
     getPlan();
     print(plan);
+
+    //calculate the current date and set the format
+    final today = DateTime.now();
+    final DateFormat dateFormater = DateFormat('yyyy-MM-dd');
+    //get the dates after one month and one year
+    final aMonthFromNow = dateFormater.format(today.add(const Duration(days: 31)));
+    final aYearFromNow = dateFormater.format(today.add(const Duration(days: 365)));
+
       return SafeArea(
          child: Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
               decoration: BoxDecoration(
-              color: kLightOrange,
+              color: kLightBlue,
               borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(60.0),
-                bottomLeft: Radius.circular(60.0),
+                bottomRight: Radius.circular(200.0), //60
+                bottomLeft: Radius.circular(0.0), //60
               )),
 
               child: SizedBox(
@@ -115,42 +124,85 @@ class _SummaryState extends State<Summary> {
             ),
             const SizedBox(height: 20),
             Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              //mainAxisAlignment: MainAxisAlignment.start,
+              //crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: <Widget>[
+            Row(
               children: <Widget>[
             Text(
-              plan==0 ? "Choosen payment plan: Montly plan" : "Choosen payment plan: Yearly plan" ,
+              "Choosen payment plan: ",
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: kOrange,
-                fontSize: getProportionateScreenWidth(25),
+                fontSize: getProportionateScreenWidth(23),
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              "Subscription expiration:",
+            RichText(
+                text: TextSpan(
+                  text: plan==0 ? "Montly plan" : "Yearly plan",
+                  style: TextStyle(
+                    color: kOrange,
+                    fontSize: getProportionateScreenWidth(18),
+                    fontFamily: 'Ubuntu', 
+                  ),
+                ),
+            )]),            
+            Row(
+              children: <Widget>[
+            Text(
+              "Subscription expiration: " ,
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: kOrange,
-                fontSize: 25,
+                fontSize: getProportionateScreenWidth(23),
+                fontWeight: FontWeight.bold,
+                //fontFamily: 'Outfit', 
+                
               )
             ),
+            RichText(
+                text: TextSpan(
+                  text: plan==0 ? aMonthFromNow : aYearFromNow,
+                  style: TextStyle(
+                    color: kOrange,
+                    fontSize: getProportionateScreenWidth(18),
+                    fontFamily: 'Ubuntu', 
+                  ),
+                ),
+            )]),
 
-            const Text(
-              "Total:",
+            Row(
+              children: <Widget>[
+            Text(
+              "Total cost: ",
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: kOrange,
-                fontSize: 25,
+                    fontSize: getProportionateScreenWidth(23),
+                    fontWeight: FontWeight.bold,
+                    //fontFamily: 'Outfit', 
               )
-            ),   
+            ),  
+            RichText(
+                text: TextSpan(
+                  text: plan==0 ? "\$x" : "\$y",
+                  style: TextStyle(
+                    color: kOrange,
+                    fontSize: getProportionateScreenWidth(18),
+                    fontFamily: 'Ubuntu', 
+                  ),
+                ),
+            )]),             
               ]),      
 
-
+              
               Align(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: kLightOrange,
+                  primary: kLightBlue,
                   shape: new RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(20.0),
                   ),
