@@ -53,3 +53,34 @@ Future<String> changePasswordService(
     return "Unknown Error";
   }
 }
+
+Future<String> bookAppointmentService(
+    String _emailWorker,
+    String _emailCustomer,
+    String _date,
+    String _timeSlot,
+    String _description,
+    String _jwt) async {
+  final uri = Uri.http(baseUrl, '/wefix/account/add-meeting');
+
+  final response = await http.post(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $_jwt',
+    },
+    body: jsonEncode(<String, String>{
+      'emailWorker': _emailWorker,
+      'emailCustomer': _emailCustomer,
+      'description': _description,
+      'date': _date,
+      'slot_time': _timeSlot,
+    }),
+  );
+  if (response.statusCode == 200) {
+    print("appointment booked!");
+    return "";
+  } else {
+    return 'Error: ' + jsonDecode(response.body)["message"].toString();
+  }
+}

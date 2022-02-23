@@ -2,6 +2,7 @@
 // All our routes will be available here
 
 import 'package:wefix/screens/book_appointment/booking.dart';
+import 'package:wefix/screens/book_appointment/confirmation.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/login/login.dart';
@@ -24,4 +25,5 @@ final Map<String, WidgetBuilder> routes = {
   SubscriptionPage.routeName: (context) => SubscriptionPage(),
   BookAppointmentPage.routeName: (context) => BookAppointmentPage(),
   SummaryPage.routeName: (context) => SummaryPage(),
+  BookingConfirmationScreen.routeName: (context) => BookingConfirmationScreen(),
 };

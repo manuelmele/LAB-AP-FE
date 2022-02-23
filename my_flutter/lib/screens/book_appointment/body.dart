@@ -24,7 +24,7 @@ class Body extends StatelessWidget {
                 ),
                 const SizedBox(height: 0.04),
                 Text(
-                  "Upgrade to PRO",
+                  "Book your appontiment",
                   style: TextStyle(
                     color: kOrange,
                     fontSize: getProportionateScreenWidth(28),
@@ -32,10 +32,10 @@ class Body extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  "Complete your details to complete your business account",
+                  "Describe the issue and choose your preferred day and time",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: SizeConfig.screenHeight * 0.03),
                 BookingForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SizedBox(height: getProportionateScreenHeight(20)),
