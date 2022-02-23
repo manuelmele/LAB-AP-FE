@@ -48,6 +48,9 @@ dependencies:
   google_maps_flutter: ^2.1.1
   geolocator: ^8.1.1
   form_field_validator: ^1.1.0
+  omni_datetime_picker: ^0.0.3+1
+  syncfusion_flutter_datepicker: ^19.4.53
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
