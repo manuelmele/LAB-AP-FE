@@ -41,7 +41,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool userIsCustomer = true;
+    bool userIsCustomer = false;
     return Column(
       children: [
         SizedBox(height: getProportionateScreenHeight(10)),

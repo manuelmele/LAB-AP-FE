@@ -26,7 +26,37 @@ Future<List<MeetingModel>> getAllCustomerMeetings(
     },
   );
 
-  print(response.body);
+  //print(response.body);
+
+  List<MeetingModel> results = json
+      .decode(response.body)
+      .map<MeetingModel>((data) => MeetingModel.fromJson(data))
+      .toList();
+
+  for (MeetingModel result in results) {
+    print(result.toString());
+  }
+
+  //print("msg:" + response.body.toString());
+  return results;
+}
+
+Future<List<MeetingModel>> getAllWorkerMeetings(
+    String _jwt, String _emailWorker) async {
+  final queryParameters = {
+    'emailWorker': _emailWorker,
+  };
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/worker-meetings', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  //print(response.body);
 
   List<MeetingModel> results = json
       .decode(response.body)

@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/models/meeting_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
+import 'package:wefix/services/meetings_service.dart';
+import 'package:wefix/services/user_service.dart';
 import 'package:wefix/utilis/allert_dialogs.dart';
 
 import '../../../../constants.dart';
@@ -18,11 +23,37 @@ class CompletedRequestsWorker extends StatefulWidget {
 }
 
 class _AppointmentsState extends State<CompletedRequestsWorker> {
+  List<MeetingModel> results = [];
+  bool disposed = false;
+  bool initialResults = false;
+
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
+  }
+
+  void loadMeeting() {
+    if (initialResults) return;
+
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      getUserDataService(jwt).then((userResult) {
+        getAllWorkerMeetings(jwt, userResult.email).then((newResults) {
+          if (!disposed) {
+            setState(() {
+              results = newResults;
+              initialResults = true;
+            });
+          }
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    String userID = widget.userID!;
-    String imageUrl =
-        "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png";
+    loadMeeting();
 
     return Container(
       padding: EdgeInsets.only(left: 20),
@@ -42,22 +73,22 @@ class _AppointmentsState extends State<CompletedRequestsWorker> {
               ),
               children: [
                 SizedBox(
-                  height: SizeConfig.screenHeight / 2,
-                  child: ListView(
-                    children: [
-                      ListAppointment(
-                          name: 'Marco Prova',
-                          service: "Type of service: Gardener",
-                          imageUrl: imageUrl,
-                          press: () {}),
-                      ListAppointment(
-                          name: 'Marco Prova2',
-                          service: "Type of service: Gardener",
-                          imageUrl: imageUrl,
-                          press: () {}),
-                    ],
-                  ),
-                ),
+                    height: SizeConfig.screenHeight / 2,
+                    child: ListView.builder(
+                      itemCount: results.length,
+                      itemBuilder: (context, i) {
+                        return ListAppointment(
+                            name: results[i].firstName +
+                                " " +
+                                results[i].secondName,
+                            service: results[i].category,
+                            date: results[i].dateTime.substring(0, 10),
+                            slotTime: results[i].slotTime,
+                            description: results[i].description,
+                            image: results[i].photoProfile,
+                            press: () {});
+                      },
+                    )),
               ],
             ),
           )),
@@ -70,13 +101,19 @@ class ListAppointment extends StatelessWidget {
     Key? key,
     required this.name,
     required this.service,
-    required this.imageUrl,
+    required this.slotTime,
+    required this.date,
+    required this.description,
+    required this.image,
     required this.press,
   }) : super(key: key);
 
   final String name;
   final String service;
-  final String imageUrl;
+  final String slotTime;
+  final String date;
+  final String description;
+  final String image;
   final VoidCallback press;
 
   @override
@@ -99,8 +136,9 @@ class ListAppointment extends StatelessWidget {
                 DialogsUI().showRatingDialog(context, name);
               },
             )),
-        leading:
-            CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl)),
+        leading: CircleAvatar(
+            radius: 32,
+            child: ClipOval(child: Image.memory(base64Decode(image)))),
         title: Text(
           name,
           style: const TextStyle(
