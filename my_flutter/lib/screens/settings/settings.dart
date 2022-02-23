@@ -132,6 +132,7 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                 ? Icon(Icons.star)
                 : Icon(Icons.paid),
             onTap: () {
+              //DEVE STARE A role==Customer, se è diverso è per debug
               if (role == "Customer") {
                 Navigator.push(
                     context,

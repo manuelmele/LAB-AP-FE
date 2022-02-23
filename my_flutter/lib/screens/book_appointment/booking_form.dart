@@ -24,10 +24,7 @@ class _BookingFormState extends State<BookingForm> {
   final _formKey = GlobalKey<FormState>();
   String? description;
   String? timeSlot;
-  List<String> timeSlots = [
-    "Morning (9:00 - 12:00)",
-    "Afternoon (15:00 - 19:00)"
-  ];
+  List<String> timeSlots = ["Morning", "Afternoon", "Evening"];
   List<String?> errors = [];
   var today;
   var minDate;
@@ -46,7 +43,7 @@ class _BookingFormState extends State<BookingForm> {
     //PRENDERE EMAIL DEL WORKER QUANDO SARÀ PRONTA LA PAGINA UTENTE WORKER
     String? _emailWorker = "marcopinorossi@live.it";
 
-    String response = await bookAppointmentService(_emailWorker!,
+    String response = await bookAppointmentService(_emailWorker,
         _emailCustomer!, _chosenDate!, _chosenTime!, description!, jwt!);
 
     if (response.contains('Error')) {
