@@ -51,6 +51,8 @@ dependencies:
   omni_datetime_picker: ^0.0.3+1
   syncfusion_flutter_datepicker: ^19.4.53
   intl: ^0.17.0
+  url_launcher: ^6.0.20 
+  url_launcher_web: ^2.0.8
 
 dev_dependencies:
   flutter_test:

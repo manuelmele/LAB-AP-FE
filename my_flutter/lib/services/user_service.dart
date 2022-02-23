@@ -113,7 +113,8 @@ Future<String> bookAppointmentService(
   );
   if (response.statusCode == 200) {
     print("Upgrade to PRO successed!");
-    return "";
+    print(response.body.substring(9));
+    return response.body.substring(9);
   } else {
     return 'Error: ' + jsonDecode(response.body)["message"].toString();
   }

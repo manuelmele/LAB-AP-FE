@@ -5,8 +5,9 @@ import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'summary_content.dart';
 import 'package:intl/intl.dart';
-
 import 'package:wefix/size_config.dart';
+import 'package:url_launcher/url_launcher.dart'; 
+
 //import 'package:shop_app/components/no_account_text.dart';
 //import 'package:shop_app/components/socal_card.dart';
 import '../../../size_config.dart';
@@ -41,15 +42,6 @@ class _SummaryState extends State<Summary> {
   String currency="EUR";
 
 
-  Future<String> InsertInfo() async {
-    if (_chosenCategory == null || partita_iva==null) {
-      return "Error: date field is required";
-    }
-    errors = [];
-    return '';
-    //print(response);
-  }
-
 Future<String> UpgradeToPro() async {
    if (_chosenCategory == null || partita_iva==null) {
       return "Error: manca qualcosa";
@@ -70,7 +62,7 @@ Future<String> UpgradeToPro() async {
       String error = response;
       addError(error: error);
     } else {
-      return jwt!;
+      launch(response); 
     }
     return '';
   }
@@ -93,7 +85,6 @@ Future<String> UpgradeToPro() async {
   }
 
 
-  //CODICE PRESO DA MANUEL
   void getUserData() {
     //search by category just the first time
     if (initialResults) return;
@@ -125,16 +116,17 @@ Future<String> UpgradeToPro() async {
 
     //calculate the current date and set the format
     final today = DateTime.now();
-    final DateFormat dateFormater = DateFormat('yyyy-MM-dd');
+    final DateFormat dateFormater = DateFormat('dd/MM/yyyy');
     //get the dates after one month and one year
     final aMonthFromNow = dateFormater.format(today.add(const Duration(days: 31)));
     final aYearFromNow = dateFormater.format(today.add(const Duration(days: 365)));
 
       return SafeArea(
+        child: SingleChildScrollView(
          child: Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
               decoration: BoxDecoration(
               color: kLightBlue,
               borderRadius: BorderRadius.only(
@@ -155,13 +147,13 @@ Future<String> UpgradeToPro() async {
                         style: TextStyle(
                           fontSize: getProportionateScreenWidth(27),
                           fontWeight: FontWeight.bold,
-                          //color: kOrange,
+                          color: kBlueDark,
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: getProportionateScreenWidth(20),
-                          vertical: getProportionateScreenHeight(30),
+                          vertical: getProportionateScreenHeight(10),
                         ),
                       ),
                       CircleAvatar(
@@ -172,13 +164,14 @@ Future<String> UpgradeToPro() async {
                       Text(userData == null ? "" : userData!.firstName + " " + userData!.secondName,
                         style: TextStyle(
                           fontSize: 18,
-                          //color: kOrange,
+                          color: kBlueDark,
                         ),
                       ),
                     ]),
                   ),  
               ),
             ),
+
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
             child: Column(
@@ -200,7 +193,7 @@ Future<String> UpgradeToPro() async {
               "Choosen payment plan: ",
               textAlign: TextAlign.left,
               style: TextStyle(
-                color: kOrange,
+                color: kBlueDark,
                 fontSize: getProportionateScreenWidth(23),
                 fontWeight: FontWeight.bold,
               ),
@@ -209,7 +202,7 @@ Future<String> UpgradeToPro() async {
                 text: TextSpan(
                   text: plan==0 ? "Montly plan" : "Yearly plan",
                   style: TextStyle(
-                    color: kOrange,
+                    color: kBlueDark,
                     fontSize: getProportionateScreenWidth(18),
                     fontFamily: 'Ubuntu', 
                   ),
@@ -221,7 +214,7 @@ Future<String> UpgradeToPro() async {
               "Subscription expiration: " ,
               textAlign: TextAlign.left,
               style: TextStyle(
-                color: kOrange,
+                color: kBlueDark,
                 fontSize: getProportionateScreenWidth(23),
                 fontWeight: FontWeight.bold,
                 //fontFamily: 'Outfit', 
@@ -232,7 +225,7 @@ Future<String> UpgradeToPro() async {
                 text: TextSpan(
                   text: plan==0 ? aMonthFromNow : aYearFromNow,
                   style: TextStyle(
-                    color: kOrange,
+                    color: kBlueDark,
                     fontSize: getProportionateScreenWidth(18),
                     fontFamily: 'Ubuntu', 
                   ),
@@ -245,7 +238,7 @@ Future<String> UpgradeToPro() async {
               "Total cost: ",
               textAlign: TextAlign.left,
               style: TextStyle(
-                color: kOrange,
+                color: kBlueDark,
                     fontSize: getProportionateScreenWidth(23),
                     fontWeight: FontWeight.bold,
                     //fontFamily: 'Outfit', 
@@ -253,9 +246,9 @@ Future<String> UpgradeToPro() async {
             ),  
             RichText(
                 text: TextSpan(
-                  text: plan==0 ? "\$x" : "\$y",
+                  text: plan==0 ? "€ 4.99" : "€ 49.90",
                   style: TextStyle(
-                    color: kOrange,
+                    color: kBlueDark,
                     fontSize: getProportionateScreenWidth(18),
                     fontFamily: 'Ubuntu', 
                   ),
@@ -275,26 +268,25 @@ Future<String> UpgradeToPro() async {
                 ),
                 child: const Text('Proceed to PayPal',
                   style: TextStyle(
-                    //color: kOrange,
+                    color: kBlueDark,
                   ),
                 ),
-                  onPressed: () async {
-                    if (!_formKey.currentState!.validate()) {
-                      print("booking form not valid");
-                    } 
-                    else {
+                  onPressed: () {
+
                       UpgradeToPro();
                       //Navigator.pushReplacementNamed(context, PaymentPage.routeName);
                     }
-                  }
+                  
                 ),
               ),
       
              
           ]),
             ),
+          
           ],
          ),
+        ),
       );
            
   }
@@ -312,7 +304,7 @@ Future<String> UpgradeToPro() async {
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
             // width: 0.0 produces a thin "hairline" border
-            borderSide: BorderSide(color: kLightOrange),
+            borderSide: BorderSide(color: kBlueDark),
           ),
           labelText: "Job category",
           floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -357,7 +349,7 @@ Future<String> UpgradeToPro() async {
         border: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
-          borderSide: BorderSide(color: kLightOrange),
+          borderSide: BorderSide(color: kBlueDark),
         ),
         labelText: "Partita IVA",
         hintText: "Enter your partita IVA",
@@ -394,7 +386,7 @@ Future<String> UpgradeToPro() async {
         border: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           // width: 0.0 produces a thin "hairline" border
-          borderSide: BorderSide(color: kLightOrange),
+          borderSide: BorderSide(color: kBlueDark),
         ),
         labelText: "Identity card",
         hintText: "Enter your identity card number",
