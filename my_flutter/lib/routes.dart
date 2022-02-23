@@ -26,6 +26,6 @@ final Map<String, WidgetBuilder> routes = {
   SubscriptionPage.routeName: (context) => SubscriptionPage(),
   BookAppointmentPage.routeName: (context) => BookAppointmentPage(),
   SummaryPage.routeName: (context) => SummaryPage(),
-  //InfoPage.routeName: (context) => InfoPage(),
+  InfoPage.routeName: (context) => InfoPage(),
   BookingConfirmationScreen.routeName: (context) => BookingConfirmationScreen(),
 };

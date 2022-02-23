@@ -84,3 +84,37 @@ Future<String> bookAppointmentService(
     return 'Error: ' + jsonDecode(response.body)["message"].toString();
   }
 }
+
+  Future<String> UpgradeToProService(
+    String _chosenCategory,
+    String partita_iva, 
+    String identity_card,
+    String price, 
+    String currency,
+    String jwt,
+  ) async {
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/upgrade-pro');
+
+   final response = await http.post(
+    uri,
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $jwt',
+    },
+    body: jsonEncode(<String, String>{
+      'category': _chosenCategory,
+      'currency': currency,
+      'price': price,
+      'identityCard': identity_card,
+      'piva': partita_iva,
+    }),
+  );
+  if (response.statusCode == 200) {
+    print("Upgrade to PRO successed!");
+    return "";
+  } else {
+    return 'Error: ' + jsonDecode(response.body)["message"].toString();
+  }
+}

@@ -21,7 +21,7 @@ class Summary extends StatefulWidget {
 }
 
 class _SummaryState extends State<Summary> {
-
+  final _formKey = GlobalKey<FormState>();
   String? jwt;
   int? plan;
   var role;
@@ -33,7 +33,64 @@ class _SummaryState extends State<Summary> {
   String? newPassword;
   bool _oldPasswordVisible = false;
   bool _newPasswordVisible = false;
+  String? _chosenCategory;
+  String? partita_iva;
+  String? identity_card;
+  List<String> category = ["Plumber", "Painter", "Electrician", "Blacksmith", "Gardener", "Carpenter"];
   List<String?> errors = [];
+  String currency="EUR";
+
+
+  Future<String> InsertInfo() async {
+    if (_chosenCategory == null || partita_iva==null) {
+      return "Error: date field is required";
+    }
+    errors = [];
+    return '';
+    //print(response);
+  }
+
+Future<String> UpgradeToPro() async {
+   if (_chosenCategory == null || partita_iva==null) {
+      return "Error: manca qualcosa";
+    }
+    errors = [];
+    String price;
+    if (plan==0) {
+      price="1";
+    }
+    else {
+      price="10";
+    }
+    SharedPreferences prefs =await SharedPreferences.getInstance();
+    jwt = prefs.getString('jwt');
+    String response = await UpgradeToProService(_chosenCategory!, partita_iva!, identity_card!, price, currency, jwt!);
+
+    if (response.contains('Error')) {
+      String error = response;
+      addError(error: error);
+    } else {
+      return jwt!;
+    }
+    return '';
+  }
+
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
 
 
   //CODICE PRESO DA MANUEL
@@ -122,10 +179,20 @@ class _SummaryState extends State<Summary> {
                   ),  
               ),
             ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+            child: Column(
+              children: <Widget>[
             const SizedBox(height: 20),
+            buildCategoryFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            buildPartitaIVAFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
+            buildIdentityCardFormField(),
+            SizedBox(height: getProportionateScreenHeight(30)),
             Column(
-              //mainAxisAlignment: MainAxisAlignment.start,
-              //crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
             Row(
               children: <Widget>[
@@ -196,7 +263,7 @@ class _SummaryState extends State<Summary> {
             )]),             
               ]),      
 
-              
+              SizedBox(height: getProportionateScreenHeight(30)),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
@@ -211,15 +278,136 @@ class _SummaryState extends State<Summary> {
                     //color: kOrange,
                   ),
                 ),
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, PaymentPage.routeName);
-                }
+                  onPressed: () async {
+                    if (!_formKey.currentState!.validate()) {
+                      print("booking form not valid");
+                    } 
+                    else {
+                      UpgradeToPro();
+                      //Navigator.pushReplacementNamed(context, PaymentPage.routeName);
+                    }
+                  }
+                ),
               ),
-            ),
+      
+             
           ]),
+            ),
+          ],
+         ),
       );
-         
+           
+  }
 
- 
+     DropdownButtonHideUnderline buildCategoryFormField() {
+    return DropdownButtonHideUnderline(
+      child: DropdownButtonFormField<String>(
+        validator: (value) {
+          if (value == null) {
+            return mandatory;
+          }
+          return null;
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+            // width: 0.0 produces a thin "hairline" border
+            borderSide: BorderSide(color: kLightOrange),
+          ),
+          labelText: "Job category",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+        ),
+        hint: Text("Select your job"),
+        value: _chosenCategory,
+        isDense: true,
+        onChanged: (newValue) {
+          setState(() {
+            _chosenCategory = newValue;
+          });
+          print(_chosenCategory);
+        },
+        items: category.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  TextFormField buildPartitaIVAFormField() {
+    return TextFormField(
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => partita_iva = newValue,
+      onChanged: (value) {
+          setState(() {
+            partita_iva = value;
+          });
+          print(partita_iva);
+        partita_iva = value;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          return mandatory;
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
+        labelText: "Partita IVA",
+        hintText: "Enter your partita IVA",
+
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Align(
+          widthFactor: 1.0,
+          heightFactor: 1.0,
+        ),
+      ),
+    );
+  }
+
+
+
+  TextFormField buildIdentityCardFormField() {
+    return TextFormField(
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => identity_card = newValue,
+      onChanged: (value) {
+          setState(() {
+            identity_card = value;
+          });
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          return mandatory;
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          // width: 0.0 produces a thin "hairline" border
+          borderSide: BorderSide(color: kLightOrange),
+        ),
+        labelText: "Identity card",
+        hintText: "Enter your identity card number",
+
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Align(
+          widthFactor: 1.0,
+          heightFactor: 1.0,
+        ),
+      ),
+    );
   }
 }
+

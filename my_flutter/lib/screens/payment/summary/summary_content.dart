@@ -1,9 +1,25 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:wefix/size_config.dart';
 import 'package:wefix/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/main.dart';
+import 'package:wefix/screens/book_appointment/confirmation.dart';
+import 'package:wefix/screens/homepage/home_page.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
+import 'package:wefix/screens/signup_optional/signup_optional.dart';
+import 'package:wefix/services/auth_service.dart';
 
-class IntroContent extends StatelessWidget {
-  const IntroContent({
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:intl/intl.dart';
+
+import 'package:wefix/services/user_service.dart';
+
+import '../../../constants.dart';
+import '../../../size_config.dart';
+
+class Summary extends StatelessWidget {
+  Summary({
     Key? key,
     this.title,
     this.discount,
@@ -12,6 +28,39 @@ class IntroContent extends StatelessWidget {
     this.pay,
   }) : super(key: key);
   final String? title, discount, cost, image, pay;
+  String? _chosenCategory;
+  List<String> category = ["Plumber", "Painter", "Electrician", "Blacksmith", "Gardener", "Carpenter"];
+  List<String?> errors = [];
+
+
+
+  Future<String> selectCategory() async {
+    if (_chosenCategory == null) {
+      return "Error: date field is required";
+    }
+    errors = [];
+    return '';
+    //print(response);
+  }
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,4 +152,43 @@ class IntroContent extends StatelessWidget {
           ),
         ]);
   }
-}
+
+
+
+   DropdownButtonHideUnderline buildTimeSlotFormField() {
+    return DropdownButtonHideUnderline(
+      child: DropdownButtonFormField<String>(
+        validator: (value) {
+          if (value == null) {
+            return mandatory;
+          }
+          return null;
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+            // width: 0.0 produces a thin "hairline" border
+            borderSide: BorderSide(color: kLightOrange),
+          ),
+          labelText: "Job category",
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+        ),
+        hint: Text("Select your job"),
+        value: _chosenCategory,
+        isDense: true,
+        onChanged: (newValue) {
+          setState(() {
+            _chosenCategory = newValue;
+          });
+          print(_chosenCategory);
+        },
+        items: category.map((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}*/
