@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -69,4 +70,37 @@ Future<List<MeetingModel>> getAllWorkerMeetings(
 
   //print("msg:" + response.body.toString());
   return results;
+}
+
+bool isNewMeeting(MeetingModel meeting) {
+  final now = DateTime.now();
+  final expirationDate =
+      DateFormat('dd/MM/yyyy').parse(meeting.dateTime.substring(0, 10));
+  final bool isDateExpired = expirationDate.isBefore(now);
+
+  if (meeting.accepted == null && !isDateExpired) return true;
+
+  return false;
+}
+
+bool isBookedMeeting(MeetingModel meeting) {
+  final now = DateTime.now();
+  final expirationDate =
+      DateFormat('dd/MM/yyyy').parse(meeting.dateTime.substring(0, 10));
+  final bool isDateExpired = expirationDate.isBefore(now);
+
+  if (meeting.accepted == true && !isDateExpired) return true;
+
+  return false;
+}
+
+bool isCompletedMeeting(MeetingModel meeting) {
+  final now = DateTime.now();
+  final expirationDate =
+      DateFormat('dd/MM/yyyy').parse(meeting.dateTime.substring(0, 10));
+  final bool isDateExpired = expirationDate.isBefore(now);
+
+  if (meeting.accepted == false || isDateExpired) return true;
+
+  return false;
 }

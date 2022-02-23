@@ -78,16 +78,20 @@ class _AppointmentsState extends State<BookedRequestsCustomer> {
                   child: ListView.builder(
                     itemCount: results.length,
                     itemBuilder: (context, i) {
-                      return ListAppointment(
-                          name: results[i].firstName +
-                              " " +
-                              results[i].secondName,
-                          service: results[i].category,
-                          date: results[i].dateTime.substring(0, 10),
-                          slotTime: results[i].slotTime,
-                          description: results[i].description,
-                          image: results[i].photoProfile,
-                          press: () {});
+                      if (isBookedMeeting(results[i])) {
+                        return ListAppointment(
+                            name: results[i].firstName +
+                                " " +
+                                results[i].secondName,
+                            service: results[i].category,
+                            date: results[i].dateTime.substring(0, 10),
+                            slotTime: results[i].slotTime,
+                            description: results[i].description,
+                            image: results[i].photoProfile,
+                            press: () {});
+                      } else {
+                        return const SizedBox(height: 0);
+                      }
                     },
                   ),
                 ),
