@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:wefix/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/models/payment_model.dart';
@@ -20,7 +22,24 @@ class Subscription extends StatefulWidget {
 
 class _SubscriptionState extends State<Subscription> {
   int currentPage = 0;
-  List<PaymentModel> paymentsData = [];
+  var today = DateTime.now();
+  //List<PaymentModel> paymentsData = [];
+  List<PaymentModel> paymentsData = [
+    PaymentModel(
+        paymentId: "1",
+        date: "23/12/2021",
+        deadline: "23/01/2022",
+        price: "0.80",
+        currency: "EUR",
+        paymentMethod: "PayPal"),
+    PaymentModel(
+        paymentId: "2",
+        date: "23/01/2022",
+        deadline: "23/02/2022",
+        price: "0.80",
+        currency: "EUR",
+        paymentMethod: "PayPal"),
+  ];
 
   //pageController lets us choose which page of the pageviwe to see
   final PageController _pageController = PageController();
@@ -44,9 +63,13 @@ class _SubscriptionState extends State<Subscription> {
   }
 
   Widget build(BuildContext context) {
-    getPaymentsData();
+    //getPaymentsData();
+
     if (paymentsData.isEmpty) {
       //print("non ci sono pagamenti");
+      return buildNoPayments();
+    } else {
+      print("ci sono dei pagamenti");
       return Scaffold(
         backgroundColor: kBackground,
         body: SizedBox(
@@ -58,15 +81,15 @@ class _SubscriptionState extends State<Subscription> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                //SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                SizedBox(height: SizeConfig.screenHeight * 0.08), // 4%
                 Image.asset(
                   'assets/images/parrot_contrast.jpg',
-                  height: 200,
-                  width: 200,
+                  height: 100,
+                  width: 100,
                 ),
                 const SizedBox(height: 0.04),
                 Text(
-                  "Your paiment history",
+                  "Your payment history",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: kOrange,
@@ -74,98 +97,82 @@ class _SubscriptionState extends State<Subscription> {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(20)),
                 Text(
-                  "There are no payments in your history",
+                  "Manage your payments and subscription",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: getProportionateScreenWidth(18),
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                SizedBox(height: getProportionateScreenHeight(30)),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: kLightOrange,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, NavigatorScreen.routeName);
-                    },
-                    child: const Text("Go Back"))
+                Expanded(
+                    child: ListView.builder(
+                  itemCount: paymentsData.length,
+                  itemBuilder: (context, i) {
+                    return ListPayment(
+                      paymentId: paymentsData[i].paymentId,
+                      date: paymentsData[i].date,
+                      deadline: paymentsData[i].deadline,
+                      price: paymentsData[i].price,
+                      currency: paymentsData[i].currency,
+                      paymentMethod: paymentsData[i].paymentMethod,
+                    );
+                  },
+                )),
               ],
             ),
           ),
         ),
       );
     }
-    return SafeArea(
-      child: SizedBox(
+  }
+
+  Widget buildNoPayments() {
+    return Scaffold(
+      backgroundColor: kBackground,
+      body: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: getProportionateScreenWidth(20),
-            vertical: getProportionateScreenHeight(30),
-          ),
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
           child: Column(
-            children: <Widget>[
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
               Image.asset(
                 'assets/images/parrot_contrast.jpg',
-                height: 70,
-                width: 70,
+                height: 200,
+                width: 200,
               ),
-              const SizedBox(height: 1),
+              const SizedBox(height: 0.04),
               Text(
                 "Your payment history",
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: kOrange,
                   fontSize: getProportionateScreenWidth(28),
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              const Text(
-                "Manage your payments and subscription",
+              SizedBox(height: getProportionateScreenHeight(20)),
+              Text(
+                "There are no payments in your history",
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(18),
+                  fontWeight: FontWeight.normal,
+                ),
               ),
-              SizedBox(height: getProportionateScreenWidth(60)),
-              Scaffold(
-                  body: Column(
-                children: [
-                  SizedBox(height: getProportionateScreenHeight(20)),
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: paymentsData.length,
-                    itemBuilder: (context, i) {
-                      return ListPayment(
-                        paymentId: paymentsData[i].paymentId,
-                        date: paymentsData[i].date,
-                        deadline: paymentsData[i].deadline,
-                        price: paymentsData[i].price,
-                        currency: paymentsData[i].currency,
-                        paymentMethod: paymentsData[i].paymentMethod,
-                      );
-                    },
-                  )),
-                  SizedBox(height: getProportionateScreenWidth(30)),
-                ],
-              )),
-              SizedBox(height: getProportionateScreenWidth(30)),
-              Align(
-                alignment: Alignment.topCenter,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: kLightOrange,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: const Text('Renew Subscription'),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext ctx) => PaymentPage()));
-                    }),
-              ),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kLightOrange,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, NavigatorScreen.routeName);
+                  },
+                  child: const Text("Go Back"))
             ],
           ),
         ),
@@ -202,21 +209,28 @@ class ListPayment extends StatelessWidget {
         color: Colors.grey[200],
       ),
       child: ListTile(
+        leading: Icon(
+          Icons.circle,
+          color: DateTime.now().isBefore(DateFormat("dd/MM/yyyy HH:mm:ss")
+                  .parse(deadline + " 00:00:00"))
+              ? kLightGreen
+              : kGrey,
+        ),
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
         trailing: Icon(Icons.arrow_forward_ios),
         title: Text(
           date,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 20,
             color: Colors.black,
           ),
         ),
         subtitle: Text(
-          price,
+          price + " " + currency,
           style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
+            fontSize: 30,
+            color: kOrange,
           ),
         ),
       ),

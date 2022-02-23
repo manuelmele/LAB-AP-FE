@@ -150,38 +150,6 @@ class _BookingFormState extends State<BookingForm> {
       },
     );
   }
-/*
-  FormField buildDateFormField() {
-    return FormField<String>(
-      autovalidateMode: AutovalidateMode.always,
-      //validator: (value) {
-      //if (_chosenDate!.isEmpty) {
-      //return mandatory;
-      //}
-      //return null;
-      //},
-      builder: (FormFieldState<String> state) {
-        return Column(
-          children: <Widget>[
-            SfDateRangePicker(
-                onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                  if (args.value is DateTime) {
-                    _chosenDate = DateFormat("dd/MM/yyyy").format(args.value);
-                    print(_chosenDate);
-                  }
-                },
-                allowViewNavigation: false,
-                minDate: minDate,
-                maxDate: maxDate,
-                view: DateRangePickerView.month,
-                monthViewSettings:
-                    const DateRangePickerMonthViewSettings(firstDayOfWeek: 1)),
-          ],
-        );
-      },
-    );
-  }
-  */
 
   DropdownButtonHideUnderline buildTimeSlotFormField() {
     return DropdownButtonHideUnderline(
