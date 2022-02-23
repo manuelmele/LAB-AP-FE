@@ -126,7 +126,6 @@ class _SummaryState extends State<Summary> {
             Column(
               //mainAxisAlignment: MainAxisAlignment.start,
               //crossAxisAlignment: CrossAxisAlignment.start,
-
               children: <Widget>[
             Row(
               children: <Widget>[
