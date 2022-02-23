@@ -4,25 +4,21 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:wefix/models/meeting_model.dart';
 import 'package:wefix/models/user_model.dart';
 
 import '../constants.dart';
 
 String baseUrl = BASE_URL;
 
-Future<List<UserModel>> filterByCategory(String _jwt, String _category) async {
-  return filterByQuery(_jwt, "", _category);
-}
-
-Future<List<UserModel>> filterByQuery(
-    String _jwt, String _value, String _category) async {
+Future<List<MeetingModel>> getAllCustomerMeetings(
+    String _jwt, String _emailCustomer) async {
   final queryParameters = {
-    'value': _value,
-    'category': _category,
+    'emailCustomer': _emailCustomer,
   };
 
   final uri =
-      Uri.http(baseUrl, '/wefix/account/workers-filter', queryParameters);
+      Uri.http(baseUrl, '/wefix/account/customer-meetings', queryParameters);
   final response = await http.get(
     uri,
     headers: <String, String>{
@@ -30,16 +26,16 @@ Future<List<UserModel>> filterByQuery(
     },
   );
 
-  //print(response.body);
+  print(response.body);
 
-  List<UserModel> results = json
+  List<MeetingModel> results = json
       .decode(response.body)
-      .map<UserModel>((data) => UserModel.fromJson(data))
+      .map<MeetingModel>((data) => MeetingModel.fromJson(data))
       .toList();
 
-  //for (UserModel result in results) {
-  //  print(result.toString());
-  //}
+  for (MeetingModel result in results) {
+    print(result.toString());
+  }
 
   //print("msg:" + response.body.toString());
   return results;
