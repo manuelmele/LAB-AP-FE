@@ -11,14 +11,17 @@ class Categories extends StatelessWidget {
         "icon": const AssetImage("assets/images/plumber_blue.jpg"),
         "text": "Plumber"
       },
-      {"icon": const AssetImage("assets/images/painter.png"), "text": "Tiler"},
+      {
+        "icon": const AssetImage("assets/images/painter.png"),
+        "text": "Painter"
+      },
       {
         "icon": const AssetImage("assets/images/Electrician.png"),
         "text": "Electrician"
       },
       {
-        "icon": const AssetImage("assets/images/gardner.png"),
-        "text": "Glazier"
+        "icon": const AssetImage("assets/images/Blacksmith.jpg"),
+        "text": "Blacksmith"
       },
       {
         "icon": const AssetImage("assets/images/gardner_green.png"),

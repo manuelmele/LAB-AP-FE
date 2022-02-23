@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:wefix/models/user_model.dart';
 
 import '../constants.dart';
 
@@ -25,7 +24,7 @@ Future<List<PaymentModel>> getPaymentsDataService(String _jwt) async {
 
   List<PaymentModel> results = json
       .decode(response.body)
-      .map<UserModel>((data) => UserModel.fromJson(data))
+      .map<PaymentModel>((data) => PaymentModel.fromJson(data))
       .toList();
 
   for (PaymentModel result in results) {

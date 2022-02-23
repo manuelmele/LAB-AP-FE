@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wefix/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/models/payment_model.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
 
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/worker_services.dart';
@@ -36,7 +37,7 @@ class _SubscriptionState extends State<Subscription> {
       getPaymentsDataService(jwt).then((newResults) {
         setState(() {
           paymentsData = newResults;
-          print(paymentsData);
+          //print(paymentsData);
         });
       });
     });
@@ -44,6 +45,59 @@ class _SubscriptionState extends State<Subscription> {
 
   Widget build(BuildContext context) {
     getPaymentsData();
+    if (paymentsData.isEmpty) {
+      //print("non ci sono pagamenti");
+      return Scaffold(
+        backgroundColor: kBackground,
+        body: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(20)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+                Image.asset(
+                  'assets/images/parrot_contrast.jpg',
+                  height: 200,
+                  width: 200,
+                ),
+                const SizedBox(height: 0.04),
+                Text(
+                  "Your paiment history",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: kOrange,
+                    fontSize: getProportionateScreenWidth(28),
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                Text(
+                  "There are no payments in your history",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: getProportionateScreenWidth(18),
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: kLightOrange,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, NavigatorScreen.routeName);
+                    },
+                    child: const Text("Go Back"))
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -94,15 +148,6 @@ class _SubscriptionState extends State<Subscription> {
                   SizedBox(height: getProportionateScreenWidth(30)),
                 ],
               )),
-              Container(
-                //box with image and text
-                child: SubscriptionContent(
-                  state: "State: " + "Active",
-                  plan: "Monthly Plan",
-                  cost: "5/month",
-                  expiration: "Expiration date: " + "21/03/22",
-                ),
-              ),
               SizedBox(height: getProportionateScreenWidth(30)),
               Align(
                 alignment: Alignment.topCenter,
