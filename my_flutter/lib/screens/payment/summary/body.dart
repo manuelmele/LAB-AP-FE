@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:wefix/constants.dart';
@@ -7,10 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/screens/payment/redirect/redirect.dart';
-import 'summary_content.dart';
 import 'package:intl/intl.dart';
 import 'package:wefix/size_config.dart';
-import 'package:url_launcher/url_launcher.dart'; 
+import 'package:url_launcher/url_launcher.dart';
 
 //import 'package:shop_app/components/no_account_text.dart';
 //import 'package:shop_app/components/socal_card.dart';
@@ -19,6 +16,8 @@ import 'dart:convert';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/services/user_service.dart';
 
+import '../../book_appointment/confirmation.dart';
+import '../paypal/makePayment.dart';
 
 class Summary extends StatefulWidget {
   @override
@@ -27,20 +26,6 @@ class Summary extends StatefulWidget {
 
 class _SummaryState extends State<Summary> {
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey webViewKey = GlobalKey(); 
-
-InAppWebViewController? webViewController;
-InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-crossPlatform: InAppWebViewOptions(
-useShouldOverrideUrlLoading: true,
-mediaPlaybackRequiresUserGesture: false,
-),
-android: AndroidInAppWebViewOptions(
-useHybridComposition: true,
-),
-ios: IOSInAppWebViewOptions(
-allowsInlineMediaPlayback: true,
-)); 
 
   String? jwt;
   int? plan;
@@ -49,31 +34,6 @@ allowsInlineMediaPlayback: true,
   UserModel? userData;
   bool initialResults = false;
 
-  late PullToRefreshController pullToRefreshController;
-String url = "";
-double progress = 0;
-final urlController = TextEditingController();
-
-
-@override
-void initState() {
-super.initState();
-
-pullToRefreshController = PullToRefreshController(
-options: PullToRefreshOptions(
-color: Colors.blue,
-),
-onRefresh: () async {
-webViewController?.reload();
-
-},
-);
-}
-
-@override
-void dispose() {
-super.dispose();
-} 
   String? oldPassword;
   String? newPassword;
   bool _oldPasswordVisible = false;
@@ -81,114 +41,41 @@ super.dispose();
   String? _chosenCategory;
   String? partita_iva;
   String? identity_card;
-  List<String> category = ["Plumber", "Painter", "Electrician", "Blacksmith", "Gardener", "Carpenter"];
+  List<String> category = [
+    "Plumber",
+    "Painter",
+    "Electrician",
+    "Blacksmith",
+    "Gardener",
+    "Carpenter"
+  ];
   List<String?> errors = [];
-  String currency="EUR";
+  String currency = "EUR";
 
-
-Future<String> UpgradeToPro() async {
-   if (_chosenCategory == null || partita_iva==null) {
+  Future<String> UpgradeToPro() async {
+    if (_chosenCategory == null || partita_iva == null) {
       return "Error: manca qualcosa";
     }
     errors = [];
     String price;
-    if (plan==0) {
-      price="1";
+    if (plan == 0) {
+      price = "1";
+    } else {
+      price = "10";
     }
-    else {
-      price="10";
-    }
-    SharedPreferences prefs =await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     jwt = prefs.getString('jwt');
-    String response = await UpgradeToProService(_chosenCategory!, partita_iva!, identity_card!, price, currency, jwt!);
+    String response = await UpgradeToProService(
+        _chosenCategory!, partita_iva!, identity_card!, price, currency, jwt!);
 
     if (response.contains('Error')) {
       String error = response;
       addError(error: error);
     } else {
-      return response; 
+      return response;
     }
     return '';
   }
-
-  void expanded() {
-    Expanded(
-                  child: Stack(
-                    children: [
-                      InAppWebView(
-                        key: webViewKey,
-                        initialUrlRequest:
-                        URLRequest(url: Uri.parse("https://inappwebview.dev/")),
-                        initialOptions: options,
-                        pullToRefreshController: pullToRefreshController,
-                        onWebViewCreated: (controller) {
-                          webViewController = controller;
-                        },
-                        onLoadStart: (controller, url) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        androidOnPermissionRequest: (controller, origin, resources) async {
-                          return PermissionRequestResponse(
-                              resources: resources,
-                              action: PermissionRequestResponseAction.GRANT);
-                        },
-                        shouldOverrideUrlLoading: (controller, navigationAction) async {
-                          var uri = navigationAction.request.url!;
-
-                          if (![ "http", "https", "file", "chrome",
-                            "data", "javascript", "about"].contains(uri.scheme)) {
-                            if (await canLaunch(url)) {
-                              // Launch the App
-                              await launch(
-                                url,
-                              );
-                              // and cancel the request
-                              return NavigationActionPolicy.CANCEL;
-                            }
-                          }
-
-                          return NavigationActionPolicy.ALLOW;
-                        },
-                        onLoadStop: (controller, url) async {
-                          pullToRefreshController.endRefreshing();
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onLoadError: (controller, url, code, message) {
-                          pullToRefreshController.endRefreshing();
-                        },
-                        onProgressChanged: (controller, progress) {
-                          if (progress == 100) {
-                            pullToRefreshController.endRefreshing();
-                          }
-                          setState(() {
-                            this.progress = progress / 100;
-                            urlController.text = this.url;
-                          });
-                        },
-                        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                          setState(() {
-                            this.url = url.toString();
-                            urlController.text = this.url;
-                          });
-                        },
-                        onConsoleMessage: (controller, consoleMessage) {
-                          print(consoleMessage);
-                        },
-                      ),
-                      progress < 1.0
-                          ? LinearProgressIndicator(value: progress)
-                          : Container(),
-                    ],
-                  ),
-                );
-  }
-
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -205,7 +92,6 @@ Future<String> UpgradeToPro() async {
       });
     }
   }
-
 
   void getUserData() {
     //search by category just the first time
@@ -224,11 +110,10 @@ Future<String> UpgradeToPro() async {
   }
 
   void getPlan() {
-      SharedPreferences.getInstance().then((m) {
-      plan=m.getInt('plan')!;
+    SharedPreferences.getInstance().then((m) {
+      plan = m.getInt('plan')!;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -240,185 +125,184 @@ Future<String> UpgradeToPro() async {
     final today = DateTime.now();
     final DateFormat dateFormater = DateFormat('dd/MM/yyyy');
     //get the dates after one month and one year
-    final aMonthFromNow = dateFormater.format(today.add(const Duration(days: 31)));
-    final aYearFromNow = dateFormater.format(today.add(const Duration(days: 365)));
+    final aMonthFromNow =
+        dateFormater.format(today.add(const Duration(days: 31)));
+    final aYearFromNow =
+        dateFormater.format(today.add(const Duration(days: 365)));
 
-      return SafeArea(
-        child: SingleChildScrollView(
-         child: Column(
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
           children: <Widget>[
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
               decoration: BoxDecoration(
-              color: kLightBlue,
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(200.0), //60
-                bottomLeft: Radius.circular(0.0), //60
-              )),
-
+                  color: kLightBlue,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(200.0), //60
+                    bottomLeft: Radius.circular(0.0), //60
+                  )),
               child: SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: getProportionateScreenWidth(20),
-                      vertical: getProportionateScreenHeight(30),
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: getProportionateScreenWidth(20),
+                    vertical: getProportionateScreenHeight(30),
+                  ),
+                  child: Column(children: [
+                    Text(
+                      "Summary of your payment plan!",
+                      style: TextStyle(
+                        fontSize: getProportionateScreenWidth(27),
+                        fontWeight: FontWeight.bold,
+                        color: kBlueDark,
+                      ),
                     ),
-                  child: Column(
-                    children: [
-                      Text("Summary of your payment plan!",
-                        style: TextStyle(
-                          fontSize: getProportionateScreenWidth(27),
-                          fontWeight: FontWeight.bold,
-                          color: kBlueDark,
-                        ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenWidth(20),
+                        vertical: getProportionateScreenHeight(10),
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: getProportionateScreenWidth(20),
-                          vertical: getProportionateScreenHeight(10),
-                        ),
+                    ),
+                    CircleAvatar(
+                      backgroundImage: userData == null
+                          ? null
+                          : Image.memory(base64Decode(userData!.photoProfile))
+                              .image,
+                      radius: getProportionateScreenHeight(60),
+                    ),
+                    SizedBox(height: getProportionateScreenHeight(10)),
+                    Text(
+                      userData == null
+                          ? ""
+                          : userData!.firstName + " " + userData!.secondName,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: kBlueDark,
                       ),
-                      CircleAvatar(
-                        backgroundImage: userData == null ? null : Image.memory(base64Decode(userData!.photoProfile)).image,
-                        radius: getProportionateScreenHeight(60),
-                      ),
-                      SizedBox(height: getProportionateScreenHeight(10)),
-                      Text(userData == null ? "" : userData!.firstName + " " + userData!.secondName,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: kBlueDark,
-                        ),
-                      ),
-                    ]),
-                  ),  
+                    ),
+                  ]),
+                ),
               ),
             ),
-
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-            child: Column(
-              children: <Widget>[
-            const SizedBox(height: 20),
-            buildCategoryFormField(),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            buildPartitaIVAFormField(),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            buildIdentityCardFormField(),
-            SizedBox(height: getProportionateScreenHeight(30)),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-            Row(
-              children: <Widget>[
-            Text(
-              "Choosen payment plan: ",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: kBlueDark,
-                fontSize: getProportionateScreenWidth(23),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            RichText(
-                text: TextSpan(
-                  text: plan==0 ? "Montly plan" : "Yearly plan",
-                  style: TextStyle(
-                    color: kBlueDark,
-                    fontSize: getProportionateScreenWidth(18),
-                    fontFamily: 'Ubuntu', 
-                  ),
-                ),
-            )]),            
-            Row(
-              children: <Widget>[
-            Text(
-              "Subscription expiration: " ,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: kBlueDark,
-                fontSize: getProportionateScreenWidth(23),
-                fontWeight: FontWeight.bold,
-                //fontFamily: 'Outfit', 
-                
-              )
-            ),
-            RichText(
-                text: TextSpan(
-                  text: plan==0 ? aMonthFromNow : aYearFromNow,
-                  style: TextStyle(
-                    color: kBlueDark,
-                    fontSize: getProportionateScreenWidth(18),
-                    fontFamily: 'Ubuntu', 
-                  ),
-                ),
-            )]),
+              child: Column(children: <Widget>[
+                const SizedBox(height: 20),
+                buildCategoryFormField(),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                buildPartitaIVAFormField(),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                buildIdentityCardFormField(),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Row(children: <Widget>[
+                        Text(
+                          "Choosen payment plan: ",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: kBlueDark,
+                            fontSize: getProportionateScreenWidth(23),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: plan == 0 ? "Montly plan" : "Yearly plan",
+                            style: TextStyle(
+                              color: kBlueDark,
+                              fontSize: getProportionateScreenWidth(18),
+                              fontFamily: 'Ubuntu',
+                            ),
+                          ),
+                        )
+                      ]),
+                      Row(children: <Widget>[
+                        Text("Subscription expiration: ",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: kBlueDark,
+                              fontSize: getProportionateScreenWidth(23),
+                              fontWeight: FontWeight.bold,
+                              //fontFamily: 'Outfit',
+                            )),
+                        RichText(
+                          text: TextSpan(
+                            text: plan == 0 ? aMonthFromNow : aYearFromNow,
+                            style: TextStyle(
+                              color: kBlueDark,
+                              fontSize: getProportionateScreenWidth(18),
+                              fontFamily: 'Ubuntu',
+                            ),
+                          ),
+                        )
+                      ]),
+                      Row(children: <Widget>[
+                        Text("Total cost: ",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: kBlueDark,
+                              fontSize: getProportionateScreenWidth(23),
+                              fontWeight: FontWeight.bold,
+                              //fontFamily: 'Outfit',
+                            )),
+                        RichText(
+                          text: TextSpan(
+                            text: plan == 0 ? "€ 4.99" : "€ 49.90",
+                            style: TextStyle(
+                              color: kBlueDark,
+                              fontSize: getProportionateScreenWidth(18),
+                              fontFamily: 'Ubuntu',
+                            ),
+                          ),
+                        )
+                      ]),
+                    ]),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: kLightBlue,
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(20.0),
+                        ),
+                      ),
+                      child: const Text(
+                        'Proceed to PayPal',
+                        style: TextStyle(
+                          color: kBlueDark,
+                        ),
+                      ),
+                      onPressed: () async {
+                        String url = await UpgradeToPro();
+                        if (!url.contains("Error")) {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString('url', url);
+                        }
+                        //Navigator.pushReplacementNamed(
+                        //  context, makePayment.routeName);
 
-            Row(
-              children: <Widget>[
-            Text(
-              "Total cost: ",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                color: kBlueDark,
-                    fontSize: getProportionateScreenWidth(23),
-                    fontWeight: FontWeight.bold,
-                    //fontFamily: 'Outfit', 
-              )
-            ),  
-            RichText(
-                text: TextSpan(
-                  text: plan==0 ? "€ 4.99" : "€ 49.90",
-                  style: TextStyle(
-                    color: kBlueDark,
-                    fontSize: getProportionateScreenWidth(18),
-                    fontFamily: 'Ubuntu', 
-                  ),
-                ),
-            )]),             
-              ]),      
-
-              SizedBox(height: getProportionateScreenHeight(30)),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: kLightBlue,
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0),
-                  ),
-                ),
-                child: const Text('Proceed to PayPal',
-                  style: TextStyle(
-                    color: kBlueDark,
-                  ),
-                ),
-                  onPressed: () async {
-                    
-                    
-                    //String url=await UpgradeToPro();
-
-                    
+                        Navigator.pushReplacementNamed(
+                            context, RedirectPage.routeName);
+                      }
 
                       //UpgradeToPro();
-                      Navigator.pushReplacementNamed(context, RedirectPage.routeName);
-                    }
-                  
+                      ),
                 ),
-              ),
-      
-             
-          ]),
+              ]),
             ),
-          
           ],
-         ),
         ),
-      );
-           
+      ),
+    );
   }
 
-     DropdownButtonHideUnderline buildCategoryFormField() {
+  DropdownButtonHideUnderline buildCategoryFormField() {
     return DropdownButtonHideUnderline(
       child: DropdownButtonFormField<String>(
         validator: (value) {
@@ -460,10 +344,10 @@ Future<String> UpgradeToPro() async {
       keyboardType: TextInputType.text,
       onSaved: (newValue) => partita_iva = newValue,
       onChanged: (value) {
-          setState(() {
-            partita_iva = value;
-          });
-          print(partita_iva);
+        setState(() {
+          partita_iva = value;
+        });
+        print(partita_iva);
         partita_iva = value;
       },
       validator: (value) {
@@ -492,16 +376,14 @@ Future<String> UpgradeToPro() async {
     );
   }
 
-
-
   TextFormField buildIdentityCardFormField() {
     return TextFormField(
       keyboardType: TextInputType.text,
       onSaved: (newValue) => identity_card = newValue,
       onChanged: (value) {
-          setState(() {
-            identity_card = value;
-          });
+        setState(() {
+          identity_card = value;
+        });
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -529,4 +411,3 @@ Future<String> UpgradeToPro() async {
     );
   }
 }
-

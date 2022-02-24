@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/payment/payment.dart';
-import 'package:wefix/screens/payment/info/info.dart';
 import 'package:wefix/screens/payment/summary/summary.dart';
 import 'payment_content.dart';
 //import 'package:wefix/screens/payment/info/info.dart';
