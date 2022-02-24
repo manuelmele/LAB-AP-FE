@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,9 +16,9 @@ import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
 class NewRequestsWorker extends StatefulWidget {
-  final String? userID;
+  final String? userJWT;
 
-  const NewRequestsWorker({Key? key, this.userID}) : super(key: key);
+  const NewRequestsWorker({Key? key, this.userJWT}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }
@@ -36,17 +37,15 @@ class _AppointmentsState extends State<NewRequestsWorker> {
   void loadMeeting() {
     if (initialResults) return;
 
-    SharedPreferences.getInstance().then((prefs) {
-      String jwt = prefs.getString('jwt')!;
-      getUserDataService(jwt).then((userResult) {
-        getAllWorkerMeetings(jwt, userResult.email).then((newResults) {
-          if (!disposed) {
-            setState(() {
-              results = newResults;
-              initialResults = true;
-            });
-          }
-        });
+    getUserDataService(widget.userJWT!).then((userResult) {
+      getAllWorkerMeetings(widget.userJWT!, userResult.email)
+          .then((newResults) {
+        if (!disposed) {
+          setState(() {
+            results = newResults;
+            initialResults = true;
+          });
+        }
       });
     });
   }
@@ -78,16 +77,22 @@ class _AppointmentsState extends State<NewRequestsWorker> {
                     itemCount: results.length,
                     itemBuilder: (context, i) {
                       if (isNewMeeting(results[i])) {
+                        int meetingId = results[i].idMeeting;
+                        String jwt = widget.userJWT!;
                         return ListAppointment(
-                            name: results[i].firstName +
-                                " " +
-                                results[i].secondName,
-                            service: results[i].category,
-                            date: results[i].dateTime.substring(0, 10),
-                            slotTime: results[i].slotTime,
-                            description: results[i].description,
-                            image: results[i].photoProfile,
-                            press: () {});
+                          name: results[i].firstName +
+                              " " +
+                              results[i].secondName,
+                          service: results[i].category,
+                          date: results[i].dateTime.substring(0, 10),
+                          slotTime: results[i].slotTime,
+                          description: results[i].description,
+                          image: results[i].photoProfile,
+                          press: (accept) {
+                            approveMeeting(jwt, meetingId, accept);
+                            refreshCalendar(context);
+                          },
+                        );
                       } else {
                         return const SizedBox(height: 0);
                       }
@@ -119,7 +124,7 @@ class ListAppointment extends StatelessWidget {
   final String date;
   final String description;
   final String image;
-  final VoidCallback press;
+  final Function press;
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +175,7 @@ class ListAppointment extends StatelessWidget {
             Row(
               children: [
                 OutlinedButton(
-                  onPressed: () => {},
+                  onPressed: () => {press(true)},
                   style: OutlinedButton.styleFrom(
                     backgroundColor: kOrange,
                     minimumSize: Size.zero,
@@ -188,7 +193,7 @@ class ListAppointment extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   margin: EdgeInsets.only(left: 5),
                   child: OutlinedButton(
-                    onPressed: () => {},
+                    onPressed: () => {press(false)},
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.grey[400],
                       minimumSize: Size.zero,

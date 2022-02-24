@@ -15,15 +15,16 @@ import 'package:wefix/screens/payment/payment.dart';
 
 class NavigatorScreen extends StatefulWidget {
   static String routeName = "/navigator";
+  final int? initialIndex;
 
-  const NavigatorScreen({Key? key}) : super(key: key);
+  const NavigatorScreen({Key? key, this.initialIndex}) : super(key: key);
   @override
   _NavigatorState createState() => _NavigatorState();
 }
 
 class _NavigatorState extends State<NavigatorScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  int currentIndex = 0;
+  late int currentIndex = widget.initialIndex ?? 0;
 
   List listOfColors = [
     Container(

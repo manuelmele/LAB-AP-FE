@@ -41,7 +41,7 @@ class MeetingModel {
       secondName: data['secondName'],
       email: data['email'],
       photoProfile: data['photoProfile'] ?? defaultAvatarBase64,
-      category: data['category'],
+      category: data['category'] ?? "Customer",
       description: data['description'],
       dateTime: data['date'],
       slotTime: data['slot_time'],

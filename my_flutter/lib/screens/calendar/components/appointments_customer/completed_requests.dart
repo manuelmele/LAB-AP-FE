@@ -15,9 +15,9 @@ import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
 class CompletedRequestsCustomer extends StatefulWidget {
-  final String? userID;
+  final String? userJWT;
 
-  const CompletedRequestsCustomer({Key? key, this.userID}) : super(key: key);
+  const CompletedRequestsCustomer({Key? key, this.userJWT}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }

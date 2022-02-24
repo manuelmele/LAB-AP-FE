@@ -35,13 +35,13 @@ class _BodyState extends State<Body> {
     return ListView(
       children: [
         NewRequestsWorker(
-          userID: jwt,
+          userJWT: jwt,
         ),
         BookedRequestsWorker(
-          userID: jwt,
+          userJWT: jwt,
         ),
         CompletedRequestsWorker(
-          userID: jwt,
+          userJWT: jwt,
         ),
       ],
     );
@@ -51,13 +51,13 @@ class _BodyState extends State<Body> {
     return ListView(
       children: [
         NewRequestsCustomer(
-          userID: jwt,
+          userJWT: jwt,
         ),
         BookedRequestsCustomer(
-          userID: jwt,
+          userJWT: jwt,
         ),
         CompletedRequestsCustomer(
-          userID: jwt,
+          userJWT: jwt,
         ),
       ],
     );

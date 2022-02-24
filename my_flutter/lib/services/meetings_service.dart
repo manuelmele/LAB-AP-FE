@@ -1,12 +1,16 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
+import 'dart:ffi';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:wefix/models/meeting_model.dart';
 import 'package:wefix/models/user_model.dart';
+import 'package:wefix/screens/calendar/calendar_page.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
 
 import '../constants.dart';
 
@@ -72,6 +76,59 @@ Future<List<MeetingModel>> getAllWorkerMeetings(
   return results;
 }
 
+void approveMeeting(String _jwt, int _idMeeting, bool _accept) async {
+  print(_idMeeting);
+
+  final queryParameters = {
+    'idMeeting': _idMeeting.toString(),
+    'accept': _accept.toString(),
+  };
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/approve-meeting', queryParameters);
+  final response = await http.put(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  //print(response.body);
+
+  if (response.statusCode == 200) {
+    print("Ok! ");
+  } else {
+    print("Unable to approve the meeting");
+  }
+}
+
+void sharePosition(
+    String _jwt, int _idMeeting, bool _start, double _lat, double _lng) async {
+  final queryParameters = {
+    'idMeeting': _idMeeting,
+    'start': _start,
+    'latitude': _lat,
+    'longitude': _lng,
+  };
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/share-position', queryParameters);
+  final response = await http.put(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  //print(response.body);
+
+  if (response.statusCode == 200) {
+    print("Ok! ");
+  } else {
+    print("Unable to share position");
+  }
+}
+
 bool isNewMeeting(MeetingModel meeting) {
   final now = DateTime.now();
   final expirationDate =
@@ -103,4 +160,12 @@ bool isCompletedMeeting(MeetingModel meeting) {
   if (meeting.accepted == false || isDateExpired) return true;
 
   return false;
+}
+
+void refreshCalendar(BuildContext context) {
+  Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext ctx) =>
+              const NavigatorScreen(initialIndex: 2)));
 }
