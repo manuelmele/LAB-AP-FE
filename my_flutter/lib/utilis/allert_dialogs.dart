@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/screens/login/login_form.dart';
+import 'package:wefix/services/meetings_service.dart';
 import 'package:wefix/size_config.dart';
 
 class DialogsUI {

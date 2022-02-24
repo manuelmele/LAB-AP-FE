@@ -8,7 +8,6 @@ import 'package:wefix/models/user_model.dart';
 
 import '../constants.dart';
 
-//[BE] server.port must be localhost:8000
 String baseUrl = BASE_URL;
 
 Future<List<UserModel>> filterByCategory(String _jwt, String _category) async {
@@ -22,8 +21,6 @@ Future<List<UserModel>> filterByQuery(
     'category': _category,
   };
 
-  print("Calling BE");
-
   final uri =
       Uri.http(baseUrl, '/wefix/account/workers-filter', queryParameters);
   final response = await http.get(
@@ -33,16 +30,16 @@ Future<List<UserModel>> filterByQuery(
     },
   );
 
-  print(response.body);
+  //print(response.body);
 
   List<UserModel> results = json
       .decode(response.body)
       .map<UserModel>((data) => UserModel.fromJson(data))
       .toList();
 
-  for (UserModel result in results) {
-    print(result.toString());
-  }
+  //for (UserModel result in results) {
+  //  print(result.toString());
+  //}
 
   //print("msg:" + response.body.toString());
   return results;

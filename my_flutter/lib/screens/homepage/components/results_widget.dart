@@ -126,11 +126,7 @@ class ListProfile extends StatelessWidget {
         trailing: Icon(Icons.arrow_forward_ios),
         leading: CircleAvatar(
             radius: 32,
-            child: ClipOval(
-                child: image == null || image.isEmpty
-                    ? const Image(
-                        image: AssetImage('assets/avatar/default_avatar.jpg'))
-                    : Image.memory(base64Decode(image)))),
+            child: ClipOval(child: Image.memory(base64Decode(image)))),
         title: Text(
           name,
           style: const TextStyle(
