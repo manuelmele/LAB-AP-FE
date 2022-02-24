@@ -12,8 +12,8 @@ class MeetingModel {
   final String slotTime;
   final bool? accepted;
   final bool? started;
-  final Double? lat;
-  final Double? lng;
+  final double? lat;
+  final double? lng;
 
   MeetingModel({
     required this.idMeeting,

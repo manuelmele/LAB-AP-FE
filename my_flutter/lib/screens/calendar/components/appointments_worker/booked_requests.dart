@@ -26,9 +26,14 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
   List<MeetingModel> results = [];
   bool disposed = false;
   bool initialResults = false;
+  bool sendingPosition = false;
+  Timer? timer;
 
   @override
   void dispose() {
+    if (timer != null) {
+      timer!.cancel();
+    }
     disposed = true;
     super.dispose();
   }
@@ -78,6 +83,9 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
                     itemCount: results.length,
                     itemBuilder: (context, i) {
                       if (isBookedMeeting(results[i])) {
+                        int meetingId = results[i].idMeeting;
+                        String jwt = widget.userJWT!;
+
                         return ListAppointment(
                             name: results[i].firstName +
                                 " " +
@@ -87,7 +95,15 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
                             slotTime: results[i].slotTime,
                             description: results[i].description,
                             image: results[i].photoProfile,
-                            press: () {});
+                            press: () {
+                              timer = Timer.periodic(Duration(seconds: 2),
+                                  (Timer t) {
+                                shareLoadedPosition(jwt, meetingId, true);
+                              });
+
+                              showSendingPosDialog(
+                                  context, jwt, meetingId, timer!);
+                            });
                       } else {
                         return const SizedBox(height: 0);
                       }
@@ -99,6 +115,40 @@ class _AppointmentsState extends State<BookedRequestsWorker> {
           )),
     );
   }
+}
+
+showSendingPosDialog(
+    BuildContext context, String _jwt, int _idMeeting, Timer timer) {
+  // set up the button
+  Widget okButton = TextButton(
+    child: const Text("Address Reached!"),
+    onPressed: () {
+      timer.cancel();
+      approveMeeting(_jwt, _idMeeting, false);
+      Navigator.of(context, rootNavigator: true).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Sending position.."),
+    content: const Text(
+        "Do not close the app, we are sending your live position to the customer. "),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
 
 class ListAppointment extends StatelessWidget {
@@ -168,7 +218,7 @@ class ListAppointment extends StatelessWidget {
               ),
             ),
             OutlinedButton(
-              onPressed: () => {},
+              onPressed: () => {press()},
               style: OutlinedButton.styleFrom(
                 backgroundColor: kOrange,
                 minimumSize: Size.zero,

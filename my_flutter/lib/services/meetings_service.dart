@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
 import 'package:http/http.dart' as http;
@@ -96,7 +97,7 @@ void approveMeeting(String _jwt, int _idMeeting, bool _accept) async {
   //print(response.body);
 
   if (response.statusCode == 200) {
-    print("Ok! ");
+    print("Ok! Approved");
   } else {
     print("Unable to approve the meeting");
   }
@@ -105,10 +106,10 @@ void approveMeeting(String _jwt, int _idMeeting, bool _accept) async {
 void sharePosition(
     String _jwt, int _idMeeting, bool _start, double _lat, double _lng) async {
   final queryParameters = {
-    'idMeeting': _idMeeting,
-    'start': _start,
-    'latitude': _lat,
-    'longitude': _lng,
+    'idMeeting': _idMeeting.toString(),
+    'start': _start.toString(),
+    'latitude': _lat.toString(),
+    'longitude': _lng.toString(),
   };
 
   final uri =
@@ -157,7 +158,9 @@ bool isCompletedMeeting(MeetingModel meeting) {
       DateFormat('dd/MM/yyyy').parse(meeting.dateTime.substring(0, 10));
   final bool isDateExpired = expirationDate.isBefore(now);
 
-  if (meeting.accepted == false || isDateExpired) return true;
+  if (meeting.accepted == false || meeting.started == false || isDateExpired) {
+    return true;
+  }
 
   return false;
 }
@@ -168,4 +171,16 @@ void refreshCalendar(BuildContext context) {
       MaterialPageRoute(
           builder: (BuildContext ctx) =>
               const NavigatorScreen(initialIndex: 2)));
+}
+
+void shareLoadedPosition(String _jwt, int _idMeeting, bool _start) async {
+  await Geolocator.requestPermission().then((permission) {
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      Geolocator.getCurrentPosition().then((position) {
+        sharePosition(
+            _jwt, _idMeeting, _start, position.latitude, position.longitude);
+      });
+    }
+  });
 }
