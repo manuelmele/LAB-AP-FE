@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/models/product_model.dart';
 import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'dart:convert';
@@ -89,8 +90,8 @@ Future<double> getReviewAverageService(String _jwt, String _email) async {
   final queryParameters = {
     "emailCustomer": _email,
   };
-  final uri =
-      Uri.http(baseUrl, '/wefix/account/user-avg-reviews', queryParameters);
+  final uri = Uri.http(baseUrl, '/wefix/worker/user-avg-reviews',
+      queryParameters); //controllare bene se le API corrispondono
   final response = await http.get(
     uri,
     headers: <String, String>{
@@ -98,15 +99,63 @@ Future<double> getReviewAverageService(String _jwt, String _email) async {
     },
   );
 
-  //print(response.body);
-
-  //funzionerà?
-  //double result = json
-  //    .decode(response.body)
-  //      .map<double>((data) => ReviewModel.fromJson(data)); //?
-
   double result = jsonDecode(response.body)["avgStar"] ?? 0.0;
 
   print("msg:" + response.body.toString());
   return result;
 }
+
+//funzione che permette di caricare tutti i prodotti di un certo worker
+Future<List<ProductModel>> getProductService(String _jwt, String _email) async {
+  final queryParameters = {
+    "emailWorker": _email,
+  };
+  print("Calling BE");
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/worker-products', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  print(response.body);
+
+  List<ProductModel> results = json
+      .decode(response.body)
+      .map<ProductModel>((data) => ProductModel.fromJson(data))
+      .toList();
+
+  for (ProductModel result in results) {
+    print(result.toString());
+  }
+
+  print("msg:" + response.body.toString());
+  return results;
+}
+
+/*
+Future<UserModel> updateProfileService(
+    String _jwt, String _firstName, String _secondName, String _bio) async {
+  final queryParameters = {
+    "firstName": _firstName,
+    "secondNe": _secondName,
+    "bio": _bio,
+  };
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/update-profile', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  Map<String, dynamic> map = json.decode(response.body);
+  UserModel result = UserModel.fromJson(map);
+  return result;
+} */
+
+

@@ -28,22 +28,6 @@ class CustomerPageState extends State<CustomerPage> {
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
-/*
-  void getUserData() {
-    //search by category just the first time
-    if (initialResults) return;
-
-    SharedPreferences.getInstance().then((prefs) {
-      String jwt = prefs.getString('jwt')!;
-      getUserDataService(jwt).then((newResults) {
-        setState(() {
-          userData = newResults;
-          initialResults = true;
-          print(userData);
-        });
-      });
-    });
-  } */
   @override
   void dispose() {
     disposed = true;
@@ -131,9 +115,26 @@ class CustomerPageState extends State<CustomerPage> {
       source: source,
     );
     setState(() {
-      _imageFile = pickedFile;
+      _imageFile = pickedFile; // modify! invoke the function on the backend
     });
   }
+
+/*
+//function to update the profile info
+  void updateProfile(String updFirstName, String updSecondName, String updBio) {
+    if (initialResults) {
+      return; // non può più essere usata in nessun altra funzione, crearne un altra per le average
+    }
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      updateProfileService(jwt, updFirstName, updSecondName, updBio)
+          .then((userResults) {
+        //userData!.firstName = updFirstName;
+        //userData!.secondName = updSecondName;
+        //userData!.bio = updBio;
+      });
+    });
+  } */
 
 //function for the pop up of the info
   Future openDialog() => showDialog(
@@ -176,7 +177,6 @@ class CustomerPageState extends State<CustomerPage> {
 
   @override
   Widget build(BuildContext context) {
-    //getUserData(); lo metto dentro la funzione dopo
     getReviews();
     if (userData != null) {
       return Scaffold(
@@ -201,12 +201,6 @@ class CustomerPageState extends State<CustomerPage> {
                           backgroundImage:
                               Image.memory(base64Decode(userData!.photoProfile))
                                   .image,
-
-                          //Image.asset(
-                          //        "assets/images/parrot_cut.png",
-                          //        height: 110,
-                          //        fit: BoxFit.scaleDown)
-                          //    .image,
                           radius: 70,
                           child: Container(
                             alignment: Alignment.topRight,

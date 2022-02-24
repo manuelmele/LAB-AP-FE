@@ -4,30 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wefix/models/product_model.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
+import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/user_service.dart';
 
 import '../../../size_config.dart';
 
-class WorkerPage extends StatefulWidget {
+class UserPage extends StatefulWidget {
   @override
-  WorkerPageState createState() => WorkerPageState();
+  UserPageState createState() => UserPageState();
 }
 
-class WorkerPageState extends State<WorkerPage> {
+class UserPageState extends State<UserPage> {
   String? jwt;
   UserModel? userData;
   bool initialResults = false;
   List<ReviewModel> reviewData = [];
+  List<ProductModel> productData = [];
   double? reviewAvg;
   bool disposed = false;
 
-  XFile? _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  //XFile? _imageFile;
+  //final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
@@ -35,7 +38,7 @@ class WorkerPageState extends State<WorkerPage> {
     super.dispose();
   }
 
-  void getReviews() {
+  void getInfo() {
     if (initialResults) {
       return; // non può più essere usata in nessun altra funzione, crearne un altra per le average
     }
@@ -45,27 +48,39 @@ class WorkerPageState extends State<WorkerPage> {
         getReviewService(jwt, userResults.email).then((reviewResults) {
           getReviewAverageService(jwt, userResults.email)
               .then((reviewAvgResults) {
-            if (!disposed) {
-              //remind this mechanism before the set state
-              setState(() {
-                userData = userResults;
-                reviewData = reviewResults;
-                reviewAvg = reviewAvgResults;
-                initialResults = true;
-                print(userData);
-                print(reviewData);
-                print(reviewAvgResults);
-              });
-            }
+            getProductService(jwt, userResults.email).then((productResults) {
+              if (!disposed) {
+                //remind this mechanism before the set state
+                setState(() {
+                  userData = userResults;
+                  reviewData = reviewResults;
+                  reviewAvg = reviewAvgResults;
+                  productData = productResults;
+                  initialResults = true;
+                  print(userData);
+                  print(reviewData);
+                  print(reviewAvgResults);
+                  print(productData);
+                });
+              }
+            });
           });
         });
       });
     });
   }
 
+  double reviewUpdate(double? rev) {
+    if (rev == null) {
+      return 0.0;
+    } else {
+      return rev;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    getReviews(); // when the page starts it calls the user data
+    getInfo(); // when the page starts it calls the user data
     if (userData != null) {
       return Scaffold(
         //resizeToAvoidBottomInset: false,
@@ -84,30 +99,7 @@ class WorkerPageState extends State<WorkerPage> {
                         backgroundImage:
                             Image.memory(base64Decode(userData!.photoProfile))
                                 .image,
-
-                        //Image.asset(
-                        //      "assets/images/parrot_cut.png", // caricare l'immagine del database
-                        //    height: 110,
-                        //  fit: BoxFit.scaleDown)
-                        //.image,
                         radius: 70,
-                        child: Container(
-                          alignment: Alignment.topRight,
-                          child: GestureDetector(
-                            onTap: () =>
-                                {}, //connect directly to the imagepicker function
-
-                            child: CircleAvatar(
-                              radius: 15,
-                              backgroundColor: kLightOrange,
-                              child: Icon(
-                                Icons.edit,
-                                color: kWhite,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                     SizedBox(
@@ -125,26 +117,17 @@ class WorkerPageState extends State<WorkerPage> {
                             children: [
                               Text(
                                 userData!.firstName,
+                                //"Name",
                                 style: TextStyle(fontSize: 32),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Container(
-                                alignment: Alignment.topRight,
-                                child: GestureDetector(
-                                  onTap: () => {}, //show dialog for modify name
-                                  child: CircleAvatar(
-                                    radius: 15,
-                                    backgroundColor: kLightOrange,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: kWhite,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              )
+                              Text(
+                                userData!.secondName,
+                                //"Surname",
+                                style: TextStyle(fontSize: 32),
+                              ),
                             ],
                           ),
                           Row(children: [
@@ -153,16 +136,22 @@ class WorkerPageState extends State<WorkerPage> {
                               style:
                                   TextStyle(fontSize: 19, color: Colors.grey),
                             ),
-                            //here insert the rating!!!!
                           ]),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               SizedBox(
-                                width: 10,
                                 height: 5,
                               ),
+                              Text(
+                                userData!.email,
+                                //"Email",
+                                style:
+                                    TextStyle(fontSize: 19, color: Colors.grey),
+                              ),
                             ],
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                           Text(
                             userData!.bio,
@@ -172,8 +161,8 @@ class WorkerPageState extends State<WorkerPage> {
                           //here starts the rating
                           Row(children: [
                             RatingBarIndicator(
-                              rating:
-                                  4.5, //get the rating from the media form the db
+                              rating: reviewUpdate(
+                                  reviewAvg), //get the rating from the media form the db
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
@@ -186,7 +175,8 @@ class WorkerPageState extends State<WorkerPage> {
                               width: 10,
                             ),
                             Text(
-                              "4.5", //DISPLAY THE MEDIA FROM THE DB
+                              reviewAvg
+                                  .toString(), //DISPLAY THE MEDIA FROM THE DB
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
                             ),
@@ -224,8 +214,8 @@ class WorkerPageState extends State<WorkerPage> {
                     child: ListView.builder(
                       //scroll horizontal
                       scrollDirection: Axis.horizontal,
-                      itemCount:
-                          18, //number of reviews given to the user, input from the databases
+                      itemCount: reviewData
+                          .length, //number of reviews given to the user, input from the databases
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -238,7 +228,8 @@ class WorkerPageState extends State<WorkerPage> {
                           ),
                           child: Column(children: [
                             Text(
-                              "User id1:", //get theuser name and surname from the db
+                              reviewData[index]
+                                  .firstName, //get theuser name and surname from the db
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 17,
@@ -248,7 +239,8 @@ class WorkerPageState extends State<WorkerPage> {
                               height: 5,
                             ),
                             Text(
-                              "Example of review 1", //get the content of the review from the db
+                              reviewData[index]
+                                  .contentReview, //get the content of the review from the db
                               style:
                                   TextStyle(color: Colors.black, fontSize: 15),
                             ),
@@ -270,25 +262,6 @@ class WorkerPageState extends State<WorkerPage> {
                           fontSize: 28,
                           fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                        onTap: () =>
-                            {}, //show dialog function for adding price list item
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: kLightOrange,
-                          child: Icon(
-                            Icons.edit,
-                            color: kWhite,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
                 SizedBox(
@@ -303,7 +276,8 @@ class WorkerPageState extends State<WorkerPage> {
                       //controller: controller, doesn't work fine
                       scrollDirection: Axis.vertical,
                       physics: BouncingScrollPhysics(),
-                      itemCount: 4, //number of photos uploaded by the user
+                      itemCount: productData
+                          .length, //number of products uploaded by the user
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -322,8 +296,10 @@ class WorkerPageState extends State<WorkerPage> {
                                     color: kOrange,
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: const AssetImage(
-                                          "assets/images/parrot_cut.png"),
+                                      image: AssetImage(
+                                          //levato il const... aggiungerlo se si rimette un immagine fissa
+                                          productData[index].image),
+                                      //"assets/images/parrot_cut.png"
                                       //take the image input from the database
                                       fit: BoxFit.fitHeight,
                                     )),
@@ -336,17 +312,20 @@ class WorkerPageState extends State<WorkerPage> {
                                     MediaQuery.of(context).size.width / 2 - 30,
                                 child: Column(children: [
                                   Text(
-                                    "Title", // import from the db
+                                    productData[index].title,
+                                    //"Title", // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 20),
                                   ),
                                   Text(
-                                    "Description:...", // import from the db
+                                    productData[index].description,
+                                    //"Description:...", // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 17),
                                   ),
                                   Text(
-                                    "Price:...", // import from the db
+                                    productData[index].price,
+                                    //"Price:...", // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 17),
                                   ),

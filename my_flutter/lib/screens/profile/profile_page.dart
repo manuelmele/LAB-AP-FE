@@ -8,6 +8,7 @@ import 'package:wefix/screens/login/login.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/profile/customer_page.dart';
+import 'package:wefix/screens/profile/user_page.dart';
 import 'package:wefix/screens/profile/worker_page.dart';
 import 'package:wefix/services/user_service.dart';
 
@@ -49,7 +50,7 @@ class ProfilePageState extends State<ProfilePage> {
       if (role == "Customer") {
         return Scaffold(
           backgroundColor: kBackground,
-          body: CustomerPage(),
+          body: UserPage(),
         );
       } else {
         return Scaffold(
