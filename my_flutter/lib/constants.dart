@@ -18,6 +18,7 @@ const kLightGreen = Color(0xFFcfdc9e);
 const kLightOrange = Color(0xFFecc08a);
 const kYellow = Color(0xFFf7e4aa);
 const kRed = Color(0xFFC70039);
+const kBlueDark = Color(0xFF6397d0);
 
 const kOrange = Color(0xFFe78549);
 //const kBluScuro = Color(0xFFfe7062);

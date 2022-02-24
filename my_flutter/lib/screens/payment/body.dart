@@ -5,6 +5,7 @@ import 'package:wefix/constants.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/screens/payment/summary/summary.dart';
 import 'payment_content.dart';
+//import 'package:wefix/screens/payment/info/info.dart';
 
 import 'package:wefix/size_config.dart';
 //import 'package:shop_app/components/no_account_text.dart';
@@ -31,15 +32,15 @@ class _PaymentState extends State<Payment> {
     {
       "title": "Monthly plan",
       "discount": " ",
-      "cost": "\$x/month",
+      "cost": "\€ 4.99/month",
       "image": "assets/images/card.jpeg",
       "pay":
           "\u{2713}  Subscribe with your Partita IVA\n\u{2713}  Create your virtual shop\n\u{2713}  Expand your business\n\u{2713}  100% secure payments with PayPal\n\u{2713}  Cancel your subscription at any time"
     },
     {
       "title": "Yearly plan",
-      "discount": "*5% discount on the monthly plan",
-      "cost": "\$y/year",
+      "discount": "*15% discount on the monthly plan",
+      "cost": "\€ 49.90/year",
       "image": "assets/images/card.jpeg",
       "pay":
           "\u{2713}  Subscribe with your Partita IVA\n\u{2713}  Create your virtual shop\n\u{2713}  Expand your business\n\u{2713}  100% secure payments with PayPal\n\u{2713}  Cancel your subscription at any time"
