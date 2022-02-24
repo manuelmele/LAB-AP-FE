@@ -22,10 +22,13 @@ class CustomerPageState extends State<CustomerPage> {
   UserModel? userData;
   bool initialResults = false;
   List<ReviewModel> reviewData = [];
+  double? reviewAvg;
+  bool disposed = false;
 
   XFile? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
+/*
   void getUserData() {
     //search by category just the first time
     if (initialResults) return;
@@ -40,17 +43,46 @@ class CustomerPageState extends State<CustomerPage> {
         });
       });
     });
+  } */
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
   }
 
   void getReviews() {
-    if (userData != null) {
-      getReviewService(userData!.email).then((newResults) {
-        setState(() {
-          reviewData = newResults;
-          initialResults = true;
-          print(reviewData);
+    if (initialResults) {
+      return; // non può più essere usata in nessun altra funzione, crearne un altra per le average
+    }
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      getUserDataService(jwt).then((userResults) {
+        getReviewService(jwt, userResults.email).then((reviewResults) {
+          getReviewAverageService(jwt, userResults.email)
+              .then((reviewAvgResults) {
+            if (!disposed) {
+              //remind this mechanism before the set state
+              setState(() {
+                userData = userResults;
+                reviewData = reviewResults;
+                reviewAvg = reviewAvgResults;
+                initialResults = true;
+                print(userData);
+                print(reviewData);
+                print(reviewAvgResults);
+              });
+            }
+          });
         });
       });
+    });
+  }
+
+  double reviewUpdate(double? rev) {
+    if (rev == null) {
+      return 0.0;
+    } else {
+      return rev;
     }
   }
 
@@ -133,7 +165,8 @@ class CustomerPageState extends State<CustomerPage> {
             ]),
             actions: [
               TextButton(
-                onPressed: () {},
+                onPressed:
+                    () {}, //passare la funzione che manda i dati al Back End
                 child: Text(
                   "SUBMIT",
                 ),
@@ -143,7 +176,7 @@ class CustomerPageState extends State<CustomerPage> {
 
   @override
   Widget build(BuildContext context) {
-    getUserData();
+    //getUserData(); lo metto dentro la funzione dopo
     getReviews();
     if (userData != null) {
       return Scaffold(
@@ -280,8 +313,8 @@ class CustomerPageState extends State<CustomerPage> {
                             //here insert the rating
                             Column(children: [
                               RatingBarIndicator(
-                                rating:
-                                    4.5, //get the rating from the media form the db
+                                rating: reviewUpdate(
+                                    reviewAvg), //get the rating from the media form the db, try without the function...
                                 itemBuilder: (context, index) => Icon(
                                   Icons.star,
                                   color: Colors.amber,
@@ -293,7 +326,8 @@ class CustomerPageState extends State<CustomerPage> {
                             ]),
                             //here insert the rating
                             Text(
-                              "4.5", //DISPLAY THE MEDIA FROM THE DB
+                              reviewAvg
+                                  .toString(), //DISPLAY THE MEDIA FROM THE BACK END
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
                             ),
@@ -322,10 +356,10 @@ class CustomerPageState extends State<CustomerPage> {
                       maxHeight: 250.0,
                     ),
                     child: ListView.builder(
-                      //scroll horizontal
+                      //scroll vertical
                       scrollDirection: Axis.vertical,
-                      itemCount:
-                          5, //number of reviews given to the user, input from the databases
+                      itemCount: reviewData
+                          .length, //number of reviews given to the user, input from the databases
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -338,7 +372,8 @@ class CustomerPageState extends State<CustomerPage> {
                           ),
                           child: Column(children: [
                             Text(
-                              "Worker id:", //get theuser name and surname from the db
+                              reviewData[index]
+                                  .firstName, //get the user name and surname from the db
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 17,
@@ -348,7 +383,8 @@ class CustomerPageState extends State<CustomerPage> {
                               height: 5,
                             ),
                             Text(
-                              "This user is reliable", //get the content of the review from the db
+                              reviewData[index]
+                                  .contentReview, //get the content of the review from the db
                               style:
                                   TextStyle(color: Colors.black, fontSize: 15),
                             ),

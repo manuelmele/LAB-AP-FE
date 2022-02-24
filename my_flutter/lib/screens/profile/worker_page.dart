@@ -329,6 +329,15 @@ class WorkerPageState extends State<WorkerPage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            {}, // here I invoke the function to book the appointment, go to another page
+        backgroundColor: kOrange,
+        child: Icon(
+          Icons.chat_bubble_outline,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

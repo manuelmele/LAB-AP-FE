@@ -55,16 +55,19 @@ Future<String> changePasswordService(
   }
 }
 
-Future<List<ReviewModel>> getReviewService(String _email) async {
+Future<List<ReviewModel>> getReviewService(String _jwt, String _email) async {
   final queryParameters = {
     "emailCustomer": _email,
   };
+
+  print("Calling BE");
+
   final uri = Uri.http(baseUrl, '/wefix/account/user-reviews', queryParameters);
   final response = await http.get(
     uri,
-    //headers: <String, String>{
-    //  'Authorization': 'Bearer $_jwt',
-    //},
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
   );
 
   print(response.body);
@@ -78,6 +81,32 @@ Future<List<ReviewModel>> getReviewService(String _email) async {
     print(result.toString());
   }
 
-  //print("msg:" + response.body.toString());
+  print("msg:" + response.body.toString());
   return results;
+}
+
+Future<double> getReviewAverageService(String _jwt, String _email) async {
+  final queryParameters = {
+    "emailCustomer": _email,
+  };
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/user-avg-reviews', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  //print(response.body);
+
+  //funzionerà?
+  //double result = json
+  //    .decode(response.body)
+  //      .map<double>((data) => ReviewModel.fromJson(data)); //?
+
+  double result = jsonDecode(response.body)["avgStar"] ?? 0.0;
+
+  print("msg:" + response.body.toString());
+  return result;
 }
