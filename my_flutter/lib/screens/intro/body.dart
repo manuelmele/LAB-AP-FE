@@ -150,7 +150,7 @@ class _BodyState extends State<Body> {
       margin: EdgeInsets.only(right: 5),
       height: 6,
       //il primo valore di width indica quanto deve essere largo il dot evidenziato, 240 lo fa diventare una barra
-      width: currentPage == index ? 200 : 6,
+      width: currentPage == index ? 50 : 6, //overflow bug fixed
       decoration: BoxDecoration(
         color: currentPage == index ? kLightOrange : kGrey,
         borderRadius: BorderRadius.circular(3),
