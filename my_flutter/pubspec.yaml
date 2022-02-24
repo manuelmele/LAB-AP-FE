@@ -53,6 +53,7 @@ dependencies:
   intl: ^0.17.0
   url_launcher: ^6.0.20 
   url_launcher_web: ^2.0.8
+  flutter_inappwebview: ^5.3.2
 
 dev_dependencies:
   flutter_test:

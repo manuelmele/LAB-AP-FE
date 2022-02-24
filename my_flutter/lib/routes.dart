@@ -8,6 +8,7 @@ import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/screens/payment/redirect/redirect.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
 import 'package:wefix/screens/payment/summary/summary.dart';
@@ -28,4 +29,5 @@ final Map<String, WidgetBuilder> routes = {
   SummaryPage.routeName: (context) => SummaryPage(),
   InfoPage.routeName: (context) => InfoPage(),
   BookingConfirmationScreen.routeName: (context) => BookingConfirmationScreen(),
+  RedirectPage.routeName: (context) => RedirectPage(),
 };
