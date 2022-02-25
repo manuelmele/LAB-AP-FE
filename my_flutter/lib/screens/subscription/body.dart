@@ -24,22 +24,7 @@ class _SubscriptionState extends State<Subscription> {
   int currentPage = 0;
   var today = DateTime.now();
   //List<PaymentModel> paymentsData = [];
-  List<PaymentModel> paymentsData = [
-    PaymentModel(
-        paymentId: "1",
-        date: "23/12/2021",
-        deadline: "23/01/2022",
-        price: "0.80",
-        currency: "EUR",
-        paymentMethod: "PayPal"),
-    PaymentModel(
-        paymentId: "2",
-        date: "23/01/2022",
-        deadline: "23/02/2022",
-        price: "0.80",
-        currency: "EUR",
-        paymentMethod: "PayPal"),
-  ];
+  List<PaymentModel> paymentsData = [];
 
   //pageController lets us choose which page of the pageviwe to see
   final PageController _pageController = PageController();
@@ -56,14 +41,14 @@ class _SubscriptionState extends State<Subscription> {
       getPaymentsDataService(jwt).then((newResults) {
         setState(() {
           paymentsData = newResults;
-          //print(paymentsData);
+          print(paymentsData);
         });
       });
     });
   }
 
   Widget build(BuildContext context) {
-    //getPaymentsData();
+    getPaymentsData();
 
     if (paymentsData.isEmpty) {
       //print("non ci sono pagamenti");
@@ -192,10 +177,10 @@ class ListPayment extends StatelessWidget {
     required this.paymentMethod,
   }) : super(key: key);
 
-  final String paymentId;
+  final int paymentId;
   final String date;
   final String deadline;
-  final String price;
+  final double price;
   final String currency;
   final String paymentMethod;
 
@@ -227,7 +212,7 @@ class ListPayment extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          price + " " + currency,
+          price.toString() + " " + currency,
           style: const TextStyle(
             fontSize: 30,
             color: kOrange,

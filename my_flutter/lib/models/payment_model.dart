@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 class PaymentModel {
-  final String paymentId;
+  final int paymentId;
   final String date;
   final String deadline;
-  final String price;
+  final double price;
   final String currency;
   final String paymentMethod;
 
