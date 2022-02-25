@@ -170,26 +170,29 @@ Future<List<ReviewModel>> getPublicWorkerReviewService(
   return results;
 }
 
-/*
-Future<UserModel> updateProfileService(
+Future<String> updateProfileService(
     String _jwt, String _firstName, String _secondName, String _bio) async {
-  final queryParameters = {
-    "firstName": _firstName,
-    "secondNe": _secondName,
-    "bio": _bio,
-  };
-  final uri =
-      Uri.http(baseUrl, '/wefix/account/update-profile', queryParameters);
-  final response = await http.get(
+  final uri = Uri.http(baseUrl, '/wefix/account/update-profile');
+  final response = await http.put(
     uri,
     headers: <String, String>{
       'Authorization': 'Bearer $_jwt',
+      'Content-Type': 'application/json',
     },
+    body: jsonEncode(<String, String>{
+      'firstName': _firstName,
+      'secondName': _secondName,
+      'bio': _bio,
+    }),
   );
 
-  Map<String, dynamic> map = json.decode(response.body);
-  UserModel result = UserModel.fromJson(map);
-  return result;
-} */
+  //String message = jsonDecode(response.body)["message"].toString();
 
-
+  if (response.body.isNotEmpty && response.body != "null") {
+    return "Error: " + response.body.toString();
+  } else if (response.statusCode == 200) {
+    return "";
+  } else {
+    return "Unknown Error";
+  }
+}

@@ -23,14 +23,34 @@ class CustomerPageState extends State<CustomerPage> {
   bool initialResults = false;
   List<ReviewModel> reviewData = [];
   bool disposed = false;
+  List<String?> errors = [];
+  String? newName;
+  String? newSurname;
+  String? newBio;
 
-  XFile? _imageFile;
+  XFile? _photoProfile;
   final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
     disposed = true;
     super.dispose();
+  }
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
   }
 
   void getInfo() {
@@ -46,7 +66,6 @@ class CustomerPageState extends State<CustomerPage> {
             setState(() {
               userData = userResults;
               reviewData = reviewResults;
-
               initialResults = true;
               print(userData);
               print(reviewData);
@@ -56,15 +75,6 @@ class CustomerPageState extends State<CustomerPage> {
       });
     });
   }
-
-/*
-  double reviewUpdate(double? rev) {
-    if (rev == null) {
-      return 0.0;
-    } else {
-      return rev;
-    }
-  } */
 
   Widget bottomSheet() {
     return Container(
@@ -111,10 +121,177 @@ class CustomerPageState extends State<CustomerPage> {
       source: source,
     );
     setState(() {
-      _imageFile = pickedFile; // modify! invoke the function on the backend
+      _photoProfile = pickedFile; // modify! invoke the function on the backend
     });
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Future<void> editUserSettings(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          //bool isChecked = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return //SingleChildScrollView(child:
+                AlertDialog(
+              content: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        initialValue: userData!.firstName,
+                        onSaved: (newValue) => newName = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            newName = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Your Name",
+                          //focusColor: kOrange,
+                          hintText: "Enter your name",
+                          // If  you are using latest version of flutter then lable text and hint text shown like this
+                          // if you r using flutter less then 1.20.* then maybe this is not working properly
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.person,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        initialValue: userData!.secondName,
+                        onSaved: (newValue) => newSurname = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            newSurname =
+                                value; //switcha tra password oscurata e password visibile
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Your Surname",
+                          //focusColor: kOrange,
+                          hintText: "Enter your surname",
+                          // If  you are using latest version of flutter then lable text and hint text shown like this
+                          // if you r using flutter less then 1.20.* then maybe this is not working properly
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.person,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        initialValue: userData!.bio,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        onSaved: (newValue) => newBio = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            newBio = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            // width: 0.0 produces a thin "hairline" border
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Your Bio",
+                          //focusColor: kOrange,
+                          hintText: "Enter your bio",
+                          // If  you are using latest version of flutter then lable text and hint text shown like this
+                          // if you r using flutter less then 1.20.* then maybe this is not working properly
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.library_books,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              title: Text('Edit your info:'),
+              actions: <Widget>[
+                InkWell(
+                  child: Text('OK   '),
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? jwt = prefs.getString('jwt');
+
+                    print("Adesso stampo la jwt");
+                    print(jwt);
+
+                    //check, the values cannot be null
+                    if (newName == null) {
+                      newName = userData!.firstName;
+                    }
+                    if (newSurname == null) {
+                      newSurname = userData!.secondName;
+                    }
+                    if (newBio == null) {
+                      newBio = userData!.bio;
+                    }
+                    String res = await updateProfileService(
+                        jwt!, newName!, newSurname!, newBio!);
+                    print(res);
+                    //chiamo la funzione validate per mostrare gli errori a schermo
+                    if (!_formKey.currentState!.validate()) {
+                      print("not valid");
+                    }
+                    if (_formKey.currentState!.validate()) {
+                      // Do something like updating SharedPreferences or User Settings etc.
+                      Navigator.of(context).pop();
+                      initialResults = false;
+                      getInfo();
+                    }
+                  },
+                ),
+              ],
+              //),
+            );
+          });
+        });
+  }
 /*
 //function to update the profile info
   void updateProfile(String updFirstName, String updSecondName, String updBio) {
@@ -133,7 +310,7 @@ class CustomerPageState extends State<CustomerPage> {
   } */
 
 //function for the pop up of the info
-  Future openDialog() => showDialog(
+  /*Future openDialog() => showDialog(
       context: context,
       builder: (context) => AlertDialog(
             title: Text("Edit your info:"),
@@ -171,7 +348,7 @@ class CustomerPageState extends State<CustomerPage> {
                 ),
               ),
             ],
-          ));
+          )); */
 
   @override
   Widget build(BuildContext context) {
@@ -259,8 +436,8 @@ class CustomerPageState extends State<CustomerPage> {
                                 Container(
                                   alignment: Alignment.centerRight,
                                   child: GestureDetector(
-                                    onTap: () => {
-                                      openDialog(),
+                                    onTap: () async => {
+                                      await editUserSettings(context),
                                     },
                                     child: CircleAvatar(
                                       radius: 15,
