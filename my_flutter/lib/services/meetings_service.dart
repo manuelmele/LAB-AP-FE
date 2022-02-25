@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:wefix/models/meeting_model.dart';
+import 'package:wefix/models/position_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
@@ -183,4 +184,34 @@ void shareLoadedPosition(String _jwt, int _idMeeting, bool _start) async {
       });
     }
   });
+}
+
+Future<PositionModel> getMeetingPosition(String _jwt, int _idMeeting) async {
+  final queryParameters = {
+    'idMeeting': _idMeeting.toString(),
+  };
+
+  final uri = Uri.http(baseUrl, '/wefix/account/get-position', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  if (response.body.isEmpty) {
+    return PositionModel(lat: 0, lng: 0);
+  }
+
+  List<PositionModel> results = json
+      .decode(response.body)
+      .map<PositionModel>((data) => PositionModel.fromJson(data))
+      .toList();
+
+  for (PositionModel result in results) {
+    print(result.toString());
+  }
+
+  //print("msg:" + response.body.toString());
+  return results[0];
 }
