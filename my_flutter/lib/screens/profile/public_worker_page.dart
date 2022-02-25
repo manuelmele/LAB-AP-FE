@@ -12,30 +12,39 @@ import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/user_service.dart';
+import 'package:wefix/services/worker_service.dart';
 
 import '../../../size_config.dart';
 
-class UserPage extends StatefulWidget {
+class PublicWorkerPage extends StatefulWidget {
+  static String routeName = "/publicWorker";
   @override
-  UserPageState createState() => UserPageState();
+  PublicWorkerPageState createState() => PublicWorkerPageState();
 }
 
-class UserPageState extends State<UserPage> {
+class PublicWorkerPageState extends State<PublicWorkerPage> {
   String? jwt;
-  UserModel? userData;
+  UserModel? workerData;
   bool initialResults = false;
   List<ReviewModel> reviewData = [];
   List<ProductModel> productData = [];
-  double? reviewAvg;
   bool disposed = false;
+  String? emailWorker;
 
-  //XFile? _imageFile;
-  //final ImagePicker _picker = ImagePicker();
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
     disposed = true;
     super.dispose();
+  }
+
+  void setEmailWorker() async {
+    SharedPreferences.getInstance().then((prefs) {
+      emailWorker = prefs.getString('emailWorker')!;
+    });
+    print(emailWorker);
   }
 
   void getInfo() {
@@ -44,26 +53,23 @@ class UserPageState extends State<UserPage> {
     }
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
-      getUserDataService(jwt).then((userResults) {
-        getReviewService(jwt, userResults.email).then((reviewResults) {
-          getReviewAverageService(jwt, userResults.email)
-              .then((reviewAvgResults) {
-            getProductService(jwt, userResults.email).then((productResults) {
-              if (!disposed) {
-                //remind this mechanism before the set state
-                setState(() {
-                  userData = userResults;
-                  reviewData = reviewResults;
-                  reviewAvg = reviewAvgResults;
-                  productData = productResults;
-                  initialResults = true;
-                  print(userData);
-                  print(reviewData);
-                  print(reviewAvgResults);
-                  print(productData);
-                });
-              }
-            });
+      emailWorker = prefs.getString('emailWorker')!;
+      getPublicWorkerDataService(jwt, emailWorker!).then((workerResults) {
+        getPublicWorkerReviewService(jwt, emailWorker!).then((reviewResults) {
+          getPublicWorkerProductService(jwt, emailWorker!)
+              .then((productResults) {
+            if (!disposed) {
+              //remind this mechanism before the set state
+              setState(() {
+                workerData = workerResults;
+                reviewData = reviewResults;
+                productData = productResults;
+                initialResults = true;
+                print(workerData);
+                print(reviewData);
+                print(productData);
+              });
+            }
           });
         });
       });
@@ -81,7 +87,7 @@ class UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     getInfo(); // when the page starts it calls the user data
-    if (userData != null) {
+    if (workerData != null) {
       return Scaffold(
         //resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
@@ -97,7 +103,7 @@ class UserPageState extends State<UserPage> {
                       backgroundColor: kLightOrange,
                       child: CircleAvatar(
                         backgroundImage:
-                            Image.memory(base64Decode(userData!.photoProfile))
+                            Image.memory(base64Decode(workerData!.photoProfile))
                                 .image,
                         radius: 70,
                       ),
@@ -116,7 +122,7 @@ class UserPageState extends State<UserPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                userData!.firstName,
+                                workerData!.firstName,
                                 //"Name",
                                 style: TextStyle(fontSize: 32),
                               ),
@@ -124,7 +130,7 @@ class UserPageState extends State<UserPage> {
                                 width: 10,
                               ),
                               Text(
-                                userData!.secondName,
+                                workerData!.secondName,
                                 //"Surname",
                                 style: TextStyle(fontSize: 32),
                               ),
@@ -132,7 +138,7 @@ class UserPageState extends State<UserPage> {
                           ),
                           Row(children: [
                             Text(
-                              userData!.category,
+                              workerData!.category,
                               style:
                                   TextStyle(fontSize: 19, color: Colors.grey),
                             ),
@@ -143,7 +149,7 @@ class UserPageState extends State<UserPage> {
                                 height: 5,
                               ),
                               Text(
-                                userData!.email,
+                                workerData!.email,
                                 //"Email",
                                 style:
                                     TextStyle(fontSize: 19, color: Colors.grey),
@@ -154,15 +160,15 @@ class UserPageState extends State<UserPage> {
                             height: 5,
                           ),
                           Text(
-                            userData!.bio,
+                            workerData!.bio,
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
 
                           //here starts the rating
                           Row(children: [
                             RatingBarIndicator(
-                              rating: reviewUpdate(
-                                  reviewAvg), //get the rating from the media form the db
+                              rating: workerData!
+                                  .avgStar, //get the rating from the media form the db
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
@@ -175,7 +181,7 @@ class UserPageState extends State<UserPage> {
                               width: 10,
                             ),
                             Text(
-                              reviewAvg
+                              workerData!.avgStar
                                   .toString(), //DISPLAY THE MEDIA FROM THE DB
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),

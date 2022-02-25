@@ -10,6 +10,7 @@ import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:wefix/services/user_service.dart';
+import 'package:wefix/services/worker_service.dart';
 import '../../../size_config.dart';
 
 class CustomerPage extends StatefulWidget {
@@ -19,13 +20,11 @@ class CustomerPage extends StatefulWidget {
 
 class CustomerPageState extends State<CustomerPage> {
   String? jwt;
-  UserModel? userData;
+  UserModel? customerData;
   bool initialResults = false;
+  String? emailCustomer;
   List<ReviewModel> reviewData = [];
   bool disposed = false;
-
-  XFile? _imageFile;
-  final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
@@ -35,20 +34,23 @@ class CustomerPageState extends State<CustomerPage> {
 
   void getInfo() {
     if (initialResults) {
-      return; // non può più essere usata in nessun altra funzione, crearne un altra per le average
+      return;
     }
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
-      getUserDataService(jwt).then((userResults) {
-        getReviewService(jwt).then((reviewResults) {
+      emailCustomer = prefs.getString(
+          'emailCustomer'); //implementare la funzione dalla pagina appuntamenti
+      getPublicCustomerDataService(jwt, emailCustomer!).then((customerResults) {
+        getPublicCustomerReviewService(jwt, emailCustomer!)
+            .then((reviewResults) {
           if (!disposed) {
             //remind this mechanism before the set state
             setState(() {
-              userData = userResults;
+              customerData = customerResults;
               reviewData = reviewResults;
 
               initialResults = true;
-              print(userData);
+              print(customerData);
               print(reviewData);
             });
           }
@@ -57,126 +59,10 @@ class CustomerPageState extends State<CustomerPage> {
     });
   }
 
-/*
-  double reviewUpdate(double? rev) {
-    if (rev == null) {
-      return 0.0;
-    } else {
-      return rev;
-    }
-  } */
-
-  Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(
-        children: <Widget>[
-          const Text(
-            "Choose Profile photo",
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.camera, color: kOrange),
-              onPressed: () {
-                takePhoto(ImageSource.camera);
-              },
-              label: Text("Camera"),
-            ),
-            FlatButton.icon(
-              icon: Icon(Icons.image, color: kOrange),
-              onPressed: () {
-                takePhoto(ImageSource.gallery);
-              },
-              label: Text("Gallery"),
-            ),
-          ])
-        ],
-      ),
-    );
-  }
-
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(
-      source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile; // modify! invoke the function on the backend
-    });
-  }
-
-/*
-//function to update the profile info
-  void updateProfile(String updFirstName, String updSecondName, String updBio) {
-    if (initialResults) {
-      return; // non può più essere usata in nessun altra funzione, crearne un altra per le average
-    }
-    SharedPreferences.getInstance().then((prefs) {
-      String jwt = prefs.getString('jwt')!;
-      updateProfileService(jwt, updFirstName, updSecondName, updBio)
-          .then((userResults) {
-        //userData!.firstName = updFirstName;
-        //userData!.secondName = updSecondName;
-        //userData!.bio = updBio;
-      });
-    });
-  } */
-
-//function for the pop up of the info
-  Future openDialog() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Edit your info:"),
-            content: SingleChildScrollView(
-              child: Column(children: [
-                Text("Your Name"),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(hintText: "Enter your Name"),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Text("Your Surname"),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(hintText: "Enter your Surname"),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Text("Your Bio"),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(hintText: "Enter your Bio"),
-                ),
-              ]),
-            ),
-            actions: [
-              TextButton(
-                onPressed:
-                    () {}, //passare la funzione che manda i dati al Back End
-                child: Text(
-                  "SUBMIT",
-                ),
-              ),
-            ],
-          ));
-
   @override
   Widget build(BuildContext context) {
     getInfo();
-    if (userData != null) {
+    if (customerData != null) {
       return Scaffold(
         body: SingleChildScrollView(
           child: Container(
@@ -196,30 +82,10 @@ class CustomerPageState extends State<CustomerPage> {
                         radius: 75,
                         backgroundColor: kLightOrange,
                         child: CircleAvatar(
-                          backgroundImage:
-                              Image.memory(base64Decode(userData!.photoProfile))
-                                  .image,
+                          backgroundImage: Image.memory(
+                                  base64Decode(customerData!.photoProfile))
+                              .image,
                           radius: 70,
-                          child: Container(
-                            alignment: Alignment.topRight,
-                            child: GestureDetector(
-                              onTap: () => {
-                                showModalBottomSheet(
-                                  context: context,
-                                  builder: ((builder) => bottomSheet()),
-                                ),
-                              },
-                              child: CircleAvatar(
-                                radius: 15,
-                                backgroundColor: kLightOrange,
-                                child: Icon(
-                                  Icons.edit,
-                                  color: kWhite,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                     ),
@@ -241,7 +107,7 @@ class CustomerPageState extends State<CustomerPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  userData!.firstName,
+                                  customerData!.firstName,
                                   //"Name",
                                   style: TextStyle(fontSize: 32),
                                 ),
@@ -249,43 +115,26 @@ class CustomerPageState extends State<CustomerPage> {
                                   width: 10,
                                 ),
                                 Text(
-                                  userData!.secondName,
+                                  customerData!.secondName,
                                   //"Surname",
                                   style: TextStyle(fontSize: 32),
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: GestureDetector(
-                                    onTap: () => {
-                                      openDialog(),
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: kLightOrange,
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: kWhite,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                             SizedBox(
                               height: 5,
                             ),
                             Text(
-                              userData!.userRole,
+                              customerData!.userRole,
                               //"User role",
                               style:
                                   TextStyle(fontSize: 19, color: Colors.grey),
                             ),
                             Text(
-                              userData!.email,
+                              customerData!.email,
                               //"Email",
                               style:
                                   TextStyle(fontSize: 19, color: Colors.grey),
@@ -294,7 +143,7 @@ class CustomerPageState extends State<CustomerPage> {
                               height: 5,
                             ),
                             Text(
-                              userData!.bio,
+                              customerData!.bio,
                               //"Here goes the bio",
                               style:
                                   TextStyle(color: Colors.black, fontSize: 16),
@@ -305,7 +154,7 @@ class CustomerPageState extends State<CustomerPage> {
                             //here insert the rating
                             Column(children: [
                               RatingBarIndicator(
-                                rating: userData!
+                                rating: customerData!
                                     .avgStar, //get the rating from the media form the db, try without the function...
                                 itemBuilder: (context, index) => Icon(
                                   Icons.star,
@@ -318,7 +167,7 @@ class CustomerPageState extends State<CustomerPage> {
                             ]),
                             //here insert the rating
                             Text(
-                              userData!.avgStar
+                              customerData!.avgStar
                                   .toString(), //DISPLAY THE MEDIA FROM THE BACK END
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),

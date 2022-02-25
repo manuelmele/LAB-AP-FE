@@ -6,6 +6,7 @@ import 'package:wefix/screens/intro/intro.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/screens/profile/public_worker_page.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
 
@@ -18,4 +19,5 @@ final Map<String, WidgetBuilder> routes = {
   SignUpOptionalScreen.routeName: (context) => SignUpOptionalScreen(),
   NavigatorScreen.routeName: (context) => NavigatorScreen(),
   PaymentPage.routeName: (context) => PaymentPage(),
+  PublicWorkerPage.routeName: (context) => PublicWorkerPage(),
 };

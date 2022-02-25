@@ -23,7 +23,6 @@ class WorkerPageState extends State<WorkerPage> {
   UserModel? userData;
   bool initialResults = false;
   List<ReviewModel> reviewData = [];
-  double? reviewAvg;
   bool disposed = false;
 
   XFile? _imageFile;
@@ -42,22 +41,18 @@ class WorkerPageState extends State<WorkerPage> {
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
       getUserDataService(jwt).then((userResults) {
-        getReviewService(jwt, userResults.email).then((reviewResults) {
-          getReviewAverageService(jwt, userResults.email)
-              .then((reviewAvgResults) {
-            if (!disposed) {
-              //remind this mechanism before the set state
-              setState(() {
-                userData = userResults;
-                reviewData = reviewResults;
-                reviewAvg = reviewAvgResults;
-                initialResults = true;
-                print(userData);
-                print(reviewData);
-                print(reviewAvgResults);
-              });
-            }
-          });
+        getReviewService(jwt).then((reviewResults) {
+          if (!disposed) {
+            //remind this mechanism before the set state
+            setState(() {
+              userData = userResults;
+              reviewData = reviewResults;
+
+              initialResults = true;
+              print(userData);
+              print(reviewData);
+            });
+          }
         });
       });
     });
@@ -172,8 +167,8 @@ class WorkerPageState extends State<WorkerPage> {
                           //here starts the rating
                           Row(children: [
                             RatingBarIndicator(
-                              rating:
-                                  4.5, //get the rating from the media form the db
+                              rating: userData!
+                                  .avgStar, //get the rating from the media form the db
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
@@ -186,7 +181,8 @@ class WorkerPageState extends State<WorkerPage> {
                               width: 10,
                             ),
                             Text(
-                              "4.5", //DISPLAY THE MEDIA FROM THE DB
+                              userData!.avgStar
+                                  .toString(), //DISPLAY THE MEDIA FROM THE DB
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
                             ),
@@ -359,15 +355,6 @@ class WorkerPageState extends State<WorkerPage> {
                     )),
               ],
             ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              {}, // here I invoke the function to book the appointment, go to another page
-          backgroundColor: kOrange,
-          child: Icon(
-            Icons.chat_bubble_outline,
-            color: Colors.white,
           ),
         ),
       );

@@ -14,6 +14,7 @@ class UserModel {
   final String userRole;
   final String category;
   final String piva;
+  final double avgStar;
 
   UserModel({
     required this.firstName,
@@ -25,6 +26,7 @@ class UserModel {
     required this.userRole,
     required this.category,
     required this.piva,
+    required this.avgStar,
   });
 
   factory UserModel.fromJson(Map<dynamic, dynamic> data) {
@@ -43,6 +45,7 @@ class UserModel {
       userRole: data['userRole'],
       category: data['category'] ?? "customer",
       piva: data['piva'] ?? "Not provided",
+      avgStar: data['avgStar'] ?? 0.0,
     );
   }
 

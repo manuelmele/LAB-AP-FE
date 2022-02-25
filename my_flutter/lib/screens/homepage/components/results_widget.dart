@@ -9,6 +9,7 @@ import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
+import 'package:wefix/screens/profile/public_worker_page.dart';
 import 'package:wefix/services/filters_service.dart';
 
 import '../../../size_config.dart';
@@ -87,6 +88,7 @@ class _ResultsState extends State<ResultsWidget> {
             return ListProfile(
                 name: results[i].firstName + " " + results[i].secondName,
                 description: results[i].bio,
+                email: results[i].email,
                 image: results[i].photoProfile,
                 press: () {});
           },
@@ -101,6 +103,7 @@ class ListProfile extends StatelessWidget {
   const ListProfile({
     Key? key,
     required this.name,
+    required this.email,
     required this.description,
     required this.image,
     required this.press,
@@ -109,40 +112,50 @@ class ListProfile extends StatelessWidget {
   final String name;
   final String description;
   final String image;
+  final String email;
   final VoidCallback press;
 
   @override
   Widget build(BuildContext context) {
     final textColor = Colors.grey[200];
-    return Container(
-      margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: Colors.grey[200],
-      ),
-      child: ListTile(
-        contentPadding:
-            const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
-        trailing: Icon(Icons.arrow_forward_ios),
-        leading: CircleAvatar(
-            radius: 32,
-            child: ClipOval(
-                child: image == null || image.isEmpty
-                    ? const Image(
-                        image: AssetImage('assets/avatar/default_avatar.jpg'))
-                    : Image.memory(base64Decode(image)))),
-        title: Text(
-          name,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
+    return GestureDetector(
+      onTap: () async {
+        SharedPreferences.getInstance().then((prefs) {
+          print(email);
+          prefs.setString('emailWorker', email);
+          Navigator.pushNamed(context, PublicWorkerPage.routeName);
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: Colors.grey[200],
         ),
-        subtitle: Text(
-          description,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
+        child: ListTile(
+          contentPadding:
+              const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
+          trailing: Icon(Icons.arrow_forward_ios),
+          leading: CircleAvatar(
+              radius: 32,
+              child: ClipOval(
+                  child: image == null || image.isEmpty
+                      ? const Image(
+                          image: AssetImage('assets/avatar/default_avatar.jpg'))
+                      : Image.memory(base64Decode(image)))),
+          title: Text(
+            name,
+            style: const TextStyle(
+              fontSize: 18,
+              color: Colors.black,
+            ),
+          ),
+          subtitle: Text(
+            description,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
           ),
         ),
       ),

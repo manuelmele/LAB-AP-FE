@@ -56,14 +56,10 @@ Future<String> changePasswordService(
   }
 }
 
-Future<List<ReviewModel>> getReviewService(String _jwt, String _email) async {
-  final queryParameters = {
-    "emailCustomer": _email,
-  };
-
+Future<List<ReviewModel>> getReviewService(String _jwt) async {
   print("Calling BE");
 
-  final uri = Uri.http(baseUrl, '/wefix/account/user-reviews', queryParameters);
+  final uri = Uri.http(baseUrl, '/wefix/account/reviews');
   final response = await http.get(
     uri,
     headers: <String, String>{
@@ -86,29 +82,12 @@ Future<List<ReviewModel>> getReviewService(String _jwt, String _email) async {
   return results;
 }
 
-Future<double> getReviewAverageService(String _jwt, String _email) async {
-  final queryParameters = {
-    "emailCustomer": _email,
-  };
-  final uri = Uri.http(baseUrl, '/wefix/worker/user-avg-reviews',
-      queryParameters); //controllare bene se le API corrispondono
-  final response = await http.get(
-    uri,
-    headers: <String, String>{
-      'Authorization': 'Bearer $_jwt',
-    },
-  );
-
-  double result = jsonDecode(response.body)["avgStar"] ?? 0.0;
-
-  print("msg:" + response.body.toString());
-  return result;
-}
-
 //funzione che permette di caricare tutti i prodotti di un certo worker
-Future<List<ProductModel>> getProductService(String _jwt, String _email) async {
+//SOLO PER LA PAGINA: USER PAGE
+Future<List<ProductModel>> getPublicWorkerProductService(
+    String _jwt, String _emailWorker) async {
   final queryParameters = {
-    "emailWorker": _email,
+    "emailWorker": _emailWorker,
   };
   print("Calling BE");
 
@@ -129,6 +108,61 @@ Future<List<ProductModel>> getProductService(String _jwt, String _email) async {
       .toList();
 
   for (ProductModel result in results) {
+    print(result.toString());
+  }
+
+  print("msg:" + response.body.toString());
+  return results;
+}
+
+//SERVE PER PRENDERE I DATI DI UN WORKER TRA I RISULTATI DI RICERCA
+Future<UserModel> getPublicWorkerDataService(
+    String _jwt, String _emailWorker) async {
+  final queryParameters = {
+    "emailWorker": _emailWorker,
+  };
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/worker-profile', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  //print(response.body);
+
+  Map<String, dynamic> map = json.decode(response.body);
+  UserModel result = UserModel.fromJson(map);
+  return result;
+}
+
+//PRENDE LE REVIEW DI UN WORKER DA UN RISULTATO DI RICERCA
+Future<List<ReviewModel>> getPublicWorkerReviewService(
+    String _jwt, String _emailWorker) async {
+  final queryParameters = {
+    "emailWorker": _emailWorker,
+  };
+
+  print("Calling BE");
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/account/worker-reviews', queryParameters);
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+    },
+  );
+
+  print(response.body);
+
+  List<ReviewModel> results = json
+      .decode(response.body)
+      .map<ReviewModel>((data) => ReviewModel.fromJson(data))
+      .toList();
+
+  for (ReviewModel result in results) {
     print(result.toString());
   }
 
