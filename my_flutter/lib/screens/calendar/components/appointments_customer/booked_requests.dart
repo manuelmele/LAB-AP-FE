@@ -79,6 +79,10 @@ class _AppointmentsState extends State<BookedRequestsCustomer> {
                     itemCount: results.length,
                     itemBuilder: (context, i) {
                       if (isBookedMeeting(results[i])) {
+                        int meetingId = results[i].idMeeting;
+                        var longitude = results[i].lng;
+                        String jwt = widget.userJWT!;
+
                         return ListAppointment(
                             name: results[i].firstName +
                                 " " +
@@ -88,7 +92,10 @@ class _AppointmentsState extends State<BookedRequestsCustomer> {
                             slotTime: results[i].slotTime,
                             description: results[i].description,
                             image: results[i].photoProfile,
-                            press: () {});
+                            showTrack: (longitude != null),
+                            press: () {
+                              showMapDialog(context, jwt, meetingId);
+                            });
                       } else {
                         return const SizedBox(height: 0);
                       }
@@ -112,6 +119,7 @@ class ListAppointment extends StatelessWidget {
     required this.description,
     required this.image,
     required this.press,
+    required this.showTrack,
   }) : super(key: key);
 
   final String name;
@@ -121,6 +129,7 @@ class ListAppointment extends StatelessWidget {
   final String description;
   final String image;
   final VoidCallback press;
+  final bool showTrack;
 
   @override
   Widget build(BuildContext context) {
@@ -168,21 +177,22 @@ class ListAppointment extends StatelessWidget {
                 ),
               ),
             ),
-            OutlinedButton(
-              onPressed: () => {showMapDialog(context)},
-              style: OutlinedButton.styleFrom(
-                backgroundColor: kOrange,
-                minimumSize: Size.zero,
-                padding: EdgeInsets.all(5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
+            if (showTrack)
+              OutlinedButton(
+                onPressed: () => {press()},
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: kOrange,
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.all(5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                ),
+                child: const Text(
+                  "Track",
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              child: const Text(
-                "Track",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
@@ -191,7 +201,7 @@ class ListAppointment extends StatelessWidget {
   }
 }
 
-showMapDialog(BuildContext context) {
+showMapDialog(BuildContext context, String jwt, int meetingId) {
   // set up the button
   Widget okButton = TextButton(
     child: Text("Close"),
@@ -203,8 +213,9 @@ showMapDialog(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Tracking..."),
-    content:
-        SizedBox(height: SizeConfig.screenHeight / 2, child: TrackingWidget()),
+    content: SizedBox(
+        height: SizeConfig.screenHeight / 2,
+        child: TrackingWidget(userJWT: jwt, meetingId: meetingId)),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
