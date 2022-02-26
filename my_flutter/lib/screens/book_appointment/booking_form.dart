@@ -32,7 +32,7 @@ class _BookingFormState extends State<BookingForm> {
   String? _chosenDate;
   String? _chosenTime;
 
-  Future<String> bookAppointment() async {
+  Future<String> bookAppointment(_emailWorker) async {
     if (_chosenDate == null) {
       return "Error: date field is required";
     }
@@ -41,7 +41,7 @@ class _BookingFormState extends State<BookingForm> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? _emailCustomer = prefs.getString('email');
     //PRENDERE EMAIL DEL WORKER QUANDO SARÀ PRONTA LA PAGINA UTENTE WORKER
-    String? _emailWorker = "marcopinorossi@live.it";
+    //String? _emailWorker = "marcopinorossi@live.it";
 
     String response = await bookAppointmentService(_emailWorker,
         _emailCustomer!, _chosenDate!, _chosenTime!, description!, jwt!);
@@ -100,7 +100,9 @@ class _BookingFormState extends State<BookingForm> {
               if (!_formKey.currentState!.validate()) {
                 print("booking form not valid");
               } else {
-                String res = await bookAppointment();
+                //MODIFICARE QUI PER RENDERE CAMPO DINAMICO
+                String? emailWorker = "marcopinorossi@live.it";
+                String res = await bookAppointment(emailWorker);
                 //METTERE res=="" QUANDO LO TESTI DAVVERO
                 if (res == "") {
                   Navigator.pushReplacementNamed(

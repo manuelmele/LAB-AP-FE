@@ -14,14 +14,17 @@ class CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Body(),
+      backgroundColor: kBackground,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: kBackground,
+        elevation: 0,
         centerTitle: true,
         title: const Text(
           "Your Appointments",
           style: TextStyle(
             color: kOrange,
+            fontSize: 28,
           ),
         ),
         actions: <Widget>[

@@ -5,9 +5,11 @@ import 'package:wefix/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/models/payment_model.dart';
 import 'package:wefix/screens/navigator/navigator.dart';
+import 'package:wefix/screens/payment/body.dart';
 
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/worker_services.dart';
+import '../../utilis/allert_dialogs.dart';
 import 'subscription_content.dart';
 
 import 'package:wefix/size_config.dart';
@@ -25,22 +27,29 @@ class _SubscriptionState extends State<Subscription> {
   var today = DateTime.now();
   //List<PaymentModel> paymentsData = [];
   List<PaymentModel> paymentsData = [];
+  PaymentModel? payment;
+  bool disposed = false;
+  bool initialResults = false;
+  bool initialResult = false;
 
-  //pageController lets us choose which page of the pageviwe to see
-  final PageController _pageController = PageController();
-  @override //non so a che serve l'ho preso dalle api di flutter
+  @override
   void dispose() {
-    _pageController.dispose();
+    disposed = true;
     super.dispose();
   }
 
+  //pageController lets us choose which page of the pageviwe to see
+  final PageController _pageController = PageController();
+
   Future<void> getPaymentsData() async {
+    if (initialResults) return;
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
 
       getPaymentsDataService(jwt).then((newResults) {
         setState(() {
           paymentsData = newResults;
+          initialResults = true;
           print(paymentsData);
         });
       });
@@ -104,6 +113,9 @@ class _SubscriptionState extends State<Subscription> {
                     );
                   },
                 )),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                RenewButton(),
+                SizedBox(height: getProportionateScreenHeight(50)),
               ],
             ),
           ),
@@ -157,17 +169,33 @@ class _SubscriptionState extends State<Subscription> {
                   onPressed: () {
                     Navigator.pushNamed(context, NavigatorScreen.routeName);
                   },
-                  child: const Text("Go Back"))
+                  child: const Text("Go Back")),
             ],
           ),
         ),
       ),
     );
   }
+
+  RenewButton() {
+    if (DateTime.now().isBefore(DateFormat("dd/MM/yyyy HH:mm:ss")
+        .parse(paymentsData[paymentsData.length - 1].deadline + " 00:00:00"))) {
+      return SizedBox();
+    } else {
+      return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kLightOrange,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, PaymentPage.routeName);
+          },
+          child: Text("Renew Subscription"));
+    }
+  }
 }
 
 class ListPayment extends StatelessWidget {
-  const ListPayment({
+  ListPayment({
     Key? key,
     required this.paymentId,
     required this.date,
@@ -183,10 +211,17 @@ class ListPayment extends StatelessWidget {
   final double price;
   final String currency;
   final String paymentMethod;
+  PaymentModel? payment;
+  bool disposed = false;
+  bool initialResult = false;
 
   @override
   Widget build(BuildContext context) {
     final textColor = Colors.grey[200];
+    String state = DateTime.now().isBefore(
+            DateFormat("dd/MM/yyyy HH:mm:ss").parse(deadline + " 00:00:00"))
+        ? "Active"
+        : "Expired";
     return Container(
       margin: EdgeInsets.only(top: 20, right: 20, left: 20),
       decoration: BoxDecoration(
@@ -203,9 +238,24 @@ class ListPayment extends StatelessWidget {
         ),
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
-        trailing: Icon(Icons.arrow_forward_ios),
+        trailing: Container(
+            height: double.infinity,
+            child: IconButton(
+              icon: Icon(Icons.arrow_forward_ios),
+              onPressed: () async {
+                DialogsUI().showInfoPaymentDialog(context, "Payment Info", date,
+                    deadline, price, currency, paymentMethod, paymentId);
+                //}
+              },
+            )),
         title: Text(
-          date,
+          //"Validity period: \n" +
+          "State: " +
+              state +
+              "\n" +
+              date.substring(0, 10) +
+              " - " +
+              deadline.substring(0, 10),
           style: const TextStyle(
             fontSize: 20,
             color: Colors.black,

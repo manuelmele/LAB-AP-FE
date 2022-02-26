@@ -169,7 +169,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           GestureDetector(
             onTap: () {
-              Navigator.pushReplacementNamed(context, SignUpScreen.routeName);
+              Navigator.pushNamed(context, SignUpScreen.routeName);
             }, //add forgotpasswordScreen.routeName and .dart
             child: const Text(
               "Don't have an account? Sign up",

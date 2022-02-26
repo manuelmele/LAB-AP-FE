@@ -27,42 +27,43 @@ class IntroContent extends StatelessWidget {
               fontWeight: FontWeight.normal,
             ),
           ),
-
           Text(
-          discount!,
+            discount!,
             style: TextStyle(
               fontSize: getProportionateScreenWidth(15),
               color: kOrange,
               fontWeight: FontWeight.normal,
             ),
           ),
-          Container(
-              margin: EdgeInsets.all(15),
+          SizedBox(
+            height: getProportionateScreenHeight(400),
+            child: Container(
+              margin: const EdgeInsets.all(15),
               height: getProportionateScreenHeight(330),
               width: getProportionateScreenWidth(330),
               //padding: EdgeInsets.all(1),
               decoration: BoxDecoration(
                 color: kBackground,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                     bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)
-                ),
+                    bottomRight: Radius.circular(20)),
                 boxShadow: [
                   BoxShadow(
                     color: kLightOrange.withOpacity(0.7),
                     spreadRadius: 2,
                     blurRadius: 7,
-                    offset: Offset(3, 3), // changes position of shadow
+                    offset: const Offset(3, 3), // changes position of shadow
                   ),
                 ],
               ),
-            child: new Column (
-              children: [
-                  new Container(
-                    margin: const EdgeInsets.only(top:30),
-                    child: new Text(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    child: Text(
                       cost!,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(35),
@@ -72,33 +73,26 @@ class IntroContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
-
-                  new Container(
-                    //margin: EdgeInsets.all(40),
-                    child: Image.asset(
-                      image!,
-                      height: getProportionateScreenHeight(120),
-                      width: getProportionateScreenWidth(120),
-                    ),
+                  Image.asset(
+                    image!,
+                    height: getProportionateScreenHeight(120),
+                    width: getProportionateScreenWidth(120),
                   ),
-
-
-
-                  new Container(
-                    margin: const EdgeInsets.only(bottom:30, left:45, right:45),
-                    child: new Text(
+                  Container(
+                    margin:
+                        const EdgeInsets.only(bottom: 30, left: 45, right: 45),
+                    child: Text(
                       pay!,
                       //textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: getProportionateScreenWidth(16),
                         color: Colors.black,
                         fontWeight: FontWeight.normal,
-                        
                       ),
                     ),
                   ),
-              ],
+                ],
+              ),
             ),
           ),
         ]);
