@@ -98,15 +98,51 @@ class CustomerPageState extends State<CustomerPage> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             FlatButton.icon(
               icon: Icon(Icons.camera, color: kOrange),
-              onPressed: () {
-                takePhoto(ImageSource.camera);
+              onPressed: () async {
+                SharedPreferences.getInstance().then((prefs) async {
+                  String jwt = prefs.getString('jwt')!;
+                  takePhoto(ImageSource.camera);
+
+                  String response =
+                      await updatePhotoService(jwt, _photoProfile);
+
+                  //to refresh the information of the user
+                  initialResults = false;
+                  getInfo();
+
+                  if (response.contains('Error')) {
+                    String error = response;
+                    addError(error: error);
+                  } else {
+                    print('all ok');
+                    return;
+                  }
+                });
               },
               label: Text("Camera"),
             ),
             FlatButton.icon(
               icon: Icon(Icons.image, color: kOrange),
-              onPressed: () {
-                takePhoto(ImageSource.gallery);
+              onPressed: () async {
+                SharedPreferences.getInstance().then((prefs) async {
+                  String jwt = prefs.getString('jwt')!;
+                  takePhoto(ImageSource.gallery);
+
+                  String response =
+                      await updatePhotoService(jwt, _photoProfile);
+
+                  //to refresh the information of the user
+                  initialResults = false;
+                  getInfo();
+
+                  if (response.contains('Error')) {
+                    String error = response;
+                    addError(error: error);
+                  } else {
+                    print('all ok');
+                    return;
+                  }
+                });
               },
               label: Text("Gallery"),
             ),
@@ -292,63 +328,6 @@ class CustomerPageState extends State<CustomerPage> {
           });
         });
   }
-/*
-//function to update the profile info
-  void updateProfile(String updFirstName, String updSecondName, String updBio) {
-    if (initialResults) {
-      return; // non può più essere usata in nessun altra funzione, crearne un altra per le average
-    }
-    SharedPreferences.getInstance().then((prefs) {
-      String jwt = prefs.getString('jwt')!;
-      updateProfileService(jwt, updFirstName, updSecondName, updBio)
-          .then((userResults) {
-        //userData!.firstName = updFirstName;
-        //userData!.secondName = updSecondName;
-        //userData!.bio = updBio;
-      });
-    });
-  } */
-
-//function for the pop up of the info
-  /*Future openDialog() => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text("Edit your info:"),
-            content: SingleChildScrollView(
-              child: Column(children: [
-                Text("Your Name"),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(hintText: "Enter your Name"),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Text("Your Surname"),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(hintText: "Enter your Surname"),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Text("Your Bio"),
-                TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(hintText: "Enter your Bio"),
-                ),
-              ]),
-            ),
-            actions: [
-              TextButton(
-                onPressed:
-                    () {}, //passare la funzione che manda i dati al Back End
-                child: Text(
-                  "SUBMIT",
-                ),
-              ),
-            ],
-          )); */
 
   @override
   Widget build(BuildContext context) {

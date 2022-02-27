@@ -50,7 +50,7 @@ class ProfilePageState extends State<ProfilePage> {
       if (role == "Customer") {
         return Scaffold(
           backgroundColor: kBackground,
-          body: CustomerPage(),
+          body: WorkerPage(),
         );
       } else {
         return Scaffold(

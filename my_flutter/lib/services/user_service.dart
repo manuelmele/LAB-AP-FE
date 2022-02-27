@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/models/product_model.dart';
 import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'dart:convert';
+import 'package:http_parser/src/media_type.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -195,4 +198,36 @@ Future<String> updateProfileService(
   } else {
     return "Unknown Error";
   }
+}
+
+Future<String> updatePhotoService(String _jwt, XFile? _photoProfile) async {
+  final uri = Uri.http(baseUrl, '/wefix/account/update-photo-profile');
+
+  var request = http.MultipartRequest("PUT", uri);
+  if (_photoProfile == null) {
+  } else {
+    request.files.add(http.MultipartFile.fromBytes(
+        'photoProfile', File(_photoProfile.path).readAsBytesSync(),
+        contentType: MediaType(
+            'image', 'jpeg'), //MediaType.parse('multipart/form-data'),
+        filename: _photoProfile.path.split("/").last));
+  }
+  request.headers.addAll({
+    'Authorization': "Bearer " + _jwt,
+    'Content-Type': 'application/json',
+  });
+
+  var streamedResponse = await request.send();
+  var response = await http.Response.fromStream(streamedResponse);
+  if (response.statusCode == 200) {
+    print("Uploaded photo! ");
+  } else if (response.statusCode == 400) {
+    return 'Error: Operation Failed' +
+        jsonDecode(response.body)["message"].toString();
+  } else {
+    //case statuscode is 403
+    return 'Error: Authentication Failure' +
+        jsonDecode(response.body)["message"].toString();
+  }
+  return '';
 }
