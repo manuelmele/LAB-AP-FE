@@ -330,7 +330,7 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                                         color: Colors.black, fontSize: 17),
                                   ),
                                   Text(
-                                    productData[index].price,
+                                    productData[index].price.toString(),
                                     //"Price:...", // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 17),

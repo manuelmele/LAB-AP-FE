@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wefix/models/product_model.dart';
 import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -23,11 +25,17 @@ class WorkerPageState extends State<WorkerPage> {
   UserModel? userData;
   bool initialResults = false;
   List<ReviewModel> reviewData = [];
+  List<ProductModel> productData = [];
   bool disposed = false;
   List<String?> errors = [];
   String? newName;
   String? newSurname;
   String? newBio;
+  //product info
+  String? productTitle;
+  String? productDescription;
+  String? productPrice;
+  XFile? productPhoto;
 
   XFile? _photoProfile;
   final ImagePicker _picker = ImagePicker();
@@ -62,16 +70,20 @@ class WorkerPageState extends State<WorkerPage> {
       String jwt = prefs.getString('jwt')!;
       getUserDataService(jwt).then((userResults) {
         getReviewService(jwt).then((reviewResults) {
-          if (!disposed) {
-            //remind this mechanism before the set state
-            setState(() {
-              userData = userResults;
-              reviewData = reviewResults;
-              initialResults = true;
-              print(userData);
-              print(reviewData);
-            });
-          }
+          getProductService(jwt).then((productResult) {
+            if (!disposed) {
+              //remind this mechanism before the set state
+              setState(() {
+                userData = userResults;
+                reviewData = reviewResults;
+                productData = productResult;
+                initialResults = true;
+                print(userData);
+                print(reviewData);
+                print(productData);
+              });
+            }
+          });
         });
       });
     });
@@ -162,6 +174,7 @@ class WorkerPageState extends State<WorkerPage> {
     });
   }
 
+  //FORM FOR USER SETTINGS
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<void> editUserSettings(BuildContext context) async {
@@ -203,8 +216,7 @@ class WorkerPageState extends State<WorkerPage> {
                           labelText: "Your Name",
                           //focusColor: kOrange,
                           hintText: "Enter your name",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
-                          // if you r using flutter less then 1.20.* then maybe this is not working properly
+
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           suffixIcon: Icon(
                             Icons.person,
@@ -219,8 +231,7 @@ class WorkerPageState extends State<WorkerPage> {
                         onSaved: (newValue) => newSurname = newValue,
                         onChanged: (value) {
                           setState(() {
-                            newSurname =
-                                value; //switcha tra password oscurata e password visibile
+                            newSurname = value;
                           });
                         },
                         validator: (value) {
@@ -330,6 +341,294 @@ class WorkerPageState extends State<WorkerPage> {
         });
   }
 
+//FUNCTION FOR THE INSERTION OF THE PRODUCT
+  Widget bottomSheetProduct() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          const Text(
+            "Choose Product photo",
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.camera, color: kOrange),
+              onPressed: () async {
+                SharedPreferences.getInstance().then((prefs) async {
+                  String jwt = prefs.getString('jwt')!;
+                  takePhotoProduct(ImageSource.camera);
+
+                  /*String response =
+                      await updatePhotoService(jwt, _photoProfile);
+
+                  //to refresh the information of the user
+                  initialResults = false;
+                  getInfo();
+
+                  if (response.contains('Error')) {
+                    String error = response;
+                    addError(error: error);
+                  } else {*/
+                  print('all ok');
+                  return;
+                  //}
+                });
+              },
+              label: Text("Camera"),
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.image, color: kOrange),
+              onPressed: () async {
+                SharedPreferences.getInstance().then((prefs) async {
+                  String jwt = prefs.getString('jwt')!;
+                  takePhotoProduct(ImageSource.gallery);
+
+                  /*String response =
+                      await updatePhotoService(jwt, _photoProfile);
+
+                  //to refresh the information of the user
+                  initialResults = false;
+                  getInfo();
+
+                  if (response.contains('Error')) {
+                    String error = response;
+                    addError(error: error);
+                  } else {*/
+                  print('all ok');
+                  return;
+                  //}
+                });
+              },
+              label: Text("Gallery"),
+            ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  void takePhotoProduct(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(
+      source: source,
+    );
+    setState(() {
+      productPhoto = pickedFile; // modify! invoke the function on the backend
+    });
+  }
+
+  //FORM FOR INSERT NEW PRODUCT
+  final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
+
+  Future<void> insertNewProduct(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          //bool isChecked = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return //SingleChildScrollView(child:
+                AlertDialog(
+              content: Form(
+                  key: _formKey1,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      //IMAGE
+                      Stack(children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) => bottomSheetProduct()));
+                          },
+                          child: CircleAvatar(
+                            backgroundImage: productPhoto == null
+                                ? const AssetImage(
+                                    "assets/images/imagenotfound.jpg")
+                                : Image.file(
+                                    File(productPhoto!.path),
+                                    fit: BoxFit.cover,
+                                  ).image,
+                            radius: 50.0,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 5.0,
+                          right: 5.0,
+                          child: InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) => bottomSheetProduct()),
+                              );
+                            },
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: kOrange,
+                              size: 30.0,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        onSaved: (newValue) => productTitle = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            productTitle = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Product's title",
+                          //focusColor: kOrange,
+                          hintText: "Enter the title of the product",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.title,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        onSaved: (newValue) => productPrice = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            productPrice = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Product's price",
+                          //focusColor: kOrange,
+                          hintText: "Enter the price",
+
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.price_change,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        onSaved: (newValue) => productDescription = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            productDescription = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+                          labelText: "Product's description",
+                          //focusColor: kOrange,
+                          hintText: "Enter the description",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.library_books,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              title: Text('Insert a product:'),
+              actions: <Widget>[
+                InkWell(
+                  child: Text('OK   '),
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? jwt = prefs.getString('jwt');
+
+                    print("Adesso stampo la jwt");
+                    print(jwt);
+
+                    //check, the values cannot be null
+                    if (productTitle == null) {
+                      //gestione errore?
+                      productTitle = "insert the title";
+                    }
+                    if (productDescription == null) {
+                      productDescription = "insert the description";
+                    }
+                    if (productPrice == null) {
+                      productPrice = "0.0";
+                    }
+
+                    String res = await insertNewProductService(
+                        jwt!,
+                        productPhoto!,
+                        productPrice!,
+                        productDescription!,
+                        productTitle!);
+
+                    print(res);
+                    //chiamo la funzione validate per mostrare gli errori a schermo
+                    if (!_formKey1.currentState!.validate()) {
+                      print("not valid");
+                    }
+                    if (_formKey1.currentState!.validate()) {
+                      // Do something like updating SharedPreferences or User Settings etc.
+                      Navigator.of(context).pop();
+                      initialResults = false;
+                      getInfo();
+                    }
+                  },
+                ),
+              ],
+              //),
+            );
+          });
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     getInfo(); // when the page starts it calls the user data
@@ -390,6 +689,7 @@ class WorkerPageState extends State<WorkerPage> {
                             children: [
                               Text(
                                 userData!.firstName,
+                                //"Name",
                                 style: TextStyle(fontSize: 32),
                               ),
                               SizedBox(
@@ -414,21 +714,26 @@ class WorkerPageState extends State<WorkerPage> {
                               )
                             ],
                           ),
-                          Row(children: [
-                            Text(
-                              userData!.category,
-                              style:
-                                  TextStyle(fontSize: 19, color: Colors.grey),
-                            ),
-                          ]),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width: 10,
-                                height: 5,
-                              ),
-                            ],
+                          Text(
+                            userData!.secondName,
+                            //"Surname",
+                            style: TextStyle(fontSize: 32),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            userData!.category,
+                            //"User role",
+                            style: TextStyle(fontSize: 19, color: Colors.grey),
+                          ),
+                          Text(
+                            userData!.email,
+                            //"Email",
+                            style: TextStyle(fontSize: 19, color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height: 5,
                           ),
                           Text(
                             userData!.bio,
@@ -545,13 +850,14 @@ class WorkerPageState extends State<WorkerPage> {
                     Container(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
-                        onTap: () =>
-                            {}, //show dialog function for adding price list item
+                        onTap: () async => {
+                          await insertNewProduct(context),
+                        }, //show dialog function for adding price list item
                         child: CircleAvatar(
                           radius: 15,
                           backgroundColor: kLightOrange,
                           child: Icon(
-                            Icons.edit,
+                            Icons.add,
                             color: kWhite,
                             size: 20,
                           ),
@@ -572,7 +878,8 @@ class WorkerPageState extends State<WorkerPage> {
                       //controller: controller, doesn't work fine
                       scrollDirection: Axis.vertical,
                       physics: BouncingScrollPhysics(),
-                      itemCount: 4, //number of photos uploaded by the user
+                      itemCount: productData
+                          .length, //number of products uploaded by the user
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -591,8 +898,10 @@ class WorkerPageState extends State<WorkerPage> {
                                     color: kOrange,
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: const AssetImage(
-                                          "assets/images/parrot_cut.png"),
+                                      image: Image.memory(base64Decode(
+                                              productData[index].image))
+                                          .image,
+                                      //const AssetImage("assets/images/parrot_cut.png"),
                                       //take the image input from the database
                                       fit: BoxFit.fitHeight,
                                     )),
@@ -605,17 +914,21 @@ class WorkerPageState extends State<WorkerPage> {
                                     MediaQuery.of(context).size.width / 2 - 30,
                                 child: Column(children: [
                                   Text(
-                                    "Title", // import from the db
+                                    productData[index]
+                                        .title, // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 20),
                                   ),
                                   Text(
-                                    "Description:...", // import from the db
+                                    productData[index]
+                                        .description, // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 17),
                                   ),
                                   Text(
-                                    "Price:...", // import from the db
+                                    productData[index]
+                                        .price
+                                        .toString(), // import from the db
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 17),
                                   ),

@@ -231,3 +231,68 @@ Future<String> updatePhotoService(String _jwt, XFile? _photoProfile) async {
   }
   return '';
 }
+
+Future<List<ProductModel>> getProductService(String _jwt) async {
+  final uri = Uri.http(baseUrl, '/wefix/worker/all-product');
+  final response = await http.get(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $_jwt',
+      'Content-Type': 'application/json',
+    },
+  );
+
+  print(response.body);
+
+  List<ProductModel> results = json
+      .decode(response.body)
+      .map<ProductModel>((data) => ProductModel.fromJson(data))
+      .toList();
+
+  for (ProductModel result in results) {
+    print(result.toString());
+  }
+
+  print("msg:" + response.body.toString());
+  return results;
+}
+
+Future<String> insertNewProductService(String _jwt, XFile? _photoProduct,
+    String _price, String _description, String _title) async {
+  final queryParameters = {
+    "price": _price,
+    "description": _description,
+    "title": _title,
+  };
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/worker/insert-new-product/', queryParameters);
+
+  var request = http.MultipartRequest("POST", uri);
+  if (_photoProduct == null) {
+  } else {
+    request.files.add(http.MultipartFile.fromBytes(
+        'photoProfile', File(_photoProduct.path).readAsBytesSync(),
+        contentType: MediaType(
+            'image', 'jpeg'), //MediaType.parse('multipart/form-data'),
+        filename: _photoProduct.path.split("/").last));
+  }
+  request.headers.addAll({
+    'Authorization': "Bearer " + _jwt,
+    'Content-Type': 'application/json',
+  });
+
+  var streamedResponse = await request.send();
+  var response = await http.Response.fromStream(streamedResponse);
+  if (response.statusCode == 200) {
+    print("Uploaded product! ");
+  } else if (response.statusCode == 400) {
+    return 'Error: Operation Failed' +
+        jsonDecode(response.body)["message"].toString();
+  } else {
+    //case statuscode is 403
+    return 'Error: Authentication Failure' +
+        jsonDecode(response.body)["message"].toString();
+  }
+  return '';
+}

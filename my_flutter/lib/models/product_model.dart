@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 class ProductModel {
-  final String productId;
+  final int productId;
   final String image;
-  final String price;
+  final double price;
   final String description;
   final String title;
   //final int deleted;
