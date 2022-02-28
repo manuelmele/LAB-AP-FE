@@ -78,6 +78,8 @@ class _AppointmentsState extends State<CompletedRequestsWorker> {
                       itemCount: results.length,
                       itemBuilder: (context, i) {
                         if (isCompletedMeeting(results[i])) {
+                          String jwt = widget.userJWT!;
+
                           return ListAppointment(
                               name: results[i].firstName +
                                   " " +
@@ -87,6 +89,8 @@ class _AppointmentsState extends State<CompletedRequestsWorker> {
                               slotTime: results[i].slotTime,
                               description: results[i].description,
                               image: results[i].photoProfile,
+                              jwt: jwt,
+                              email: results[i].email,
                               press: () {});
                         } else {
                           return const SizedBox(height: 0);
@@ -109,6 +113,8 @@ class ListAppointment extends StatelessWidget {
     required this.date,
     required this.description,
     required this.image,
+    required this.jwt,
+    required this.email,
     required this.press,
   }) : super(key: key);
 
@@ -118,6 +124,8 @@ class ListAppointment extends StatelessWidget {
   final String date;
   final String description;
   final String image;
+  final String jwt;
+  final String email;
   final VoidCallback press;
 
   @override
@@ -137,7 +145,7 @@ class ListAppointment extends StatelessWidget {
             child: IconButton(
               icon: Icon(Icons.star),
               onPressed: () {
-                DialogsUI().showRatingDialog(context, name);
+                DialogsUI().showRatingDialog(context, name, jwt, email);
               },
             )),
         leading: CircleAvatar(

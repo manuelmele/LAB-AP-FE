@@ -5,6 +5,7 @@ import 'package:wefix/constants.dart';
 import 'package:wefix/models/payment_model.dart';
 import 'package:wefix/screens/login/login_form.dart';
 import 'package:wefix/services/meetings_service.dart';
+import 'package:wefix/services/review_service.dart';
 import 'package:wefix/size_config.dart';
 
 class DialogsUI {
@@ -38,14 +39,14 @@ class DialogsUI {
     );
   }
 
-  showRatingDialog(BuildContext context, String name) {
+  showRatingDialog(
+      BuildContext context, String name, String _jwt, String emailReceive) {
     final _dialog = RatingDialog(
       initialRating: 5.0,
-      // your app's name?
-      title: Text(
+      title: const Text(
         'Rate Service',
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 25,
           fontWeight: FontWeight.bold,
         ),
@@ -62,7 +63,8 @@ class DialogsUI {
       onSubmitted: (response) {
         print('rating: ${response.rating}, comment: ${response.comment}');
 
-        // TODO: add your own logic
+        addReview(
+            _jwt, emailReceive, response.comment, response.rating.toInt());
       },
     );
 
