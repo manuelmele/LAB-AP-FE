@@ -89,6 +89,7 @@ class WorkerPageState extends State<WorkerPage> {
     });
   }
 
+//BOTTOM SHEET FOT PHOTO PROFILE
   Widget bottomSheet() {
     return Container(
       height: 100.0,
@@ -428,7 +429,7 @@ class WorkerPageState extends State<WorkerPage> {
   }
 
   //FORM FOR INSERT NEW PRODUCT
-  final GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyInsertProduct = GlobalKey<FormState>();
 
   Future<void> insertNewProduct(BuildContext context) async {
     return await showDialog(
@@ -439,7 +440,7 @@ class WorkerPageState extends State<WorkerPage> {
             return //SingleChildScrollView(child:
                 AlertDialog(
               content: Form(
-                  key: _formKey1,
+                  key: _formKeyInsertProduct,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -611,10 +612,281 @@ class WorkerPageState extends State<WorkerPage> {
 
                     print(res);
                     //chiamo la funzione validate per mostrare gli errori a schermo
-                    if (!_formKey1.currentState!.validate()) {
+                    if (!_formKeyInsertProduct.currentState!.validate()) {
                       print("not valid");
                     }
-                    if (_formKey1.currentState!.validate()) {
+                    if (_formKeyInsertProduct.currentState!.validate()) {
+                      // Do something like updating SharedPreferences or User Settings etc.
+                      Navigator.of(context).pop();
+                      initialResults = false;
+                      getInfo();
+                    }
+                  },
+                ),
+              ],
+              //),
+            );
+          });
+        });
+  }
+
+  //FORM TO EDIT THE PRODUCT
+  final GlobalKey<FormState> _formKeyDeleteProduct = GlobalKey<FormState>();
+
+  Future<void> deleteProduct(BuildContext context, int index) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          //bool isChecked = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return //SingleChildScrollView(child:
+                AlertDialog(
+              content: Form(
+                  key: _formKeyDeleteProduct,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Are you sure you want to delete it?",
+                        //insert the style if wanted
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                    ],
+                  )),
+              //title: Text('Insert a product:'),
+              actions: <Widget>[
+                InkWell(
+                  child: Text('YES   '),
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? jwt = prefs.getString('jwt');
+
+                    String res = await deleteProductService(
+                      jwt!,
+                      productData[index].productId,
+                    );
+
+                    print(res);
+                    //chiamo la funzione validate per mostrare gli errori a schermo
+                    if (!_formKeyDeleteProduct.currentState!.validate()) {
+                      print("not valid");
+                    }
+                    if (_formKeyDeleteProduct.currentState!.validate()) {
+                      // Do something like updating SharedPreferences or User Settings etc.
+                      Navigator.of(context).pop();
+                      initialResults = false;
+                      getInfo();
+                    }
+                  },
+                ),
+              ],
+              //),
+            );
+          });
+        });
+  }
+
+  //FUNCTION TO DELETE THE PRODUCT
+  //FORM TO EDIT THE PRODUCT
+  final GlobalKey<FormState> _formKeyEditProduct = GlobalKey<FormState>();
+
+  Future<void> editProduct(BuildContext context, int index) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          //bool isChecked = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return //SingleChildScrollView(child:
+                AlertDialog(
+              content: Form(
+                  key: _formKeyEditProduct,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      //IMAGE
+                      Stack(children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) => bottomSheetProduct()));
+                          },
+                          child: CircleAvatar(
+                            backgroundImage: productPhoto == null
+                                ? const AssetImage(
+                                    "assets/images/parrot_cut.png")
+                                : Image.file(
+                                    File(productPhoto!.path),
+                                    fit: BoxFit.cover,
+                                  ).image,
+                            radius: 50.0,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 5.0,
+                          right: 5.0,
+                          child: InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: ((builder) => bottomSheetProduct()),
+                              );
+                            },
+                            child: const Icon(
+                              Icons.camera_alt,
+                              color: kOrange,
+                              size: 30.0,
+                            ),
+                          ),
+                        ),
+                      ]),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        initialValue: productData[index]
+                            .title, // come faccio a prendere il prodotto con quell'id?
+                        onSaved: (newValue) => productTitle = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            productTitle = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Product's title",
+                          //focusColor: kOrange,
+                          hintText: "Enter the title",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.title,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        initialValue: productData[index]
+                            .price
+                            .toString(), // da errore se non metto il toString
+                        onSaved: (newValue) => productPrice = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            productPrice = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+
+                          labelText: "Product's price",
+                          //focusColor: kOrange,
+                          hintText: "Enter the price",
+
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.price_change,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20),
+                      ),
+                      TextFormField(
+                        initialValue: productData[index].description,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 5,
+                        onSaved: (newValue) => productDescription = newValue,
+                        onChanged: (value) {
+                          setState(() {
+                            productDescription = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return mandatory;
+                          }
+
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: kLightOrange),
+                          ),
+                          labelText: "Product's description",
+                          //focusColor: kOrange,
+                          hintText: "Enter the description",
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          suffixIcon: Icon(
+                            Icons.library_books,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              title: Text('Insert a product:'),
+              actions: <Widget>[
+                InkWell(
+                  child: Text('OK   '),
+                  onTap: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? jwt = prefs.getString('jwt');
+
+                    //print("Adesso stampo la jwt");
+                    //print(jwt);
+                    print("Adesso stampo la edit product");
+
+                    //check, the values cannot be null
+                    if (productTitle == null) {
+                      //gestione errore?
+                      productTitle = productData[index].title;
+                    }
+                    if (productDescription == null) {
+                      productDescription = productData[index].description;
+                    }
+                    if (productPrice == null) {
+                      productPrice = productData[index].price.toString();
+                    }
+                    // gestione errore dell'immagine?
+
+                    String res = await editProductService(
+                        jwt!,
+                        productData[index].productId,
+                        productPhoto!,
+                        productPrice!,
+                        productDescription!,
+                        productTitle!);
+
+                    print(res);
+                    //chiamo la funzione validate per mostrare gli errori a schermo
+                    if (!_formKeyEditProduct.currentState!.validate()) {
+                      print("not valid");
+                    }
+                    if (_formKeyEditProduct.currentState!.validate()) {
                       // Do something like updating SharedPreferences or User Settings etc.
                       Navigator.of(context).pop();
                       initialResults = false;
@@ -716,7 +988,6 @@ class WorkerPageState extends State<WorkerPage> {
                           ),
                           Text(
                             userData!.secondName,
-                            //"Surname",
                             style: TextStyle(fontSize: 32),
                           ),
                           SizedBox(
@@ -724,12 +995,10 @@ class WorkerPageState extends State<WorkerPage> {
                           ),
                           Text(
                             userData!.category,
-                            //"User role",
                             style: TextStyle(fontSize: 19, color: Colors.grey),
                           ),
                           Text(
                             userData!.email,
-                            //"Email",
                             style: TextStyle(fontSize: 19, color: Colors.grey),
                           ),
                           SizedBox(
@@ -739,12 +1008,11 @@ class WorkerPageState extends State<WorkerPage> {
                             userData!.bio,
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
-
                           //here starts the rating
                           Row(children: [
                             RatingBarIndicator(
                               rating: userData!
-                                  .avgStar, //get the rating from the media form the db
+                                  .avgStar, //get the rating from the average
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
@@ -757,8 +1025,7 @@ class WorkerPageState extends State<WorkerPage> {
                               width: 10,
                             ),
                             Text(
-                              userData!.avgStar
-                                  .toString(), //DISPLAY THE MEDIA FROM THE DB
+                              userData!.avgStar.toString(),
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 16),
                             ),
@@ -855,7 +1122,7 @@ class WorkerPageState extends State<WorkerPage> {
                         }, //show dialog function for adding price list item
                         child: CircleAvatar(
                           radius: 15,
-                          backgroundColor: kLightOrange,
+                          backgroundColor: kOrange,
                           child: Icon(
                             Icons.add,
                             color: kWhite,
@@ -901,23 +1168,40 @@ class WorkerPageState extends State<WorkerPage> {
                                       image: Image.memory(base64Decode(
                                               productData[index].image))
                                           .image,
-                                      //const AssetImage("assets/images/parrot_cut.png"),
-                                      //take the image input from the database
                                       fit: BoxFit.fitHeight,
                                     )),
                               ),
                               SizedBox(
-                                width: 15,
+                                width: 5,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width / 2 - 30,
+                                    MediaQuery.of(context).size.width / 2 - 10,
                                 child: Column(children: [
+                                  Container(
+                                    alignment: Alignment.topRight,
+                                    child: GestureDetector(
+                                      onTap: () async => {
+                                        await deleteProduct(context, index),
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: kRed,
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: kWhite,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                   Text(
                                     productData[index]
                                         .title, // import from the db
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 20),
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
                                   ),
                                   Text(
                                     productData[index]
@@ -932,8 +1216,26 @@ class WorkerPageState extends State<WorkerPage> {
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 17),
                                   ),
+                                  Container(
+                                    alignment: Alignment.bottomRight,
+                                    child: GestureDetector(
+                                      onTap: () async => {
+                                        await editProduct(context,
+                                            index), //here insert the function to modify the product
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: kOrange,
+                                        child: Icon(
+                                          Icons.edit,
+                                          color: kWhite,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 ]),
-                              )
+                              ),
                             ],
                           ),
                         );

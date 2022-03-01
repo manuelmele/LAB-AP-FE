@@ -295,6 +295,78 @@ Future<String> insertNewProductService(String _jwt, XFile? _photoProduct,
         jsonDecode(response.body)["message"].toString();
   }
   return '';
+}
+
+Future<String> editProductService(
+    String _jwt,
+    int _productId,
+    XFile? _photoProduct,
+    String _price,
+    String _description,
+    String _title) async {
+  final queryParameters = {
+    "price": _price,
+    "description": _description,
+    "title": _title,
+  };
+
+  final uri = Uri.http(
+      baseUrl, '/wefix/worker/update-product/$_productId', queryParameters);
+
+  var request = http.MultipartRequest("PUT", uri);
+  if (_photoProduct == null) {
+  } else {
+    request.files.add(http.MultipartFile.fromBytes(
+        'photoProfile', File(_photoProduct.path).readAsBytesSync(),
+        contentType: MediaType(
+            'image', 'jpeg'), //MediaType.parse('multipart/form-data'),
+        filename: _photoProduct.path.split("/").last));
+  }
+  request.headers.addAll({
+    'Authorization': "Bearer " + _jwt,
+    'Content-Type': 'application/json',
+  });
+
+  var streamedResponse = await request.send();
+  var response = await http.Response.fromStream(streamedResponse);
+  if (response.statusCode == 200) {
+    return "Updated product! ";
+  } else if (response.statusCode == 400) {
+    return 'Error: Operation Failed' +
+        jsonDecode(response.body)["message"].toString();
+  } else {
+    //case statuscode is 403
+    return 'Error: Authentication Failure' +
+        jsonDecode(response.body)["message"].toString();
+  }
+  //return '';
+}
+
+//FUNCTION FOR DELETING A PRODUCT OF A WORKER
+Future<String> deleteProductService(String _jwt, int _productId) async {
+  final uri = Uri.http(baseUrl, '/wefix/worker/delete-product/$_productId');
+
+  var request = http.MultipartRequest("PUT", uri);
+  request.headers.addAll({
+    'Authorization': "Bearer " + _jwt,
+    'Content-Type': 'application/json',
+  });
+
+  var streamedResponse = await request.send();
+  var response = await http.Response.fromStream(streamedResponse);
+  if (response.statusCode == 200) {
+    return "Deleted product! ";
+  } else if (response.statusCode == 400) {
+    return 'Error: Operation Failed' +
+        jsonDecode(response.body)["message"].toString();
+  } else {
+    //case statuscode is 403
+    return 'Error: Authentication Failure' +
+        jsonDecode(response.body)["message"].toString();
+  }
+  //return '';
+}
+
 Future<String> bookAppointmentService(
     String _emailWorker,
     String _emailCustomer,
@@ -326,19 +398,17 @@ Future<String> bookAppointmentService(
   }
 }
 
-  Future<String> UpgradeToProService(
-    String _chosenCategory,
-    String partita_iva, 
-    String identity_card,
-    String price, 
-    String currency,
-    String jwt,
-  ) async {
+Future<String> UpgradeToProService(
+  String _chosenCategory,
+  String partita_iva,
+  String identity_card,
+  String price,
+  String currency,
+  String jwt,
+) async {
+  final uri = Uri.http(baseUrl, '/wefix/account/upgrade-pro');
 
-  final uri =
-      Uri.http(baseUrl, '/wefix/account/upgrade-pro');
-
-   final response = await http.post(
+  final response = await http.post(
     uri,
     headers: <String, String>{
       'Content-Type': 'application/json',
