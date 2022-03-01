@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/models/meeting_model.dart';
 import 'package:wefix/screens/calendar/calendar_page.dart';
 import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
+import 'package:wefix/services/meetings_service.dart';
+import 'package:wefix/services/user_service.dart';
 import 'package:wefix/utilis/allert_dialogs.dart';
 import 'package:wefix/utilis/maps_tracking.dart';
 
@@ -11,19 +16,45 @@ import '../../../../constants.dart';
 import '../../../../size_config.dart';
 
 class BookedRequestsCustomer extends StatefulWidget {
-  final String? userID;
+  final String? userJWT;
 
-  const BookedRequestsCustomer({Key? key, this.userID}) : super(key: key);
+  const BookedRequestsCustomer({Key? key, this.userJWT}) : super(key: key);
   @override
   _AppointmentsState createState() => _AppointmentsState();
 }
 
 class _AppointmentsState extends State<BookedRequestsCustomer> {
+  List<MeetingModel> results = [];
+  bool disposed = false;
+  bool initialResults = false;
+
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
+  }
+
+  void loadMeeting() {
+    if (initialResults) return;
+
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      getUserDataService(jwt).then((userResult) {
+        getAllCustomerMeetings(jwt, userResult.email).then((newResults) {
+          if (!disposed) {
+            setState(() {
+              results = newResults;
+              initialResults = true;
+            });
+          }
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    String userID = widget.userID!;
-    String imageUrl =
-        "http://apollo2.dl.playstation.net/cdn/UP0151/CUSA09971_00/dqyZBn0kprLUqYGf0nDZUbzLWtr1nZA5.png";
+    loadMeeting();
 
     return Container(
       padding: EdgeInsets.only(left: 20),
@@ -44,21 +75,31 @@ class _AppointmentsState extends State<BookedRequestsCustomer> {
               children: [
                 SizedBox(
                   height: SizeConfig.screenHeight / 2,
-                  child: ListView(
-                    children: [
-                      ListAppointment(
-                        name: 'Marco Prova',
-                        service: "Type of service: Gardener",
-                        imageUrl: imageUrl,
-                        press: () {},
-                      ),
-                      ListAppointment(
-                        name: 'Marco Prova2',
-                        service: "Type of service: Gardener",
-                        imageUrl: imageUrl,
-                        press: () {},
-                      ),
-                    ],
+                  child: ListView.builder(
+                    itemCount: results.length,
+                    itemBuilder: (context, i) {
+                      if (isBookedMeeting(results[i])) {
+                        int meetingId = results[i].idMeeting;
+                        var longitude = results[i].lng;
+                        String jwt = widget.userJWT!;
+
+                        return ListAppointment(
+                            name: results[i].firstName +
+                                " " +
+                                results[i].secondName,
+                            service: results[i].category,
+                            date: results[i].dateTime.substring(0, 10),
+                            slotTime: results[i].slotTime,
+                            description: results[i].description,
+                            image: results[i].photoProfile,
+                            showTrack: (longitude != null),
+                            press: () {
+                              showMapDialog(context, jwt, meetingId);
+                            });
+                      } else {
+                        return const SizedBox(height: 0);
+                      }
+                    },
                   ),
                 ),
               ],
@@ -73,17 +114,28 @@ class ListAppointment extends StatelessWidget {
     Key? key,
     required this.name,
     required this.service,
-    required this.imageUrl,
+    required this.slotTime,
+    required this.date,
+    required this.description,
+    required this.image,
     required this.press,
+    required this.showTrack,
   }) : super(key: key);
 
   final String name;
   final String service;
-  final String imageUrl;
+  final String slotTime;
+  final String date;
+  final String description;
+  final String image;
   final VoidCallback press;
+  final bool showTrack;
 
   @override
   Widget build(BuildContext context) {
+    String infomessage =
+        "Description: $description \n\n Date: $date \n\n Slot Time: $slotTime";
+
     final textColor = Colors.grey[200];
     return Container(
       margin: EdgeInsets.only(top: 20, right: 20, left: 20),
@@ -100,11 +152,12 @@ class ListAppointment extends StatelessWidget {
               icon: Icon(Icons.info_outline),
               onPressed: () {
                 DialogsUI()
-                    .showInfoDialog(context, "Appointment Info", service);
+                    .showInfoDialog(context, "Appointment Info", infomessage);
               },
             )),
-        leading:
-            CircleAvatar(radius: 32, backgroundImage: NetworkImage(imageUrl)),
+        leading: CircleAvatar(
+            radius: 32,
+            child: ClipOval(child: Image.memory(base64Decode(image)))),
         title: Text(
           name,
           style: const TextStyle(
@@ -124,21 +177,22 @@ class ListAppointment extends StatelessWidget {
                 ),
               ),
             ),
-            OutlinedButton(
-              onPressed: () => {showMapDialog(context)},
-              style: OutlinedButton.styleFrom(
-                backgroundColor: kOrange,
-                minimumSize: Size.zero,
-                padding: EdgeInsets.all(5),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
+            if (showTrack)
+              OutlinedButton(
+                onPressed: () => {press()},
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: kOrange,
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.all(5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                ),
+                child: const Text(
+                  "Track",
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              child: const Text(
-                "Track",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ),
@@ -147,7 +201,7 @@ class ListAppointment extends StatelessWidget {
   }
 }
 
-showMapDialog(BuildContext context) {
+showMapDialog(BuildContext context, String jwt, int meetingId) {
   // set up the button
   Widget okButton = TextButton(
     child: Text("Close"),
@@ -159,8 +213,9 @@ showMapDialog(BuildContext context) {
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Tracking..."),
-    content:
-        SizedBox(height: SizeConfig.screenHeight / 2, child: TrackingWidget()),
+    content: SizedBox(
+        height: SizeConfig.screenHeight / 2,
+        child: TrackingWidget(userJWT: jwt, meetingId: meetingId)),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),

@@ -118,44 +118,40 @@ class ListProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor = Colors.grey[200];
-    return GestureDetector(
-      onTap: () async {
-        SharedPreferences.getInstance().then((prefs) {
-          print(email);
-          prefs.setString('emailWorker', email);
-          Navigator.pushNamed(context, PublicWorkerPage.routeName);
-        });
-      },
-      child: Container(
-        margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          color: Colors.grey[200],
-        ),
-        child: ListTile(
-          contentPadding:
-              const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
-          trailing: Icon(Icons.arrow_forward_ios),
-          leading: CircleAvatar(
-              radius: 32,
-              child: ClipOval(
-                  child: image == null || image.isEmpty
-                      ? const Image(
-                          image: AssetImage('assets/avatar/default_avatar.jpg'))
-                      : Image.memory(base64Decode(image)))),
-          title: Text(
+    return Container(
+      margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Colors.grey[200],
+      ),
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
+        trailing: Icon(Icons.arrow_forward_ios),
+        leading: CircleAvatar(
+            radius: 32,
+            child: ClipOval(child: Image.memory(base64Decode(image)))),
+        title: TextButton(
+          onPressed: () async {
+            SharedPreferences.getInstance().then((prefs) {
+              print(email);
+              prefs.setString('emailWorker', email);
+              Navigator.pushNamed(context, PublicWorkerPage.routeName);
+            });
+          },
+          child: Text(
             name,
             style: const TextStyle(
               fontSize: 18,
               color: Colors.black,
             ),
           ),
-          subtitle: Text(
-            description,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.grey,
-            ),
+        ),
+        subtitle: Text(
+          description,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.grey,
           ),
         ),
       ),

@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
 import 'package:wefix/models/user_model.dart';
+import 'package:wefix/screens/book_appointment/booking.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:wefix/screens/payment/body.dart';
 import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/screens/subscription/subscription.dart';
 import 'package:wefix/services/user_service.dart';
 import 'package:wefix/size_config.dart';
 
@@ -23,8 +25,7 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
   String? surname;
   String? email;
   String? jwt;
-  var role;
-  var data;
+  String? role;
   UserModel? userData;
   bool initialResults = false;
 
@@ -63,18 +64,20 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
     return '';
   }
 
-  //CODICE PRESO DA MANUEL
-  void getUserData() {
+  Future<void> getUserData() async {
     //search by category just the first time
     if (initialResults) return;
 
     SharedPreferences.getInstance().then((prefs) {
       String jwt = prefs.getString('jwt')!;
+
       getUserDataService(jwt).then((newResults) {
         setState(() {
           userData = newResults;
+          role = userData!.userRole;
           initialResults = true;
           print(userData);
+          print(role);
         });
       });
     });
@@ -117,18 +120,30 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
             ),
           ),
           ListTile(
-            title: role == null
+            //il null qui serve per far caricare di default il caso customer
+            //per più info vedi issue su trello
+            title: role == "Customer" || role == null
                 ? const Text('Upgrade to PRO')
                 : const Text('Manage your subscription'),
             iconColor: kOrange,
             textColor: kOrange,
             //subtitle: const Text('subscribe now to enjoy all the benefits'),
-            trailing: role == null ? Icon(Icons.star) : Icon(Icons.paid),
+            trailing: role == "Customer" || role == null
+                ? Icon(Icons.star)
+                : Icon(Icons.paid),
             onTap: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext ctx) => PaymentPage()));
+              //DEVE STARE A role==Customer, se è diverso è per debug
+              if (role == "Customer") {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext ctx) => PaymentPage()));
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext ctx) => SubscriptionPage()));
+              }
             },
           ),
           ListTile(
@@ -151,6 +166,16 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext ctx) => LoginScreen()));
+            },
+          ),
+          ListTile(
+            //momentanea per testare il booking appointment
+            title: const Text('Book Appointment'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext ctx) => BookAppointmentPage()));
             },
           ),
         ],

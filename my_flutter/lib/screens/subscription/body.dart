@@ -1,0 +1,274 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:wefix/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wefix/models/payment_model.dart';
+import 'package:wefix/screens/navigator/navigator.dart';
+import 'package:wefix/screens/payment/body.dart';
+
+import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/services/worker_services.dart';
+import '../../utilis/allert_dialogs.dart';
+import 'subscription_content.dart';
+
+import 'package:wefix/size_config.dart';
+//import 'package:shop_app/components/no_account_text.dart';
+//import 'package:shop_app/components/socal_card.dart';
+import '../../../size_config.dart';
+
+class Subscription extends StatefulWidget {
+  @override
+  _SubscriptionState createState() => _SubscriptionState();
+}
+
+class _SubscriptionState extends State<Subscription> {
+  int currentPage = 0;
+  var today = DateTime.now();
+  //List<PaymentModel> paymentsData = [];
+  List<PaymentModel> paymentsData = [];
+  PaymentModel? payment;
+  bool disposed = false;
+  bool initialResults = false;
+  bool initialResult = false;
+
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
+  }
+
+  //pageController lets us choose which page of the pageviwe to see
+  final PageController _pageController = PageController();
+
+  Future<void> getPaymentsData() async {
+    if (initialResults) return;
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+
+      getPaymentsDataService(jwt).then((newResults) {
+        setState(() {
+          paymentsData = newResults;
+          initialResults = true;
+          print(paymentsData);
+        });
+      });
+    });
+  }
+
+  Widget build(BuildContext context) {
+    getPaymentsData();
+
+    if (paymentsData.isEmpty) {
+      //print("non ci sono pagamenti");
+      return buildNoPayments();
+    } else {
+      print("ci sono dei pagamenti");
+      return Scaffold(
+        backgroundColor: kBackground,
+        body: SizedBox(
+          width: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: getProportionateScreenWidth(20)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: SizeConfig.screenHeight * 0.08), // 4%
+                Image.asset(
+                  'assets/images/parrot_contrast.jpg',
+                  height: 100,
+                  width: 100,
+                ),
+                const SizedBox(height: 0.04),
+                Text(
+                  "Your payment history",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: kOrange,
+                    fontSize: getProportionateScreenWidth(28),
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                Text(
+                  "Manage your payments and subscription",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: getProportionateScreenWidth(18),
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                Expanded(
+                    child: ListView.builder(
+                  itemCount: paymentsData.length,
+                  itemBuilder: (context, i) {
+                    return ListPayment(
+                      paymentId: paymentsData[i].paymentId,
+                      date: paymentsData[i].date,
+                      deadline: paymentsData[i].deadline,
+                      price: paymentsData[i].price,
+                      currency: paymentsData[i].currency,
+                      paymentMethod: paymentsData[i].paymentMethod,
+                    );
+                  },
+                )),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                RenewButton(),
+                SizedBox(height: getProportionateScreenHeight(50)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget buildNoPayments() {
+    return Scaffold(
+      backgroundColor: kBackground,
+      body: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              //SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
+              Image.asset(
+                'assets/images/parrot_contrast.jpg',
+                height: 200,
+                width: 200,
+              ),
+              const SizedBox(height: 0.04),
+              Text(
+                "Your payment history",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: kOrange,
+                  fontSize: getProportionateScreenWidth(28),
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              Text(
+                "There are no payments in your history",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: getProportionateScreenWidth(18),
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: kLightOrange,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, NavigatorScreen.routeName);
+                  },
+                  child: const Text("Go Back")),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  RenewButton() {
+    if (DateTime.now().isBefore(DateFormat("dd/MM/yyyy HH:mm:ss")
+        .parse(paymentsData[paymentsData.length - 1].deadline + " 00:00:00"))) {
+      return SizedBox();
+    } else {
+      return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: kLightOrange,
+          ),
+          onPressed: () {
+            Navigator.pushNamed(context, PaymentPage.routeName);
+          },
+          child: Text("Renew Subscription"));
+    }
+  }
+}
+
+class ListPayment extends StatelessWidget {
+  ListPayment({
+    Key? key,
+    required this.paymentId,
+    required this.date,
+    required this.deadline,
+    required this.price,
+    required this.currency,
+    required this.paymentMethod,
+  }) : super(key: key);
+
+  final int paymentId;
+  final String date;
+  final String deadline;
+  final double price;
+  final String currency;
+  final String paymentMethod;
+  PaymentModel? payment;
+  bool disposed = false;
+  bool initialResult = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final textColor = Colors.grey[200];
+    String state = DateTime.now().isBefore(
+            DateFormat("dd/MM/yyyy HH:mm:ss").parse(deadline + " 00:00:00"))
+        ? "Active"
+        : "Expired";
+    return Container(
+      margin: EdgeInsets.only(top: 20, right: 20, left: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Colors.grey[200],
+      ),
+      child: ListTile(
+        leading: Icon(
+          Icons.circle,
+          color: DateTime.now().isBefore(DateFormat("dd/MM/yyyy HH:mm:ss")
+                  .parse(deadline + " 00:00:00"))
+              ? kLightGreen
+              : kGrey,
+        ),
+        contentPadding:
+            const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
+        trailing: Container(
+            height: double.infinity,
+            child: IconButton(
+              icon: Icon(Icons.arrow_forward_ios),
+              onPressed: () async {
+                DialogsUI().showInfoPaymentDialog(context, "Payment Info", date,
+                    deadline, price, currency, paymentMethod, paymentId);
+                //}
+              },
+            )),
+        title: Text(
+          //"Validity period: \n" +
+          "State: " +
+              state +
+              "\n" +
+              date.substring(0, 10) +
+              " - " +
+              deadline.substring(0, 10),
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+        subtitle: Text(
+          price.toString() + " " + currency,
+          style: const TextStyle(
+            fontSize: 30,
+            color: kOrange,
+          ),
+        ),
+      ),
+    );
+  }
+}
