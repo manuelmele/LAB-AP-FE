@@ -54,7 +54,7 @@ class _SummaryState extends State<SummaryCustomer> {
 
   Future<String> UpgradeToPro() async {
     if (_chosenCategory == null || partita_iva == null) {
-      return "Error: manca qualcosa";
+      return "Error: these fields are required";
     }
     errors = [];
     String price;
