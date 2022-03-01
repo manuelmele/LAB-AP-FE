@@ -11,12 +11,13 @@ void addReview(String _jwt, String emailReceive, String contentReview,
   final response = await http.post(
     uri,
     headers: <String, String>{
+      'Content-Type': 'application/json',
       'Authorization': 'Bearer $_jwt',
     },
-    body: jsonEncode(<String, dynamic>{
+    body: jsonEncode(<String, String>{
       'email_receive': emailReceive,
       'content': contentReview,
-      'star': starNumber
+      'star': starNumber.toString(),
     }),
   );
 
