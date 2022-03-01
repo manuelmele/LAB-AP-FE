@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wefix/models/user_model.dart';
 import 'package:wefix/size_config.dart';
 import 'package:wefix/constants.dart';
 
-class IntroContent extends StatelessWidget {
-  const IntroContent({
+class PaymentContent extends StatelessWidget {
+const PaymentContent({
     Key? key,
     this.title,
     this.discount,
@@ -12,6 +13,7 @@ class IntroContent extends StatelessWidget {
     this.pay,
   }) : super(key: key);
   final String? title, discount, cost, image, pay;
+
 
   @override
   Widget build(BuildContext context) {

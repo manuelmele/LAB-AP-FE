@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
+import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/payment/payment.dart';
-import 'package:wefix/screens/payment/summary/summary.dart';
+import 'package:wefix/screens/payment/summary/summaryCustomer.dart';
+import 'package:wefix/screens/payment/summary/summaryWorker.dart';
 import 'payment_content.dart';
 //import 'package:wefix/screens/payment/info/info.dart';
 
@@ -19,6 +21,8 @@ class Payment extends StatefulWidget {
 
 class _PaymentState extends State<Payment> {
   int currentPage = 0;
+  String? x;
+  UserModel? userData;
 
   //pageController lets us choose which page of the pageviwe to see
   final PageController _pageController = PageController();
@@ -48,6 +52,9 @@ class _PaymentState extends State<Payment> {
   ];
 
   Widget build(BuildContext context) {
+    //print("il mio ruolo: ");
+    //print(role);
+    x=userData!.category;
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -91,7 +98,7 @@ class _PaymentState extends State<Payment> {
                     });
                   },
                   itemCount: plan.length,
-                  itemBuilder: (context, index) => IntroContent(
+                  itemBuilder: (context, index) => PaymentContent(
                       title: plan[index]['title'],
                       discount: plan[index]['discount'],
                       cost: plan[index]['cost'],
@@ -135,8 +142,9 @@ class _PaymentState extends State<Payment> {
                             ),
                             child: const Text('Get started'),
                             onPressed: () async {
-                              Navigator.pushReplacementNamed(
-                                  context, SummaryPage.routeName);
+                              x == "Customer" 
+                                    ? Navigator.pushReplacementNamed(context, SummaryCustomerPage.routeName)
+                                    : Navigator.pushReplacementNamed(context, SummaryWorkerPage.routeName);
                               SharedPreferences m =
                                   await SharedPreferences.getInstance();
                               m.setInt('plan', currentPage);

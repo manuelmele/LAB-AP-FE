@@ -36,3 +36,40 @@ Future<List<PaymentModel>> getPaymentsDataService(String _jwt) async {
   //print("msg:" + response.body.toString());
   return results;
 }
+
+
+
+ Future<String> renewPaymentService(
+    String price, 
+    String currency,
+    String jwt,
+  ) async {
+    final queryParameters = {
+    "price": price,
+    'currency': currency,
+  };
+
+  final uri =
+      Uri.http(baseUrl, '/wefix/worker/payment', queryParameters);
+
+   final response = await http.post(
+    uri,
+    headers: <String, String>{
+      'Authorization': 'Bearer $jwt',
+    },
+    /*body: jsonEncode(<String, dynamic>{
+      'currency': currency,
+      'price': price,
+    }),*/
+  );
+  if (response.statusCode == 200) {
+    print("Upgrade to PRO successed!");
+    print(response.body.substring(9));
+    //eturn "";
+    return response.body.substring(9);
+  } else {
+    return 'Error: ' + jsonDecode(response.body)["message"].toString();
+  }
+}
+
+
