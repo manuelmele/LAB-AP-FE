@@ -12,7 +12,7 @@ import 'package:wefix/models/review_model.dart';
 import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/payment/payment.dart';
 import 'package:wefix/services/user_service.dart';
-import 'package:wefix/services/worker_service.dart';
+import 'package:wefix/services/worker_services.dart';
 
 import '../../../size_config.dart';
 

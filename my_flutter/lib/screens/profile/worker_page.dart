@@ -184,159 +184,159 @@ class WorkerPageState extends State<WorkerPage> {
         builder: (context) {
           //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
-            return //SingleChildScrollView(child:
-                AlertDialog(
-              content: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        initialValue: userData!.firstName,
-                        onSaved: (newValue) => newName = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            newName = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+            return SingleChildScrollView(
+              child: AlertDialog(
+                content: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          initialValue: userData!.firstName,
+                          onSaved: (newValue) => newName = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              newName = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Your Name",
-                          //focusColor: kOrange,
-                          hintText: "Enter your name",
+                            labelText: "Your Name",
+                            //focusColor: kOrange,
+                            hintText: "Enter your name",
 
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.person,
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.person,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        initialValue: userData!.secondName,
-                        onSaved: (newValue) => newSurname = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            newSurname = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          initialValue: userData!.secondName,
+                          onSaved: (newValue) => newSurname = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              newSurname = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Your Surname",
-                          //focusColor: kOrange,
-                          hintText: "Enter your surname",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
-                          // if you r using flutter less then 1.20.* then maybe this is not working properly
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.person,
+                            labelText: "Your Surname",
+                            //focusColor: kOrange,
+                            hintText: "Enter your surname",
+                            // If  you are using latest version of flutter then lable text and hint text shown like this
+                            // if you r using flutter less then 1.20.* then maybe this is not working properly
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.person,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        initialValue: userData!.bio,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        onSaved: (newValue) => newBio = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            newBio = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          initialValue: userData!.bio,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          onSaved: (newValue) => newBio = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              newBio = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
 
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            // width: 0.0 produces a thin "hairline" border
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Your Bio",
-                          //focusColor: kOrange,
-                          hintText: "Enter your bio",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
-                          // if you r using flutter less then 1.20.* then maybe this is not working properly
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.library_books,
+                            labelText: "Your Bio",
+                            //focusColor: kOrange,
+                            hintText: "Enter your bio",
+                            // If  you are using latest version of flutter then lable text and hint text shown like this
+                            // if you r using flutter less then 1.20.* then maybe this is not working properly
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.library_books,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )),
-              title: Text('Edit your info:'),
-              actions: <Widget>[
-                InkWell(
-                  child: Text('OK   '),
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    String? jwt = prefs.getString('jwt');
+                      ],
+                    )),
+                title: Text('Edit your info:'),
+                actions: <Widget>[
+                  InkWell(
+                    child: Text('OK   '),
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String? jwt = prefs.getString('jwt');
 
-                    print("Adesso stampo la jwt");
-                    print(jwt);
+                      print("Adesso stampo la jwt");
+                      print(jwt);
 
-                    //check, the values cannot be null
-                    if (newName == null) {
-                      newName = userData!.firstName;
-                    }
-                    if (newSurname == null) {
-                      newSurname = userData!.secondName;
-                    }
-                    if (newBio == null) {
-                      newBio = userData!.bio;
-                    }
-                    String res = await updateProfileService(
-                        jwt!, newName!, newSurname!, newBio!);
-                    print(res);
-                    //chiamo la funzione validate per mostrare gli errori a schermo
-                    if (!_formKey.currentState!.validate()) {
-                      print("not valid");
-                    }
-                    if (_formKey.currentState!.validate()) {
-                      // Do something like updating SharedPreferences or User Settings etc.
-                      Navigator.of(context).pop();
-                      initialResults = false;
-                      getInfo();
-                    }
-                  },
-                ),
-              ],
-              //),
+                      //check, the values cannot be null
+                      if (newName == null) {
+                        newName = userData!.firstName;
+                      }
+                      if (newSurname == null) {
+                        newSurname = userData!.secondName;
+                      }
+                      if (newBio == null) {
+                        newBio = userData!.bio;
+                      }
+                      String res = await updateProfileService(
+                          jwt!, newName!, newSurname!, newBio!);
+                      print(res);
+                      //chiamo la funzione validate per mostrare gli errori a schermo
+                      if (!_formKey.currentState!.validate()) {
+                        print("not valid");
+                      }
+                      if (_formKey.currentState!.validate()) {
+                        // Do something like updating SharedPreferences or User Settings etc.
+                        Navigator.of(context).pop();
+                        initialResults = false;
+                        getInfo();
+                      }
+                    },
+                  ),
+                ],
+              ),
             );
           });
         });
@@ -370,20 +370,8 @@ class WorkerPageState extends State<WorkerPage> {
                   String jwt = prefs.getString('jwt')!;
                   takePhotoProduct(ImageSource.camera);
 
-                  /*String response =
-                      await updatePhotoService(jwt, _photoProfile);
-
-                  //to refresh the information of the user
-                  initialResults = false;
-                  getInfo();
-
-                  if (response.contains('Error')) {
-                    String error = response;
-                    addError(error: error);
-                  } else {*/
                   print('all ok');
                   return;
-                  //}
                 });
               },
               label: Text("Camera"),
@@ -395,20 +383,8 @@ class WorkerPageState extends State<WorkerPage> {
                   String jwt = prefs.getString('jwt')!;
                   takePhotoProduct(ImageSource.gallery);
 
-                  /*String response =
-                      await updatePhotoService(jwt, _photoProfile);
-
-                  //to refresh the information of the user
-                  initialResults = false;
-                  getInfo();
-
-                  if (response.contains('Error')) {
-                    String error = response;
-                    addError(error: error);
-                  } else {*/
                   print('all ok');
                   return;
-                  //}
                 });
               },
               label: Text("Gallery"),
@@ -437,194 +413,194 @@ class WorkerPageState extends State<WorkerPage> {
         builder: (context) {
           //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
-            return //SingleChildScrollView(child:
-                AlertDialog(
-              content: Form(
-                  key: _formKeyInsertProduct,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      //IMAGE
-                      Stack(children: <Widget>[
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: ((builder) => bottomSheetProduct()));
-                          },
-                          child: CircleAvatar(
-                            backgroundImage: productPhoto == null
-                                ? const AssetImage(
-                                    "assets/images/imagenotfound.jpg")
-                                : Image.file(
-                                    File(productPhoto!.path),
-                                    fit: BoxFit.cover,
-                                  ).image,
-                            radius: 50.0,
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 5.0,
-                          right: 5.0,
-                          child: InkWell(
+            return SingleChildScrollView(
+              child: AlertDialog(
+                content: Form(
+                    key: _formKeyInsertProduct,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //IMAGE
+                        Stack(children: <Widget>[
+                          GestureDetector(
                             onTap: () {
                               showModalBottomSheet(
-                                context: context,
-                                builder: ((builder) => bottomSheetProduct()),
-                              );
+                                  context: context,
+                                  builder: ((builder) => bottomSheetProduct()));
                             },
-                            child: const Icon(
-                              Icons.camera_alt,
-                              color: kOrange,
-                              size: 30.0,
+                            child: CircleAvatar(
+                              backgroundImage: productPhoto == null
+                                  ? const AssetImage(
+                                      "assets/images/imagenotfound.jpg")
+                                  : Image.file(
+                                      File(productPhoto!.path),
+                                      fit: BoxFit.cover,
+                                    ).image,
+                              radius: 50.0,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 5.0,
+                            right: 5.0,
+                            child: InkWell(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: ((builder) => bottomSheetProduct()),
+                                );
+                              },
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: kOrange,
+                                size: 30.0,
+                              ),
+                            ),
+                          ),
+                        ]),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          onSaved: (newValue) => productTitle = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              productTitle = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
+
+                            labelText: "Product's title",
+                            //focusColor: kOrange,
+                            hintText: "Enter the title of the product",
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.title,
                             ),
                           ),
                         ),
-                      ]),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        onSaved: (newValue) => productTitle = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            productTitle = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          onSaved: (newValue) => productPrice = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              productPrice = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Product's title",
-                          //focusColor: kOrange,
-                          hintText: "Enter the title of the product",
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.title,
+                            labelText: "Product's price",
+                            //focusColor: kOrange,
+                            hintText: "Enter the price",
+
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.price_change,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        onSaved: (newValue) => productPrice = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            productPrice = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          onSaved: (newValue) => productDescription = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              productDescription = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
 
-                          labelText: "Product's price",
-                          //focusColor: kOrange,
-                          hintText: "Enter the price",
-
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.price_change,
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
+                            labelText: "Product's description",
+                            //focusColor: kOrange,
+                            hintText: "Enter the description",
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.library_books,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        onSaved: (newValue) => productDescription = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            productDescription = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
+                      ],
+                    )),
+                title: Text('Insert a product:'),
+                actions: <Widget>[
+                  InkWell(
+                    child: Text('OK   '),
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String? jwt = prefs.getString('jwt');
 
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
-                          labelText: "Product's description",
-                          //focusColor: kOrange,
-                          hintText: "Enter the description",
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.library_books,
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
-              title: Text('Insert a product:'),
-              actions: <Widget>[
-                InkWell(
-                  child: Text('OK   '),
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    String? jwt = prefs.getString('jwt');
+                      print("Adesso stampo la jwt");
+                      print(jwt);
 
-                    print("Adesso stampo la jwt");
-                    print(jwt);
+                      //check, the values cannot be null
+                      if (productTitle == null) {
+                        //gestione errore?
+                        productTitle = "insert the title";
+                      }
+                      if (productDescription == null) {
+                        productDescription = "insert the description";
+                      }
+                      if (productPrice == null) {
+                        productPrice = "0.0";
+                      }
 
-                    //check, the values cannot be null
-                    if (productTitle == null) {
-                      //gestione errore?
-                      productTitle = "insert the title";
-                    }
-                    if (productDescription == null) {
-                      productDescription = "insert the description";
-                    }
-                    if (productPrice == null) {
-                      productPrice = "0.0";
-                    }
+                      String res = await insertNewProductService(
+                          jwt!,
+                          productPhoto!,
+                          productPrice!,
+                          productDescription!,
+                          productTitle!);
 
-                    String res = await insertNewProductService(
-                        jwt!,
-                        productPhoto!,
-                        productPrice!,
-                        productDescription!,
-                        productTitle!);
-
-                    print(res);
-                    //chiamo la funzione validate per mostrare gli errori a schermo
-                    if (!_formKeyInsertProduct.currentState!.validate()) {
-                      print("not valid");
-                    }
-                    if (_formKeyInsertProduct.currentState!.validate()) {
-                      // Do something like updating SharedPreferences or User Settings etc.
-                      Navigator.of(context).pop();
-                      initialResults = false;
-                      getInfo();
-                    }
-                  },
-                ),
-              ],
-              //),
+                      print(res);
+                      //chiamo la funzione validate per mostrare gli errori a schermo
+                      if (!_formKeyInsertProduct.currentState!.validate()) {
+                        print("not valid");
+                      }
+                      if (_formKeyInsertProduct.currentState!.validate()) {
+                        // Do something like updating SharedPreferences or User Settings etc.
+                        Navigator.of(context).pop();
+                        initialResults = false;
+                        getInfo();
+                      }
+                    },
+                  ),
+                ],
+              ),
             );
           });
         });
@@ -639,51 +615,51 @@ class WorkerPageState extends State<WorkerPage> {
         builder: (context) {
           //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
-            return //SingleChildScrollView(child:
-                AlertDialog(
-              content: Form(
-                  key: _formKeyDeleteProduct,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Are you sure you want to delete it?",
-                        //insert the style if wanted
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                    ],
-                  )),
-              //title: Text('Insert a product:'),
-              actions: <Widget>[
-                InkWell(
-                  child: Text('YES   '),
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    String? jwt = prefs.getString('jwt');
+            return SingleChildScrollView(
+              child: AlertDialog(
+                content: Form(
+                    key: _formKeyDeleteProduct,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Are you sure you want to delete it?",
+                          //insert the style if wanted
+                        ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                      ],
+                    )),
+                //title: Text('Insert a product:'),
+                actions: <Widget>[
+                  InkWell(
+                    child: Text('YES   '),
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String? jwt = prefs.getString('jwt');
 
-                    String res = await deleteProductService(
-                      jwt!,
-                      productData[index].productId,
-                    );
+                      String res = await deleteProductService(
+                        jwt!,
+                        productData[index].productId,
+                      );
 
-                    print(res);
-                    //chiamo la funzione validate per mostrare gli errori a schermo
-                    if (!_formKeyDeleteProduct.currentState!.validate()) {
-                      print("not valid");
-                    }
-                    if (_formKeyDeleteProduct.currentState!.validate()) {
-                      // Do something like updating SharedPreferences or User Settings etc.
-                      Navigator.of(context).pop();
-                      initialResults = false;
-                      getInfo();
-                    }
-                  },
-                ),
-              ],
-              //),
+                      print(res);
+                      //chiamo la funzione validate per mostrare gli errori a schermo
+                      if (!_formKeyDeleteProduct.currentState!.validate()) {
+                        print("not valid");
+                      }
+                      if (_formKeyDeleteProduct.currentState!.validate()) {
+                        // Do something like updating SharedPreferences or User Settings etc.
+                        Navigator.of(context).pop();
+                        initialResults = false;
+                        getInfo();
+                      }
+                    },
+                  ),
+                ],
+              ),
             );
           });
         });
@@ -856,11 +832,8 @@ class WorkerPageState extends State<WorkerPage> {
                         await SharedPreferences.getInstance();
                     String? jwt = prefs.getString('jwt');
 
-                    //print("Adesso stampo la jwt");
-                    //print(jwt);
                     print("Adesso stampo la edit product");
 
-                    //check, the values cannot be null
                     if (productTitle == null) {
                       //gestione errore?
                       productTitle = productData[index].title;
@@ -876,7 +849,7 @@ class WorkerPageState extends State<WorkerPage> {
                     String res = await editProductService(
                         jwt!,
                         productData[index].productId,
-                        productPhoto!,
+                        productPhoto,
                         productPrice!,
                         productDescription!,
                         productTitle!);
@@ -895,7 +868,6 @@ class WorkerPageState extends State<WorkerPage> {
                   },
                 ),
               ],
-              //),
             );
           });
         });
@@ -1060,43 +1032,45 @@ class WorkerPageState extends State<WorkerPage> {
                     constraints: new BoxConstraints(
                       maxHeight: 100.0, //get max height from the db??
                     ),
-                    child: ListView.builder(
-                      //scroll horizontal
-                      scrollDirection: Axis.horizontal,
-                      itemCount: reviewData
-                          .length, //number of reviews given to the user, input from the databases
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 2, vertical: 2),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: kLightOrange,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(children: [
-                            Text(
-                              reviewData[index]
-                                  .firstName, //get theuser name and surname from the db
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              reviewData[index]
-                                  .contentReview, //get the content of the review from the db
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 15),
-                            ),
-                          ]),
-                        );
-                      },
-                    )),
+                    child: (reviewData.length == 0)
+                        ? Text("No reviews yet...")
+                        : ListView.builder(
+                            //scroll horizontal
+                            scrollDirection: Axis.horizontal,
+                            itemCount: reviewData
+                                .length, //number of reviews given to the user, input from the databases
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 2),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: kLightOrange,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(children: [
+                                  Text(
+                                    reviewData[index]
+                                        .firstName, //get theuser name and surname from the db
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    reviewData[index]
+                                        .contentReview, //get the content of the review from the db
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 15),
+                                  ),
+                                ]),
+                              );
+                            },
+                          )),
                 SizedBox(
                   height: 5,
                 ),

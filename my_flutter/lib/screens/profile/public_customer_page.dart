@@ -10,7 +10,7 @@ import 'package:wefix/screens/homepage/components/results_widget.dart';
 import 'package:wefix/screens/login/login.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:wefix/services/user_service.dart';
-import 'package:wefix/services/worker_service.dart';
+import 'package:wefix/services/worker_services.dart';
 import '../../../size_config.dart';
 
 class CustomerPage extends StatefulWidget {
@@ -165,7 +165,7 @@ class CustomerPageState extends State<CustomerPage> {
                                 direction: Axis.horizontal,
                               ),
                             ]),
-                            //here insert the rating
+
                             Text(
                               customerData!.avgStar
                                   .toString(), //DISPLAY THE MEDIA FROM THE BACK END
