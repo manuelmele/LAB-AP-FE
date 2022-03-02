@@ -5,8 +5,7 @@ import 'package:wefix/size_config.dart';
 
 class Intro extends StatelessWidget {
   //equivalente a SplashScreen
-  static String routeName =
-      "/intro"; //nell'app di prova questa si chiama splash
+  static String routeName = "/intro";
 
   @override
   Widget build(BuildContext context) {

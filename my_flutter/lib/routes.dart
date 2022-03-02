@@ -10,6 +10,7 @@ import 'package:wefix/screens/navigator/navigator.dart';
 import 'package:wefix/screens/payment/confirmation/failed.dart';
 import 'package:wefix/screens/payment/confirmation/success.dart';
 import 'package:wefix/screens/payment/payment.dart';
+import 'package:wefix/screens/profile/public_worker_page.dart';
 import 'package:wefix/screens/payment/paypal/makePayment.dart';
 import 'package:wefix/screens/payment/redirect/redirect.dart';
 import 'package:wefix/screens/signup/signup.dart';
@@ -26,6 +27,7 @@ final Map<String, WidgetBuilder> routes = {
   SignUpOptionalScreen.routeName: (context) => SignUpOptionalScreen(),
   NavigatorScreen.routeName: (context) => NavigatorScreen(),
   PaymentPage.routeName: (context) => PaymentPage(),
+  PublicWorkerPage.routeName: (context) => PublicWorkerPage(),
   SubscriptionPage.routeName: (context) => SubscriptionPage(),
   BookAppointmentPage.routeName: (context) => BookAppointmentPage(),
   SummaryPage.routeName: (context) => SummaryPage(),
