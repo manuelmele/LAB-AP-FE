@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 //------------------- BASE URLs --------------------//
 //String BASE_URL = '10.0.2.2:8000'; //indirizzo per emulatore
 //String BASE_URL = '192.168.1.9:8000'; //indirizzo IP laura
-String BASE_URL = '192.168.1.239:8000'; //indirizzo IP daniela
+String BASE_URL = '192.168.1.238:8000'; //indirizzo IP daniela
 //String BASE_URL = '192.168.1.53:8000'; //indirizzo IP manuel
 
 //------------------- COLORS --------------------//
