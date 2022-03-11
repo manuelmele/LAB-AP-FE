@@ -15,7 +15,8 @@ import 'package:wefix/screens/payment/paypal/makePayment.dart';
 import 'package:wefix/screens/payment/redirect/redirect.dart';
 import 'package:wefix/screens/signup/signup.dart';
 import 'package:wefix/screens/signup_optional/signup_optional.dart';
-import 'package:wefix/screens/payment/summary/summary.dart';
+import 'package:wefix/screens/payment/summary/summaryCustomer.dart';
+import 'package:wefix/screens/payment/summary/summaryWorker.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:wefix/screens/subscription/subscription.dart'; //per importare il tipo WidgetBuilder
@@ -30,7 +31,8 @@ final Map<String, WidgetBuilder> routes = {
   PublicWorkerPage.routeName: (context) => PublicWorkerPage(),
   SubscriptionPage.routeName: (context) => SubscriptionPage(),
   BookAppointmentPage.routeName: (context) => BookAppointmentPage(),
-  SummaryPage.routeName: (context) => SummaryPage(),
+  SummaryCustomerPage.routeName: (context) => SummaryCustomerPage(),
+  SummaryWorkerPage.routeName: (context) => SummaryWorkerPage(),
   BookingConfirmationScreen.routeName: (context) => BookingConfirmationScreen(),
   RedirectPage.routeName: (context) => RedirectPage(),
   makePayment.routeName: (context) => makePayment(),

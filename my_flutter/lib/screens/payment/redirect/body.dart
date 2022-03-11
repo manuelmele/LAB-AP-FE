@@ -7,7 +7,7 @@ import 'package:wefix/constants.dart';
 import 'package:wefix/screens/payment/confirmation/failed.dart';
 import 'package:wefix/screens/payment/confirmation/success.dart';
 import 'package:wefix/screens/payment/payment.dart';
-import 'package:wefix/screens/payment/summary/summary.dart';
+import 'package:wefix/screens/payment/summary/summaryCustomer.dart';
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';

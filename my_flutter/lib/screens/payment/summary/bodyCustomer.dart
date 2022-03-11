@@ -19,12 +19,12 @@ import 'package:wefix/services/user_service.dart';
 import '../../book_appointment/confirmation.dart';
 import '../paypal/makePayment.dart';
 
-class Summary extends StatefulWidget {
+class SummaryCustomer extends StatefulWidget {
   @override
   _SummaryState createState() => _SummaryState();
 }
 
-class _SummaryState extends State<Summary> {
+class _SummaryState extends State<SummaryCustomer> {
   final _formKey = GlobalKey<FormState>();
 
   String? jwt;
@@ -54,7 +54,7 @@ class _SummaryState extends State<Summary> {
 
   Future<String> UpgradeToPro() async {
     if (_chosenCategory == null || partita_iva == null) {
-      return "Error: manca qualcosa";
+      return "Error: these fields are required";
     }
     errors = [];
     String price;
@@ -126,9 +126,9 @@ class _SummaryState extends State<Summary> {
     final DateFormat dateFormater = DateFormat('dd/MM/yyyy');
     //get the dates after one month and one year
     final aMonthFromNow =
-        dateFormater.format(today.add(const Duration(days: 31)));
+        dateFormater.format(DateTime(today.year, today.month+1, today.day));
     final aYearFromNow =
-        dateFormater.format(today.add(const Duration(days: 365)));
+        dateFormater.format(DateTime(today.year+1, today.month, today.day));
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -211,7 +211,7 @@ class _SummaryState extends State<Summary> {
                         ),
                         RichText(
                           text: TextSpan(
-                            text: plan == 0 ? "Montly plan" : "Yearly plan",
+                            text: plan == 0 ? "Monthly plan" : "Yearly plan",
                             style: TextStyle(
                               color: kBlueDark,
                               fontSize: getProportionateScreenWidth(18),

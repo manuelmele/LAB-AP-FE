@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wefix/constants.dart';
+import 'package:wefix/models/user_model.dart';
 import 'package:wefix/screens/payment/payment.dart';
-import 'package:wefix/screens/payment/summary/summary.dart';
+import 'package:wefix/screens/payment/summary/summaryCustomer.dart';
+import 'package:wefix/screens/payment/summary/summaryWorker.dart';
+import '../../services/user_service.dart';
 import 'payment_content.dart';
 //import 'package:wefix/screens/payment/info/info.dart';
 
@@ -19,6 +22,9 @@ class Payment extends StatefulWidget {
 
 class _PaymentState extends State<Payment> {
   int currentPage = 0;
+  String? x;
+  UserModel? userData;
+  bool initialResults = false;
 
   //pageController lets us choose which page of the pageviwe to see
   final PageController _pageController = PageController();
@@ -47,7 +53,29 @@ class _PaymentState extends State<Payment> {
     },
   ];
 
+   void getUserData() {
+    //search by category just the first time
+    if (initialResults) return;
+
+    SharedPreferences.getInstance().then((prefs) {
+      String jwt = prefs.getString('jwt')!;
+      getUserDataService(jwt).then((newResults) {
+        setState(() {
+          userData = newResults;
+          initialResults = true;
+          print(userData);
+        });
+      });
+    });
+  }
+
+
+
   Widget build(BuildContext context) {
+    getUserData();
+    //print("il mio ruolo: ");
+    //print(role);
+    //x=userData!.category;
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -91,7 +119,7 @@ class _PaymentState extends State<Payment> {
                     });
                   },
                   itemCount: plan.length,
-                  itemBuilder: (context, index) => IntroContent(
+                  itemBuilder: (context, index) => PaymentContent(
                       title: plan[index]['title'],
                       discount: plan[index]['discount'],
                       cost: plan[index]['cost'],
@@ -134,9 +162,10 @@ class _PaymentState extends State<Payment> {
                               ),
                             ),
                             child: const Text('Get started'),
-                            onPressed: () async {
-                              Navigator.pushReplacementNamed(
-                                  context, SummaryPage.routeName);
+                            onPressed: () async { 
+                              userData == null || userData!.category == "Customer" 
+                                    ? Navigator.pushReplacementNamed(context, SummaryCustomerPage.routeName)
+                                    : Navigator.pushReplacementNamed(context, SummaryWorkerPage.routeName);
                               SharedPreferences m =
                                   await SharedPreferences.getInstance();
                               m.setInt('plan', currentPage);
