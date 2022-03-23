@@ -127,24 +127,23 @@ class ListProfile extends StatelessWidget {
       child: ListTile(
         contentPadding:
             const EdgeInsets.only(top: 16, right: 16, left: 16, bottom: 16),
-        trailing: Icon(Icons.arrow_forward_ios),
+        trailing: IconButton(
+            icon: Icon(Icons.arrow_forward_ios),
+            onPressed: () async {
+              SharedPreferences.getInstance().then((prefs) {
+                print(email);
+                prefs.setString('emailWorker', email);
+                Navigator.pushNamed(context, PublicWorkerPage.routeName);
+              });
+            }),
         leading: CircleAvatar(
             radius: 32,
             child: ClipOval(child: Image.memory(base64Decode(image)))),
-        title: TextButton(
-          onPressed: () async {
-            SharedPreferences.getInstance().then((prefs) {
-              print(email);
-              prefs.setString('emailWorker', email);
-              Navigator.pushNamed(context, PublicWorkerPage.routeName);
-            });
-          },
-          child: Text(
-            name,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.black,
-            ),
+        title: Text(
+          name,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.black,
           ),
         ),
         subtitle: Text(
