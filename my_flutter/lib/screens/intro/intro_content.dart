@@ -36,7 +36,7 @@ class IntroContent extends StatelessWidget {
             text!,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: getProportionateScreenWidth(15),
+              fontSize: getProportionateScreenWidth(17),
             ),
           ),
         ]);
