@@ -122,18 +122,30 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                workerData!.firstName,
+                                (workerData!.firstName +
+                                                " " +
+                                                workerData!.secondName)
+                                            .length >
+                                        10
+                                    ? (workerData!.firstName +
+                                                " " +
+                                                workerData!.secondName)
+                                            .substring(0, 10) +
+                                        "..."
+                                    : workerData!.firstName +
+                                        " " +
+                                        workerData!.secondName,
                                 //"Name",
                                 style: TextStyle(fontSize: 32),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Text(
-                                workerData!.secondName,
-                                //"Surname",
-                                style: TextStyle(fontSize: 32),
-                              ),
+                              // Text(
+                              //   workerData!.secondName,
+                              //   //"Surname",
+                              //   style: TextStyle(fontSize: 32),
+                              // ),
                             ],
                           ),
                           Row(children: [
@@ -276,7 +288,7 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                 //here starts the list of items
                 ConstrainedBox(
                     constraints: new BoxConstraints(
-                      maxHeight: 200.0,
+                      maxHeight: SizeConfig.screenHeight / (2.5).toDouble(),
                     ),
                     child: ListView.builder(
                       //controller: controller, doesn't work fine

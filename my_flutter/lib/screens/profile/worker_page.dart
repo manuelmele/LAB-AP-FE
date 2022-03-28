@@ -932,7 +932,19 @@ class WorkerPageState extends State<WorkerPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                userData!.firstName,
+                                (userData!.firstName +
+                                                " " +
+                                                userData!.secondName)
+                                            .length >
+                                        10
+                                    ? (userData!.firstName +
+                                                " " +
+                                                userData!.secondName)
+                                            .substring(0, 10) +
+                                        "..."
+                                    : userData!.firstName +
+                                        " " +
+                                        userData!.secondName,
                                 //"Name",
                                 style: TextStyle(fontSize: 32),
                               ),
@@ -958,10 +970,6 @@ class WorkerPageState extends State<WorkerPage> {
                               )
                             ],
                           ),
-                          Text(
-                            userData!.secondName,
-                            style: TextStyle(fontSize: 32),
-                          ),
                           SizedBox(
                             height: 5,
                           ),
@@ -969,15 +977,17 @@ class WorkerPageState extends State<WorkerPage> {
                             userData!.category,
                             style: TextStyle(fontSize: 19, color: Colors.grey),
                           ),
-                          Text(
-                            userData!.email,
-                            style: TextStyle(fontSize: 19, color: Colors.grey),
-                          ),
+                          // Text(
+                          //   userData!.email,
+                          //   style: TextStyle(fontSize: 19, color: Colors.grey),
+                          // ),
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            userData!.bio,
+                            userData!.bio.length > 60
+                                ? userData!.bio.substring(0, 60) + "..."
+                                : userData!.bio,
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
                           //here starts the rating
@@ -1113,7 +1123,7 @@ class WorkerPageState extends State<WorkerPage> {
                 //here starts the list of items
                 ConstrainedBox(
                     constraints: new BoxConstraints(
-                      maxHeight: 200.0,
+                      maxHeight: SizeConfig.screenHeight / (2.5).toDouble(),
                     ),
                     child: ListView.builder(
                       //controller: controller, doesn't work fine

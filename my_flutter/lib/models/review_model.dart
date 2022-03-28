@@ -19,8 +19,8 @@ class ReviewModel {
 
   factory ReviewModel.fromJson(Map<dynamic, dynamic> data) {
     return ReviewModel(
-      firstName: data['firstName'],
-      secondName: data['secondName'],
+      firstName: data['firstNameReviewer'],
+      secondName: data['lastNameReviewer'],
       contentReview: data['contentReview'],
       star: data['star'],
     );

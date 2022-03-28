@@ -212,6 +212,20 @@ class CustomerPageState extends State<CustomerPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(children: [
+                            Column(children: [
+                              RatingBarIndicator(
+                                rating: reviewData[index]
+                                    .star
+                                    .toDouble(), //get the rating from the media form the db, try without the function...
+                                itemBuilder: (context, index) => Icon(
+                                  Icons.star,
+                                  color: kOrange,
+                                ),
+                                itemCount: 5,
+                                itemSize: 30.0,
+                                direction: Axis.horizontal,
+                              ),
+                            ]),
                             Text(
                               reviewData[index]
                                   .firstName, //get the user name and surname from the db

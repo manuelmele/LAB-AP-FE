@@ -169,161 +169,161 @@ class CustomerPageState extends State<CustomerPage> {
         builder: (context) {
           //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
-            return //SingleChildScrollView(child:
-                AlertDialog(
-              content: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        initialValue: userData!.firstName,
-                        onSaved: (newValue) => newName = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            newName = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+            return SingleChildScrollView(
+              child: AlertDialog(
+                content: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          initialValue: userData!.firstName,
+                          onSaved: (newValue) => newName = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              newName = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Your Name",
-                          //focusColor: kOrange,
-                          hintText: "Enter your name",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
-                          // if you r using flutter less then 1.20.* then maybe this is not working properly
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.person,
+                            labelText: "Your Name",
+                            //focusColor: kOrange,
+                            hintText: "Enter your name",
+                            // If  you are using latest version of flutter then lable text and hint text shown like this
+                            // if you r using flutter less then 1.20.* then maybe this is not working properly
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.person,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        initialValue: userData!.secondName,
-                        onSaved: (newValue) => newSurname = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            newSurname =
-                                value; //switcha tra password oscurata e password visibile
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          initialValue: userData!.secondName,
+                          onSaved: (newValue) => newSurname = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              newSurname =
+                                  value; //switcha tra password oscurata e password visibile
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Your Surname",
-                          //focusColor: kOrange,
-                          hintText: "Enter your surname",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
-                          // if you r using flutter less then 1.20.* then maybe this is not working properly
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.person,
+                            labelText: "Your Surname",
+                            //focusColor: kOrange,
+                            hintText: "Enter your surname",
+                            // If  you are using latest version of flutter then lable text and hint text shown like this
+                            // if you r using flutter less then 1.20.* then maybe this is not working properly
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.person,
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: getProportionateScreenHeight(20),
-                      ),
-                      TextFormField(
-                        initialValue: userData!.bio,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 5,
-                        onSaved: (newValue) => newBio = newValue,
-                        onChanged: (value) {
-                          setState(() {
-                            newBio = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return mandatory;
-                          }
+                        SizedBox(
+                          height: getProportionateScreenHeight(20),
+                        ),
+                        TextFormField(
+                          initialValue: userData!.bio,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          onSaved: (newValue) => newBio = newValue,
+                          onChanged: (value) {
+                            setState(() {
+                              newBio = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return mandatory;
+                            }
 
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(
-                            // width: 0.0 produces a thin "hairline" border
-                            borderSide: BorderSide(color: kLightOrange),
-                          ),
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderSide: BorderSide(color: kLightOrange),
+                            ),
 
-                          labelText: "Your Bio",
-                          //focusColor: kOrange,
-                          hintText: "Enter your bio",
-                          // If  you are using latest version of flutter then lable text and hint text shown like this
-                          // if you r using flutter less then 1.20.* then maybe this is not working properly
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          suffixIcon: Icon(
-                            Icons.library_books,
+                            labelText: "Your Bio",
+                            //focusColor: kOrange,
+                            hintText: "Enter your bio",
+                            // If  you are using latest version of flutter then lable text and hint text shown like this
+                            // if you r using flutter less then 1.20.* then maybe this is not working properly
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            suffixIcon: Icon(
+                              Icons.library_books,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )),
-              title: Text('Edit your info:'),
-              actions: <Widget>[
-                InkWell(
-                  child: Text('OK   '),
-                  onTap: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
-                    String? jwt = prefs.getString('jwt');
+                      ],
+                    )),
+                title: Text('Edit your info:'),
+                actions: <Widget>[
+                  InkWell(
+                    child: Text('OK   '),
+                    onTap: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String? jwt = prefs.getString('jwt');
 
-                    print("Adesso stampo la jwt");
-                    print(jwt);
+                      print("Adesso stampo la jwt");
+                      print(jwt);
 
-                    //check, the values cannot be null
-                    if (newName == null) {
-                      newName = userData!.firstName;
-                    }
-                    if (newSurname == null) {
-                      newSurname = userData!.secondName;
-                    }
-                    if (newBio == null) {
-                      newBio = userData!.bio;
-                    }
-                    String res = await updateProfileService(
-                        jwt!, newName!, newSurname!, newBio!);
-                    print(res);
-                    //chiamo la funzione validate per mostrare gli errori a schermo
-                    if (!_formKey.currentState!.validate()) {
-                      print("not valid");
-                    }
-                    if (_formKey.currentState!.validate()) {
-                      // Do something like updating SharedPreferences or User Settings etc.
-                      Navigator.of(context).pop();
-                      initialResults = false;
-                      getInfo();
-                    }
-                  },
-                ),
-              ],
-              //),
+                      //check, the values cannot be null
+                      if (newName == null) {
+                        newName = userData!.firstName;
+                      }
+                      if (newSurname == null) {
+                        newSurname = userData!.secondName;
+                      }
+                      if (newBio == null) {
+                        newBio = userData!.bio;
+                      }
+                      String res = await updateProfileService(
+                          jwt!, newName!, newSurname!, newBio!);
+                      print(res);
+                      //chiamo la funzione validate per mostrare gli errori a schermo
+                      if (!_formKey.currentState!.validate()) {
+                        print("not valid");
+                      }
+                      if (_formKey.currentState!.validate()) {
+                        // Do something like updating SharedPreferences or User Settings etc.
+                        Navigator.of(context).pop();
+                        initialResults = false;
+                        getInfo();
+                      }
+                    },
+                  ),
+                ],
+              ),
             );
           });
         });
@@ -519,6 +519,20 @@ class CustomerPageState extends State<CustomerPage> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(children: [
+                            Column(children: [
+                              RatingBarIndicator(
+                                rating: reviewData[index]
+                                    .star
+                                    .toDouble(), //get the rating from the media form the db, try without the function...
+                                itemBuilder: (context, index) => Icon(
+                                  Icons.star,
+                                  color: kOrange,
+                                ),
+                                itemCount: 5,
+                                itemSize: 30.0,
+                                direction: Axis.horizontal,
+                              ),
+                            ]),
                             Text(
                               reviewData[index]
                                   .firstName, //get the user name and surname from the db
