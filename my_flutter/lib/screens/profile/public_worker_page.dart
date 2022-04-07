@@ -15,6 +15,7 @@ import 'package:wefix/services/user_service.dart';
 import 'package:wefix/services/worker_services.dart';
 
 import '../../../size_config.dart';
+import '../book_appointment/booking.dart';
 
 class PublicWorkerPage extends StatefulWidget {
   static String routeName = "/publicWorker";
@@ -155,24 +156,26 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                                   TextStyle(fontSize: 19, color: Colors.grey),
                             ),
                           ]),
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                workerData!.email,
-                                //"Email",
-                                style:
-                                    TextStyle(fontSize: 19, color: Colors.grey),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   children: [
+                          //     SizedBox(
+                          //       height: 5,
+                          //     ),
+                          //     Text(
+                          //       workerData!.email,
+                          //       //"Email",
+                          //       style:
+                          //           TextStyle(fontSize: 19, color: Colors.grey),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(
                             height: 5,
                           ),
                           Text(
-                            workerData!.bio,
+                            workerData!.bio.length > 60
+                                ? workerData!.bio.substring(0, 60) + "..."
+                                : workerData!.bio,
                             style: TextStyle(color: Colors.grey, fontSize: 16),
                           ),
 
@@ -229,43 +232,45 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                     constraints: new BoxConstraints(
                       maxHeight: 100.0, //get max height from the db??
                     ),
-                    child: ListView.builder(
-                      //scroll horizontal
-                      scrollDirection: Axis.horizontal,
-                      itemCount: reviewData
-                          .length, //number of reviews given to the user, input from the databases
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 2, vertical: 2),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: kLightOrange,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(children: [
-                            Text(
-                              reviewData[index]
-                                  .firstName, //get theuser name and surname from the db
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              reviewData[index]
-                                  .contentReview, //get the content of the review from the db
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 15),
-                            ),
-                          ]),
-                        );
-                      },
-                    )),
+                    child: (reviewData.length == 0)
+                        ? Text("No reviews yet...")
+                        : ListView.builder(
+                            //scroll horizontal
+                            scrollDirection: Axis.horizontal,
+                            itemCount: reviewData
+                                .length, //number of reviews given to the user, input from the databases
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 2),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                decoration: BoxDecoration(
+                                  color: kLightOrange,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(children: [
+                                  Text(
+                                    reviewData[index]
+                                        .firstName, //get theuser name and surname from the db
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    reviewData[index]
+                                        .contentReview, //get the content of the review from the db
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 15),
+                                  ),
+                                ]),
+                              );
+                            },
+                          )),
                 SizedBox(
                   height: 5,
                 ),
@@ -314,26 +319,28 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                                     color: kOrange,
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
-                                      image: AssetImage(
-                                          //levato il const... aggiungerlo se si rimette un immagine fissa
-                                          productData[index].image),
+                                      image: Image.memory(base64Decode(
+                                              productData[index].image))
+                                          .image,
                                       //"assets/images/parrot_cut.png"
                                       //take the image input from the database
                                       fit: BoxFit.fitHeight,
                                     )),
                               ),
                               SizedBox(
-                                width: 15,
+                                width: 5,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width / 2 - 30,
+                                    MediaQuery.of(context).size.width / 2 - 10,
                                 child: Column(children: [
                                   Text(
                                     productData[index].title,
                                     //"Title", // import from the db
                                     style: TextStyle(
-                                        color: Colors.black, fontSize: 20),
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
                                   ),
                                   Text(
                                     productData[index].description,
@@ -358,15 +365,22 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              {}, // here I invoke the function to book the appointment, go to another page
-          backgroundColor: kOrange,
-          child: Icon(
-            Icons.chat_bubble_outline,
-            color: Colors.white,
-          ),
-        ),
+        floatingActionButton: workerData!.userRole == "Customer"
+            ? FloatingActionButton(
+                onPressed: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext ctx) => BookAppointmentPage(
+                              emailWorker: workerData!.email))),
+                }, // here I invoke the function to book the appointment, go to another page
+                backgroundColor: kOrange,
+                child: Icon(
+                  Icons.chat_bubble_outline,
+                  color: Colors.white,
+                ),
+              )
+            : null,
       );
     } else {
       return Scaffold();

@@ -28,7 +28,8 @@ class HomeHeader extends StatelessWidget {
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
             hintText: "Search",
-            prefixIcon: Icon(Icons.search)),
+            hintStyle: TextStyle(color: kOrange),
+            prefixIcon: Icon(Icons.search, color: kOrange)),
       ),
     );
   }

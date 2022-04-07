@@ -11,6 +11,7 @@ import 'package:wefix/screens/homepage/home_page.dart';
 import 'package:wefix/screens/profile/profile_page.dart';
 import 'package:wefix/screens/profile/public_worker_page.dart';
 import 'package:wefix/services/filters_service.dart';
+import 'package:wefix/constants.dart';
 
 import '../../../size_config.dart';
 import 'categories.dart';
@@ -72,30 +73,31 @@ class _ResultsState extends State<ResultsWidget> {
     searchByCategory(category);
 
     return Scaffold(
+        backgroundColor: kBackground,
         body: Column(
-      children: [
-        SizedBox(height: getProportionateScreenHeight(20)),
-        HomeHeader(
-          onSubmit: (String value) {
-            print("Searching for value: $value");
-            searchByQuery(value, category);
-          },
-        ),
-        Expanded(
-            child: ListView.builder(
-          itemCount: results.length,
-          itemBuilder: (context, i) {
-            return ListProfile(
-                name: results[i].firstName + " " + results[i].secondName,
-                description: results[i].bio,
-                email: results[i].email,
-                image: results[i].photoProfile,
-                press: () {});
-          },
-        )),
-        SizedBox(height: getProportionateScreenWidth(30)),
-      ],
-    ));
+          children: [
+            SizedBox(height: getProportionateScreenHeight(20)),
+            HomeHeader(
+              onSubmit: (String value) {
+                print("Searching for value: $value");
+                searchByQuery(value, category);
+              },
+            ),
+            Expanded(
+                child: ListView.builder(
+              itemCount: results.length,
+              itemBuilder: (context, i) {
+                return ListProfile(
+                    name: results[i].firstName + " " + results[i].secondName,
+                    description: results[i].bio,
+                    email: results[i].email,
+                    image: results[i].photoProfile,
+                    press: () {});
+              },
+            )),
+            SizedBox(height: getProportionateScreenWidth(30)),
+          ],
+        ));
   }
 }
 
@@ -122,7 +124,7 @@ class ListProfile extends StatelessWidget {
       margin: EdgeInsets.only(top: 20, right: 20, left: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: Colors.grey[200],
+        color: Colors.lightBlue[50],
       ),
       child: ListTile(
         contentPadding:
@@ -143,14 +145,14 @@ class ListProfile extends StatelessWidget {
           name,
           style: const TextStyle(
             fontSize: 18,
-            color: Colors.black,
+            color: kOrange,
           ),
         ),
         subtitle: Text(
           description,
           style: const TextStyle(
             fontSize: 12,
-            color: Colors.grey,
+            color: Colors.black,
           ),
         ),
       ),

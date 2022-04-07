@@ -4,7 +4,15 @@ import 'package:wefix/size_config.dart';
 
 import 'booking_form.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  final String emailWorker;
+
+  const Body({Key? key, required this.emailWorker}) : super(key: key);
+  @override
+  BodyState createState() => BodyState();
+}
+
+class BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,7 +44,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.03),
-                BookingForm(),
+                BookingForm(emailWorker: widget.emailWorker),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 Text(

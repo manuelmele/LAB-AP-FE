@@ -16,6 +16,9 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class BookingForm extends StatefulWidget {
+  final String emailWorker;
+
+  const BookingForm({Key? key, required this.emailWorker}) : super(key: key);
   @override
   _BookingFormState createState() => _BookingFormState();
 }
@@ -101,7 +104,7 @@ class _BookingFormState extends State<BookingForm> {
                 print("booking form not valid");
               } else {
                 //MODIFICARE QUI PER RENDERE CAMPO DINAMICO
-                String? emailWorker = "marcopinorossi@live.it";
+                String? emailWorker = widget.emailWorker;
                 String res = await bookAppointment(emailWorker);
                 //METTERE res=="" QUANDO LO TESTI DAVVERO
                 if (res == "") {

@@ -168,16 +168,6 @@ class _SettingsDrawerState extends State<SettingsDrawer> {
                       builder: (BuildContext ctx) => LoginScreen()));
             },
           ),
-          ListTile(
-            //momentanea per testare il booking appointment
-            title: const Text('Book Appointment'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext ctx) => BookAppointmentPage()));
-            },
-          ),
         ],
       ),
     );
