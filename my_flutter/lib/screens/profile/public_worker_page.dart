@@ -365,22 +365,20 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
             ),
           ),
         ),
-        floatingActionButton: workerData!.userRole == "Customer"
-            ? FloatingActionButton(
-                onPressed: () => {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext ctx) => BookAppointmentPage(
-                              emailWorker: workerData!.email))),
-                }, // here I invoke the function to book the appointment, go to another page
-                backgroundColor: kOrange,
-                child: Icon(
-                  Icons.chat_bubble_outline,
-                  color: Colors.white,
-                ),
-              )
-            : null,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext ctx) =>
+                        BookAppointmentPage(emailWorker: workerData!.email))),
+          }, // here I invoke the function to book the appointment, go to another page
+          backgroundColor: kOrange,
+          child: Icon(
+            Icons.chat_bubble_outline,
+            color: Colors.white,
+          ),
+        ),
       );
     } else {
       return Scaffold();
