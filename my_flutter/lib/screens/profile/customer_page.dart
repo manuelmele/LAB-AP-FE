@@ -497,6 +497,10 @@ class CustomerPageState extends State<CustomerPage> {
                     ),
                   ],
                 ),
+                if (reviewData.length == 0)
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [Text("No reviews available")]),
 
                 //here starts the list of contents of the reviews
                 ConstrainedBox(

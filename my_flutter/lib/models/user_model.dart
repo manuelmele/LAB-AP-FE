@@ -40,7 +40,7 @@ class UserModel {
       photoProfile: data['photoProfile'] ?? defaultAvatarBase64,
       identityCardNumber: data['identityCardNumber'] ?? "Not provided",
       userRole: data['userRole'],
-      category: data['category'] ?? "customer",
+      category: data['category'] ?? "Worker",
       piva: data['piva'] ?? "Not provided",
       avgStar: data['avgStar'] ?? 0.0,
     );

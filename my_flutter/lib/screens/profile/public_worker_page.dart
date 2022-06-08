@@ -287,6 +287,10 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                     ),
                   ],
                 ),
+                if (productData.length == 0)
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [Text("No product available")]),
                 SizedBox(
                   height: 5,
                 ),
