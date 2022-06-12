@@ -43,11 +43,12 @@ class _BookingFormState extends State<BookingForm> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? _emailCustomer = prefs.getString('email');
+    String? _jwt = prefs.getString('jwt');
     //PRENDERE EMAIL DEL WORKER QUANDO SARÀ PRONTA LA PAGINA UTENTE WORKER
     //String? _emailWorker = "marcopinorossi@live.it";
 
     String response = await bookAppointmentService(_emailWorker,
-        _emailCustomer!, _chosenDate!, _chosenTime!, description!, jwt!);
+        _emailCustomer!, _chosenDate!, _chosenTime!, description!, _jwt!);
 
     if (response.contains('Error')) {
       String error = response;
