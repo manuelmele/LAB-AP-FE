@@ -878,10 +878,11 @@ class WorkerPageState extends State<WorkerPage> {
     getInfo(); // when the page starts it calls the user data
     if (userData != null) {
       return Scaffold(
+        backgroundColor: kBackground,
         //resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -931,6 +932,26 @@ class WorkerPageState extends State<WorkerPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              Container(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () async => {
+                                    await editUserSettings(context),
+                                  }, //show dialog for modify name
+                                  child: CircleAvatar(
+                                    radius: 15,
+                                    backgroundColor: kLightOrange,
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: kWhite,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Text(
                                 (userData!.firstName +
                                                 " " +
@@ -948,26 +969,6 @@ class WorkerPageState extends State<WorkerPage> {
                                 //"Name",
                                 style: TextStyle(fontSize: 32),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                alignment: Alignment.topRight,
-                                child: GestureDetector(
-                                  onTap: () async => {
-                                    await editUserSettings(context),
-                                  }, //show dialog for modify name
-                                  child: CircleAvatar(
-                                    radius: 15,
-                                    backgroundColor: kLightOrange,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: kWhite,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                           SizedBox(
@@ -1040,7 +1041,8 @@ class WorkerPageState extends State<WorkerPage> {
                 //here starts the list of contents reviews
                 ConstrainedBox(
                     constraints: new BoxConstraints(
-                      maxHeight: 100.0, //get max height from the db??
+                      maxHeight: SizeConfig.screenHeight /
+                          (1.5).toDouble(), //per l'emulatore 2.5
                     ),
                     child: (reviewData.length == 0)
                         ? Text("No reviews yet...")

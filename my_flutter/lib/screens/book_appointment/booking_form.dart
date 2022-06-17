@@ -217,7 +217,7 @@ class _BookingFormState extends State<BookingForm> {
           // width: 0.0 produces a thin "hairline" border
           borderSide: BorderSide(color: kLightOrange),
         ),
-        labelText: "Problem Description",
+        labelText: "Problem Description and Address",
         hintText: "Describe the problem you need to be solved",
 
         // If  you are using latest version of flutter then lable text and hint text shown like this
