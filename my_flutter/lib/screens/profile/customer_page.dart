@@ -334,10 +334,11 @@ class CustomerPageState extends State<CustomerPage> {
     getInfo();
     if (userData != null) {
       return Scaffold(
+        backgroundColor: kBackground,
         body: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+            padding: EdgeInsets.symmetric(vertical: 60, horizontal: 24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -396,6 +397,26 @@ class CustomerPageState extends State<CustomerPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: GestureDetector(
+                                    onTap: () async => {
+                                      await editUserSettings(context),
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: kLightOrange,
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: kWhite,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
                                 Text(
                                   userData!.firstName,
                                   //"Name",
@@ -412,23 +433,6 @@ class CustomerPageState extends State<CustomerPage> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: GestureDetector(
-                                    onTap: () async => {
-                                      await editUserSettings(context),
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 15,
-                                      backgroundColor: kLightOrange,
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: kWhite,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ),
-                                )
                               ],
                             ),
                             SizedBox(

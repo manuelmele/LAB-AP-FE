@@ -90,10 +90,11 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
     getInfo(); // when the page starts it calls the user data
     if (workerData != null) {
       return Scaffold(
+        backgroundColor: kBackground,
         //resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -258,6 +259,16 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                                         fontSize: 17,
                                         fontWeight: FontWeight.w600),
                                   ),
+                                  Text(
+                                    "Rating value: " +
+                                        reviewData[index]
+                                            .star
+                                            .toString(), //get the content of the review from the db
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                   SizedBox(
                                     height: 5,
                                   ),
@@ -297,7 +308,8 @@ class PublicWorkerPageState extends State<PublicWorkerPage> {
                 //here starts the list of items
                 ConstrainedBox(
                     constraints: new BoxConstraints(
-                      maxHeight: SizeConfig.screenHeight / (2.5).toDouble(),
+                      maxHeight: SizeConfig.screenHeight /
+                          (1.5).toDouble(), //per l'emulatore 2.5
                     ),
                     child: ListView.builder(
                       //controller: controller, doesn't work fine

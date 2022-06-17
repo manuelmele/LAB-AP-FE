@@ -49,19 +49,20 @@ class ProfilePageState extends State<ProfilePage> {
       String role = userData!.userRole;
       if (role == "Customer") {
         return Scaffold(
-          backgroundColor: kBackground,
           body: CustomerPage(),
+          backgroundColor: kBackground,
         );
       } else {
         return Scaffold(
-          backgroundColor: kBackground,
           body: WorkerPage(),
+          backgroundColor: kBackground,
         );
       }
     } else {
       return Scaffold(
-          // if I return an empty scaffold something isn't right...
-          );
+        backgroundColor: kBackground,
+        // if I return an empty scaffold something isn't right...
+      );
     }
   }
 }

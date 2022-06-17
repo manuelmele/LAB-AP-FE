@@ -64,10 +64,11 @@ class CustomerPageState extends State<CustomerPage> {
     getInfo();
     if (customerData != null) {
       return Scaffold(
+        backgroundColor: kBackground,
         body: SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+            padding: EdgeInsets.symmetric(vertical: 50, horizontal: 24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,6 +233,16 @@ class CustomerPageState extends State<CustomerPage> {
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 17,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Rating value: " +
+                                  reviewData[index]
+                                      .star
+                                      .toString(), //get the content of the review from the db
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
