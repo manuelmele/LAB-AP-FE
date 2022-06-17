@@ -961,7 +961,7 @@ class WorkerPageState extends State<WorkerPage> {
                                     ? (userData!.firstName +
                                                 " " +
                                                 userData!.secondName)
-                                            .substring(0, 10) +
+                                            .substring(0, 8) +
                                         "..."
                                     : userData!.firstName +
                                         " " +
@@ -1042,7 +1042,7 @@ class WorkerPageState extends State<WorkerPage> {
                 ConstrainedBox(
                     constraints: new BoxConstraints(
                       maxHeight: SizeConfig.screenHeight /
-                          (1.5).toDouble(), //per l'emulatore 2.5
+                          (8.0).toDouble(), //per l'emulatore 2.5
                     ),
                     child: (reviewData.length == 0)
                         ? Text("No reviews yet...")
@@ -1068,6 +1068,16 @@ class WorkerPageState extends State<WorkerPage> {
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 17,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    "Rating value: " +
+                                        reviewData[index]
+                                            .star
+                                            .toString(), //get the content of the review from the db
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w600),
                                   ),
                                   SizedBox(
