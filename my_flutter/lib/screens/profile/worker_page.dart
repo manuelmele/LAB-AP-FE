@@ -578,7 +578,7 @@ class WorkerPageState extends State<WorkerPage> {
                       if (productPrice == null) {
                         productPrice = "0.0";
                       }
-
+                    
                       String res = await insertNewProductService(
                           jwt!,
                           productPhoto!,
@@ -586,7 +586,7 @@ class WorkerPageState extends State<WorkerPage> {
                           productDescription!,
                           productTitle!);
 
-                      print(res);
+                      //print(res);
                       //chiamo la funzione validate per mostrare gli errori a schermo
                       if (!_formKeyInsertProduct.currentState!.validate()) {
                         print("not valid");
@@ -675,7 +675,8 @@ class WorkerPageState extends State<WorkerPage> {
         builder: (context) {
           //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
-            return //SingleChildScrollView(child:
+            return SingleChildScrollView(
+              child:
                 AlertDialog(
               content: Form(
                   key: _formKeyEditProduct,
@@ -868,7 +869,7 @@ class WorkerPageState extends State<WorkerPage> {
                   },
                 ),
               ],
-            );
+            ));
           });
         });
   }

@@ -257,6 +257,7 @@ Future<List<ProductModel>> getProductService(String _jwt) async {
   return results;
 }
 
+
 Future<String> insertNewProductService(String _jwt, XFile? _photoProduct,
     String _price, String _description, String _title) async {
   final queryParameters = {
@@ -267,12 +268,11 @@ Future<String> insertNewProductService(String _jwt, XFile? _photoProduct,
 
   final uri =
       Uri.http(baseUrl, '/wefix/worker/insert-new-product/', queryParameters);
-
   var request = http.MultipartRequest("POST", uri);
   if (_photoProduct == null) {
   } else {
     request.files.add(http.MultipartFile.fromBytes(
-        'photoProfile', File(_photoProduct.path).readAsBytesSync(),
+        'image', File(_photoProduct.path).readAsBytesSync(),
         contentType: MediaType(
             'image', 'jpeg'), //MediaType.parse('multipart/form-data'),
         filename: _photoProduct.path.split("/").last));

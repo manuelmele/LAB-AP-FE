@@ -140,7 +140,12 @@ class ListProfile extends StatelessWidget {
             }),
         leading: CircleAvatar(
             radius: 32,
-            child: ClipOval(child: Image.memory(base64Decode(image)))),
+            child: CircleAvatar(
+              backgroundImage: Image.memory(
+                base64Decode(image))
+                .image,
+                radius: 70,
+            )),
         title: Text(
           name,
           style: const TextStyle(
