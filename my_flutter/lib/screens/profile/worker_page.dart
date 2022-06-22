@@ -578,7 +578,7 @@ class WorkerPageState extends State<WorkerPage> {
                       if (productPrice == null) {
                         productPrice = "0.0";
                       }
-                    
+
                       String res = await insertNewProductService(
                           jwt!,
                           productPhoto!,
@@ -670,14 +670,17 @@ class WorkerPageState extends State<WorkerPage> {
   final GlobalKey<FormState> _formKeyEditProduct = GlobalKey<FormState>();
 
   Future<void> editProduct(BuildContext context, int index) async {
+    productTitle = productData[index].title;
+    productPrice = productData[index].price.toString();
+    productDescription = productData[index].description;
+
     return await showDialog(
         context: context,
         builder: (context) {
           //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
             return SingleChildScrollView(
-              child:
-                AlertDialog(
+                child: AlertDialog(
               content: Form(
                   key: _formKeyEditProduct,
                   child: Column(
@@ -695,10 +698,9 @@ class WorkerPageState extends State<WorkerPage> {
                             backgroundImage: productPhoto == null
                                 ? const AssetImage(
                                     "assets/images/parrot_cut.png")
-                                : Image.file(
-                                    File(productPhoto!.path),
-                                    fit: BoxFit.cover,
-                                  ).image,
+                                : Image.memory(
+                                        base64Decode(productData[index].image))
+                                    .image,
                             radius: 50.0,
                           ),
                         ),
@@ -824,7 +826,7 @@ class WorkerPageState extends State<WorkerPage> {
                       ),
                     ],
                   )),
-              title: Text('Insert a product:'),
+              title: Text('Update a product:'),
               actions: <Widget>[
                 InkWell(
                   child: Text('OK   '),
