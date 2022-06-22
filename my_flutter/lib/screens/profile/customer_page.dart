@@ -549,6 +549,16 @@ class CustomerPageState extends State<CustomerPage> {
                                   fontSize: 17,
                                   fontWeight: FontWeight.w600),
                             ),
+                            Text(
+                              "Rating value: " +
+                                  reviewData[index]
+                                      .star
+                                      .toString(), //get the content of the review from the db
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
                             SizedBox(
                               height: 5,
                             ),
