@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 //------------------- BASE URLs --------------------//
-//String BASE_URL = '10.0.2.2:9000'; //indirizzo per emulatore
-//String BASE_URL = '192.168.1.9:9000'; //indirizzo IP laura
-String BASE_URL = '192.168.1.241:9000'; //indirizzo IP daniela
-//String BASE_URL = '192.168.1.53:9000'; //indirizzo IP manuel
-//String BASE_URL = '192.168.43.174:9000'; //indirizzo IP manuel 4G
+String BASE_URL = '10.0.2.2:9000'; //indirizzo per emulatore
+//String BASE_URL = '192.215.45.179:9000'; //indirizzo IP for real device
 
 //------------------- COLORS --------------------//
 //this is the value to modify to change base color of the application
